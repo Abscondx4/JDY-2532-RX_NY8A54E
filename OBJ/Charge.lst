@@ -1,0 +1,500 @@
+
+                    Nyquest Technology Co., Ltd.
+
+NYASM 2.50
+
+    ADDR  OPCODE/VALUE              LINE   TAG  SOURCE                   STATEMENT    
+
+                                    1-    1     ;--------------------------------------------------------
+                                    1-    2     ; File Created by SDCC : free open source ISO C Compiler 
+                                    1-    3     ; Version 4.2.2 #0 (MSVC)
+                                    1-    4     ;--------------------------------------------------------
+                                    1-    5     ; NY8A port
+                                    1-    6     ;--------------------------------------------------------
+                                    1-    7     	.file	"Charge.c"
+                                    1-    8     	list	p=NY8A054E,c=on
+                                    1-    9     	#include "ny8a054e.inc"
+                                    2-    1     #include "common.inc"
+                                    3-    1     ;; header file for 8 bit series assembly -*- mode:asm; coding:utf-8; -*-
+                                    3-    2     ;; author    Ting
+                                    3-    3     ;; date      2020-12-24
+                                    3-    4     ;;
+                                    3-    5     ;; # constant definition
+                                    3-    6     ;;
+                                    3-    7     ;; ## instruction result store destination
+                                    3-    8     ;;  - W: the result is stored in the ACC.
+                                    3-    9     ;;  - F: the result is stored back in register.
+                                    3-   10     ;; ## flag name in STATUS register
+                                    3-   11     ;;  - C, DC, Z
+                                    3-   12     ;;
+                                    3-   13     ;; # macro define
+                                    3-   14     ;;
+                                    3-   15     ;; ## RETURN, used by C compiler, end of function
+                                    3-   16     ;; ## PAGESEL, empty macro, maybe used by C compiler (bug?)
+                                    3-   17     ;; ## BANKSEL, replace by .banksel pseudo command, empty if disable bank.
+                                    3-   18     ;; ## MGOTO, replace by LGOTO (ic<=2K word) or FGOTO (ic>2K word)
+                                    3-   19     ;; ## MCALL, same as above
+                                    3-   20     ;;
+                                    3-   21     W       EQU 0
+                                    3-   21     ;W = 0
+                                    3-   22     F       EQU 1
+                                    3-   22     ;F = 1
+                                    3-   23     C		EQU	0
+                                    3-   23     ;C = 0
+                                    3-   24     DC		EQU	1
+                                    3-   24     ;DC = 1
+                                    3-   25     Z		EQU	2
+                                    3-   25     ;Z = 2
+                                    3-   28     ;; common register for all series
+                                    3-   29     INDF    EQU 0x00
+                                    3-   29     ;INDF = 0
+                                    3-   30     PCL     EQU 0x02
+                                    3-   30     ;PCL = 2
+                                    3-   31     STATUS  EQU 0x03
+                                    3-   31     ;STATUS = 3
+                                    3-   32     FSR     EQU 0x04
+                                    3-   32     ;FSR = 4
+                                    3-   33     PCHBUF  EQU 0x0A
+                                    3-   33     ;PCHBUF = 10
+                                    1-   11     ;--------------------------------------------------------
+                                    1-   12     ; external declarations
+                                    1-   13     ;--------------------------------------------------------
+                                    1-   14     	extern	_Low_Voltage_Process
+                                    1-   15     	extern	_Battery_Full_Process
+                                    1-   16     	extern	_Battery_Voltage_Detect
+                                    1-   17     	extern	_StandBy_Exit
+                                    1-   18     	extern	_StandBy_Check
+                                    1-   19     	extern	_StandBy_Mode
+                                    1-   20     	extern	_Power_Off
+                                    1-   21     	extern	_Init
+                                    1-   22     	extern	_clear_ram
+                                    1-   23     	extern	_multi_16b
+                                    1-   24     	extern	_multi_8b
+                                    1-   25     	extern	_T0MD
+                                    1-   26     	extern	_PCON1
+                                    1-   27     	extern	_CMPCR
+                                    1-   28     	extern	_BODCON
+                                    1-   29     	extern	_PS0CV
+                                    1-   30     	extern	_APHCON
+                                    1-   31     	extern	_IOSTB
+                                    1-   32     	extern	_IOSTA
+                                    1-   33     	extern	_PWM5RH
+                                    1-   34     	extern	_PWM5DUTY
+                                    1-   35     	extern	_P5CR1
+                                    1-   36     	extern	_PWM4DUTY
+                                    1-   37     	extern	_P4CR1
+                                    1-   38     	extern	_PS3CV
+                                    1-   39     	extern	_PWM3DUTY
+                                    1-   40     	extern	_T3CR2
+                                    1-   41     	extern	_T3CR1
+                                    1-   42     	extern	_TMR3
+                                    1-   43     	extern	_OSCCR
+                                    1-   44     	extern	_PWM2DUTY
+                                    1-   45     	extern	_P2CR1
+                                    1-   46     	extern	_TBHD
+                                    1-   47     	extern	_TBHP
+                                    1-   48     	extern	_IRCR
+                                    1-   49     	extern	_BZ1CR
+                                    1-   50     	extern	_PS1CV
+                                    1-   51     	extern	_PWM1DUTY
+                                    1-   52     	extern	_T1CR2
+                                    1-   53     	extern	_T1CR1
+                                    1-   54     	extern	_TMR1
+                                    1-   55     	extern	_TM34RH
+                                    1-   56     	extern	_TMRH
+                                    1-   57     	extern	_PCHBUF
+                                    1-   58     	extern	_STATUS
+                                    1-   59     	extern	_PCL
+                                    1-   60     	extern	_TMR0
+                                    1-   61     	extern	_StandBy_ShutDown_Cnt
+                                    1-   62     	extern	_Low_Voltage_LED_Flash_Cnt
+                                    1-   63     	extern	_Low_Voltage_Cnt
+                                    1-   64     	extern	_Low_Voltage_Debounce_Cnt
+                                    1-   65     	extern	_TeleCon_LED_Flash_Cnt
+                                    1-   66     	extern	_TeleCon_Signal_Recv_Time_Cnt
+                                    1-   67     	extern	_TeleCon_Strength_change_Code
+                                    1-   68     	extern	_TeleCon_Data_Code
+                                    1-   69     	extern	_TeleCon_Check_Code
+                                    1-   70     	extern	_Analyze_Save3
+                                    1-   71     	extern	_Analyze_Save2
+                                    1-   72     	extern	_Analyze_Save1
+                                    1-   73     	extern	_TeleCon_Signal_Sbit_Cnt
+                                    1-   74     	extern	_TeleCon_Signal_Cnt
+                                    1-   75     	extern	_TeleCon_Signal_Save
+                                    1-   76     	extern	_Charge_3H_Time_Cnt
+                                    1-   77     	extern	_Low_Voltage_LED_Flash_Times_Cnt
+                                    1-   78     	extern	_Full_Cnt
+                                    1-   79     	extern	_Charge_Cnt
+                                    1-   80     	extern	_Charging_LED_Flashing_Time
+                                    1-   81     	extern	_M1_Cnt
+                                    1-   82     	extern	_Motor_Freq_Cnt2
+                                    1-   83     	extern	_Motor_Freq_Cnt1
+                                    1-   84     	extern	_Motor_Freq_Cnt0
+                                    1-   85     	extern	_M1_Freq_Change_Set
+                                    1-   86     	extern	_M1_Freq_Change
+                                    1-   87     	extern	_M1_1_Cycle_Set
+                                    1-   88     	extern	_M1_1_Duty_Set
+                                    1-   89     	extern	_M1_Duty
+                                    1-   90     	extern	_M1_Cycle
+                                    1-   91     	extern	_Motor_Freq_Change
+                                    1-   92     	extern	_M1_Duty_Set
+                                    1-   93     	extern	_M1_Cycle_Set
+                                    1-   94     	extern	_Key_Quick_Press_LED_Cnt
+                                    1-   95     	extern	_Key_Long_Cnt
+                                    1-   96     	extern	_Key_Press_Cnt
+                                    1-   97     	extern	_Clock_Save
+                                    1-   98     	extern	_Sleep_Cnt
+                                    1-   99     	extern	_T_1MIN
+                                    1-  100     	extern	_T_1S
+                                    1-  101     	extern	_T_100MS
+                                    1-  102     	extern	_T_10MS
+                                    1-  103     	extern	_T_1MS
+                                    1-  104     	extern	_T_100US
+                                    1-  105     	extern	_Time
+                                    1-  106     	extern	_INTE2bits
+                                    1-  107     	extern	_RFCbits
+                                    1-  108     	extern	_INTEDGbits
+                                    1-  109     	extern	_AWUCONbits
+                                    1-  110     	extern	_INTFbits
+                                    1-  111     	extern	_INTEbits
+                                    1-  112     	extern	_BPHCONbits
+                                    1-  113     	extern	_ABPLCONbits
+                                    1-  114     	extern	_BWUCONbits
+                                    1-  115     	extern	_PCONbits
+                                    1-  116     	extern	_PORTBbits
+                                    1-  117     	extern	_PORTAbits
+                                    1-  119     	extern PSAVE
+                                    1-  120     	extern SSAVE
+                                    1-  121     	extern WSAVE
+                                    1-  122     	extern STK12
+                                    1-  123     	extern ___STK12
+                                    1-  124     	extern STK11
+                                    1-  125     	extern ___STK11
+                                    1-  126     	extern STK10
+                                    1-  127     	extern ___STK10
+                                    1-  128     	extern STK09
+                                    1-  129     	extern ___STK09
+                                    1-  130     	extern STK08
+                                    1-  131     	extern ___STK08
+                                    1-  132     	extern STK07
+                                    1-  133     	extern ___STK07
+                                    1-  134     	extern STK06
+                                    1-  135     	extern ___STK06
+                                    1-  136     	extern STK05
+                                    1-  137     	extern ___STK05
+                                    1-  138     	extern STK04
+                                    1-  139     	extern ___STK04
+                                    1-  140     	extern STK03
+                                    1-  141     	extern ___STK03
+                                    1-  142     	extern STK02
+                                    1-  143     	extern ___STK02
+                                    1-  144     	extern STK01
+                                    1-  145     	extern ___STK01
+                                    1-  146     	extern STK00
+                                    1-  147     	extern ___STK00
+                                    1-  148     ;--------------------------------------------------------
+                                    1-  149     ; global declarations
+                                    1-  150     ;--------------------------------------------------------
+                                    1-  151     	extern	_Sys_Flag3
+                                    1-  152     	extern	_Sys_Flag2
+                                    1-  153     	extern	_Sys_Flag1
+                                    1-  154     	extern	_Sys_Flag4
+                                    1-  155     	extern	_Sys_Flag0
+                                    1-  156     	extern	_INTE2
+                                    1-  157     	extern	_RFC
+                                    1-  158     	extern	_INTEDG
+                                    1-  159     	extern	_AWUCON
+                                    1-  160     	extern	_INTF
+                                    1-  161     	extern	_INTE
+                                    1-  162     	extern	_BPHCON
+                                    1-  163     	extern	_ABPLCON
+                                    1-  164     	extern	_BWUCON
+                                    1-  165     	extern	_PCON
+                                    1-  166     	extern	_PORTB
+                                    1-  167     	extern	_PORTA
+                                    1-  168     	extern	_Charge_Detect
+                                    1-  169     	extern	_Charge_Process
+                                    1-  171     ;--------------------------------------------------------
+                                    1-  172     ; global definitions
+                                    1-  173     ;--------------------------------------------------------
+                                    1-  174     ;--------------------------------------------------------
+                                    1-  175     ; absolute symbol definitions
+                                    1-  176     ;--------------------------------------------------------
+                                    1-  177     ;--------------------------------------------------------
+                                    1-  178     ; compiler-defined variables
+                                    1-  179     ;--------------------------------------------------------
+                                    1-  180     ;--------------------------------------------------------
+                                    1-  181     ; initialized data
+                                    1-  182     ;--------------------------------------------------------
+                                    1-  183     ;--------------------------------------------------------
+                                    1-  184     ; initialized absolute data
+                                    1-  185     ;--------------------------------------------------------
+                                    1-  186     ;--------------------------------------------------------
+                                    1-  187     ; overlayable items in internal ram 
+                                    1-  188     ;--------------------------------------------------------
+                                    1-  189     ;	udata_ovr
+                                    1-  190     ;--------------------------------------------------------
+                                    1-  191     ; code
+                                    1-  192     ;--------------------------------------------------------
+                                    1-  193     ; code_Charge	code
+                                    1-  194     ;***
+                                    1-  195     ;  pBlock Stats: dbName = C
+                                    1-  196     ;***
+                                    1-  197     ;has an exit
+                                    1-  198     ;functions called:
+                                    1-  199     ;   _Power_Off
+                                    1-  200     ;   _Power_Off
+                                    1-  201     ;; Starting pCode block
+                                    1-  202     .segment "code"; module=Charge, function=_Charge_Process
+     0000                           1-  204     _Charge_Process:
+                                    1-  205     ; 2 exit points
+                                    1-  206     ;;signed compare: left < lit(0x2A4E=10830), size=2, mask=ffff
+                                    1-  207     	.line	37, "Charge.c"; 	if (Charge_3H_Time_Cnt >= Charge_Time_3H) // 3h时间计数器溢出
+                                    1-  208     	BANKSEL	_Charge_3H_Time_Cnt
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 01rr                      1-  209     	MOVR	(_Charge_3H_Time_Cnt + 1),W
+     0002 2580                      1-  210     	ADDIA	0x80
+     0003 2556                      1-  211     	ADDIA	0x56
+     0004 0903                      1-  212     	BTRSS	STATUS,2
+                                    1-  213     	MGOTO	_02072_DS_
+     0005 3rrr                      3-   62 m1      LGOTO rom_address
+     0006 214E                      1-  214     	MOVIA	0x4e
+     0007 04rr                      1-  215     	SUBAR	_Charge_3H_Time_Cnt,W
+     0008                           1-  216     _02072_DS_:
+     0008 0803                      1-  217     	BTRSS	STATUS,0
+                                    1-  218     	MGOTO	_02019_DS_
+     0009 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  219     	.line	39, "Charge.c"; 	Full_Cnt                        = 0;
+                                    1-  220     	BANKSEL	_Full_Cnt
+     000A rrrr                      3-  109 m1      .banksel ram_address
+     000B 02rr                      1-  221     	CLRR	_Full_Cnt
+                                    1-  222     	.line	40, "Charge.c"; 	Charge_Full_FLAG                = 1;
+                                    1-  223     	BANKSEL	_Sys_Flag1
+     000C rrrr                      3-  109 m1      .banksel ram_address
+     000D 1Arr                      1-  224     	BSR	_Sys_Flag1,5
+                                    1-  225     	.line	41, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1;
+                                    1-  226     	BANKSEL	_Sys_Flag2
+     000E rrrr                      3-  109 m1      .banksel ram_address
+     000F 18rr                      1-  227     	BSR	_Sys_Flag2,0
+                                    1-  228     	.line	42, "Charge.c"; 	Charge_3H_Time_Cnt              = 10980;
+     0010 21E4                      1-  229     	MOVIA	0xe4
+                                    1-  230     	BANKSEL	_Charge_3H_Time_Cnt
+     0011 rrrr                      3-  109 m1      .banksel ram_address
+     0012 00rr                      1-  231     	MOVAR	_Charge_3H_Time_Cnt
+     0013 212A                      1-  232     	MOVIA	0x2a
+     0014 00rr                      1-  233     	MOVAR	(_Charge_3H_Time_Cnt + 1)
+                                    1-  234     	.line	43, "Charge.c"; 	return;
+                                    1-  235     	MGOTO	_02038_DS_
+     0015 3rrr                      3-   62 m1      LGOTO rom_address
+     0016                           1-  236     _02019_DS_:
+                                    1-  237     	.line	46, "Charge.c"; 	if (Power_Onoff_FLAG) // 如果处于开机状态
+                                    1-  238     	BANKSEL	_Sys_Flag0
+     0016 rrrr                      3-  109 m1      .banksel ram_address
+     0017 0Crr                      1-  239     	BTRSC	_Sys_Flag0,0
+                                    1-  240     	.line	48, "Charge.c"; 	Power_Off(); // 关机
+                                    1-  241     	MCALL	_Power_Off
+     0018 2rrr                      3-   65 m1      LCALL rom_address
+     0019                           1-  242     _02021_DS_:
+                                    1-  243     	.line	51, "Charge.c"; 	if (KEY_Full) // 如果充满电
+                                    1-  244     	BANKSEL	_PORTA
+     0019 rrrr                      3-  109 m1      .banksel ram_address
+     001A 09rr                      1-  245     	BTRSS	_PORTA,3
+                                    1-  246     	MGOTO	_02036_DS_
+     001B 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  247     	.line	53, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
+                                    1-  248     	BANKSEL	_Sys_Flag1
+     001C rrrr                      3-  109 m1      .banksel ram_address
+     001D 0Arr                      1-  249     	BTRSS	_Sys_Flag1,5
+                                    1-  250     	MGOTO	_02025_DS_
+     001E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  251     	.line	55, "Charge.c"; 	Full_Cnt                        = 0; // 清空充满计数器
+                                    1-  252     	BANKSEL	_Full_Cnt
+     001F rrrr                      3-  109 m1      .banksel ram_address
+     0020 02rr                      1-  253     	CLRR	_Full_Cnt
+                                    1-  254     	.line	56, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1; // 充满LED亮标志位置1
+                                    1-  255     	BANKSEL	_Sys_Flag2
+     0021 rrrr                      3-  109 m1      .banksel ram_address
+     0022 18rr                      1-  256     	BSR	_Sys_Flag2,0
+                                    1-  257     	MGOTO	_02038_DS_
+     0023 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  258     ;;unsigned compare: left < lit(0x5=5), size=1
+     0024                           1-  259     _02025_DS_:
+                                    1-  260     	.line	60, "Charge.c"; 	if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
+     0024 2105                      1-  261     	MOVIA	0x05
+                                    1-  262     	BANKSEL	_Full_Cnt
+     0025 rrrr                      3-  109 m1      .banksel ram_address
+     0026 04rr                      1-  263     	SUBAR	_Full_Cnt,W
+     0027 0803                      1-  264     	BTRSS	STATUS,0
+                                    1-  265     	MGOTO	_02038_DS_
+     0028 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  266     	.line	62, "Charge.c"; 	Full_Cnt         = 0;
+     0029 02rr                      1-  267     	CLRR	_Full_Cnt
+                                    1-  268     	.line	63, "Charge.c"; 	Charge_Full_FLAG = 1; // 充满标志位置1
+                                    1-  269     	BANKSEL	_Sys_Flag1
+     002A rrrr                      3-  109 m1      .banksel ram_address
+     002B 1Arr                      1-  270     	BSR	_Sys_Flag1,5
+                                    1-  271     	MGOTO	_02038_DS_
+     002C 3rrr                      3-   62 m1      LGOTO rom_address
+     002D                           1-  272     _02036_DS_:
+                                    1-  273     	.line	69, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
+                                    1-  274     	BANKSEL	_Sys_Flag1
+     002D rrrr                      3-  109 m1      .banksel ram_address
+     002E 0Arr                      1-  275     	BTRSS	_Sys_Flag1,5
+                                    1-  276     	MGOTO	_02033_DS_
+     002F 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  277     ;;unsigned compare: left < lit(0x5=5), size=1
+                                    1-  278     	.line	71, "Charge.c"; 	if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
+     0030 2105                      1-  279     	MOVIA	0x05
+                                    1-  280     	BANKSEL	_Full_Cnt
+     0031 rrrr                      3-  109 m1      .banksel ram_address
+     0032 04rr                      1-  281     	SUBAR	_Full_Cnt,W
+     0033 0803                      1-  282     	BTRSS	STATUS,0
+                                    1-  283     	MGOTO	_02038_DS_
+     0034 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  284     	.line	73, "Charge.c"; 	Full_Cnt                   = 0;
+     0035 02rr                      1-  285     	CLRR	_Full_Cnt
+                                    1-  286     	.line	74, "Charge.c"; 	Charging_LED_Flashing_Time = 0;
+                                    1-  287     	BANKSEL	_Charging_LED_Flashing_Time
+     0036 rrrr                      3-  109 m1      .banksel ram_address
+     0037 02rr                      1-  288     	CLRR	_Charging_LED_Flashing_Time
+                                    1-  289     	.line	75, "Charge.c"; 	Charge_Full_FLAG           = 0;
+                                    1-  290     	BANKSEL	_Sys_Flag1
+     0038 rrrr                      3-  109 m1      .banksel ram_address
+     0039 1Err                      1-  291     	BCR	_Sys_Flag1,5
+                                    1-  292     	MGOTO	_02038_DS_
+     003A 3rrr                      3-   62 m1      LGOTO rom_address
+     003B                           1-  293     _02033_DS_:
+                                    1-  294     	.line	80, "Charge.c"; 	if (Charge_Force_Full_FLAG)
+                                    1-  295     	BANKSEL	_Sys_Flag4
+     003B rrrr                      3-  109 m1      .banksel ram_address
+     003C 0Arr                      1-  296     	BTRSS	_Sys_Flag4,5
+                                    1-  297     	MGOTO	_02030_DS_
+     003D 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  298     	.line	82, "Charge.c"; 	Full_Cnt                        = 0;
+                                    1-  299     	BANKSEL	_Full_Cnt
+     003E rrrr                      3-  109 m1      .banksel ram_address
+     003F 02rr                      1-  300     	CLRR	_Full_Cnt
+                                    1-  301     	.line	83, "Charge.c"; 	Charge_Full_FLAG                = 1;
+                                    1-  302     	BANKSEL	_Sys_Flag1
+     0040 rrrr                      3-  109 m1      .banksel ram_address
+     0041 1Arr                      1-  303     	BSR	_Sys_Flag1,5
+                                    1-  304     	.line	84, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1;
+                                    1-  305     	BANKSEL	_Sys_Flag2
+     0042 rrrr                      3-  109 m1      .banksel ram_address
+     0043 18rr                      1-  306     	BSR	_Sys_Flag2,0
+                                    1-  307     	MGOTO	_02038_DS_
+     0044 3rrr                      3-   62 m1      LGOTO rom_address
+     0045                           1-  308     _02030_DS_:
+                                    1-  309     	.line	88, "Charge.c"; 	Full_Cnt = 0;
+                                    1-  310     	BANKSEL	_Full_Cnt
+     0045 rrrr                      3-  109 m1      .banksel ram_address
+     0046 02rr                      1-  311     	CLRR	_Full_Cnt
+                                    1-  312     	.line	89, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0;
+                                    1-  313     	BANKSEL	_Sys_Flag2
+     0047 rrrr                      3-  109 m1      .banksel ram_address
+     0048 1Crr                      1-  314     	BCR	_Sys_Flag2,0
+     0049                           1-  315     _02038_DS_:
+                                    1-  316     	.line	93, "Charge.c"; 	}
+                                    1-  317     	RETURN	
+     0049 0010                      3-   39 m1      ret
+                                    1-  318     ; exit point of _Charge_Process
+                                    1-  320     ;***
+                                    1-  321     ;  pBlock Stats: dbName = C
+                                    1-  322     ;***
+                                    1-  323     ;has an exit
+                                    1-  324     ;; Starting pCode block
+                                    1-  325     .segment "code"; module=Charge, function=_Charge_Detect
+     0000                           1-  327     _Charge_Detect:
+                                    1-  328     ; 2 exit points
+                                    1-  329     	.line	6, "Charge.c"; 	if (Charge_DET) // 检测到充电
+                                    1-  330     	BANKSEL	_PORTA
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 0Arr                      1-  331     	BTRSS	_PORTA,5
+                                    1-  332     	MGOTO	_02011_DS_
+     0002 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  333     	.line	8, "Charge.c"; 	if (Charging_FLAG) // 如果充电标志位为1
+                                    1-  334     	BANKSEL	_Sys_Flag1
+     0003 rrrr                      3-  109 m1      .banksel ram_address
+     0004 0Brr                      1-  335     	BTRSS	_Sys_Flag1,6
+                                    1-  336     	MGOTO	_02008_DS_
+     0005 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  337     	.line	10, "Charge.c"; 	Charge_LED_Flashing_FLAG = 1; // LED呼吸标志位置1
+     0006 1Brr                      1-  338     	BSR	_Sys_Flag1,7
+                                    1-  339     	MGOTO	_02013_DS_
+     0007 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  340     ;;unsigned compare: left < lit(0x28=40), size=1
+     0008                           1-  341     _02008_DS_:
+                                    1-  342     	.line	15, "Charge.c"; 	if (Charge_Cnt >= Charge_Debounce_Time) // 进行消抖计数
+     0008 2128                      1-  343     	MOVIA	0x28
+                                    1-  344     	BANKSEL	_Charge_Cnt
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 04rr                      1-  345     	SUBAR	_Charge_Cnt,W
+     000B 0803                      1-  346     	BTRSS	STATUS,0
+                                    1-  347     	MGOTO	_02013_DS_
+     000C 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  348     	.line	17, "Charge.c"; 	Charge_Cnt    = 0; // 清空充电计数器
+     000D 02rr                      1-  349     	CLRR	_Charge_Cnt
+                                    1-  350     	.line	18, "Charge.c"; 	Charging_FLAG = 1; // 充电标志位置1
+                                    1-  351     	BANKSEL	_Sys_Flag1
+     000E rrrr                      3-  109 m1      .banksel ram_address
+     000F 1Brr                      1-  352     	BSR	_Sys_Flag1,6
+                                    1-  353     	MGOTO	_02013_DS_
+     0010 3rrr                      3-   62 m1      LGOTO rom_address
+     0011                           1-  354     _02011_DS_:
+                                    1-  355     	.line	25, "Charge.c"; 	Charging_FLAG                   = 0; // 充电标志位清零
+                                    1-  356     	BANKSEL	_Sys_Flag1
+     0011 rrrr                      3-  109 m1      .banksel ram_address
+     0012 1Frr                      1-  357     	BCR	_Sys_Flag1,6
+                                    1-  358     	.line	26, "Charge.c"; 	Charge_Cnt                      = 0; // 清空充电计数器
+                                    1-  359     	BANKSEL	_Charge_Cnt
+     0013 rrrr                      3-  109 m1      .banksel ram_address
+     0014 02rr                      1-  360     	CLRR	_Charge_Cnt
+                                    1-  361     	.line	27, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0; // 充满LED亮标志位清零
+                                    1-  362     	BANKSEL	_Sys_Flag2
+     0015 rrrr                      3-  109 m1      .banksel ram_address
+     0016 1Crr                      1-  363     	BCR	_Sys_Flag2,0
+                                    1-  364     	.line	28, "Charge.c"; 	Charge_3H_Time_Cnt              = 0; // 3h时间计数器清零
+                                    1-  365     	BANKSEL	_Charge_3H_Time_Cnt
+     0017 rrrr                      3-  109 m1      .banksel ram_address
+     0018 02rr                      1-  366     	CLRR	_Charge_3H_Time_Cnt
+     0019 02rr                      1-  367     	CLRR	(_Charge_3H_Time_Cnt + 1)
+                                    1-  368     	.line	29, "Charge.c"; 	Charge_LED_Flashing_FLAG        = 0; // LED充电闪烁标志位清零
+                                    1-  369     	BANKSEL	_Sys_Flag1
+     001A rrrr                      3-  109 m1      .banksel ram_address
+     001B 1Frr                      1-  370     	BCR	_Sys_Flag1,7
+     001C                           1-  371     _02013_DS_:
+                                    1-  372     	.line	32, "Charge.c"; 	}
+                                    1-  373     	RETURN	
+     001C 0010                      3-   39 m1      ret
+                                    1-  374     ; exit point of _Charge_Detect
+                                    1-  377     ;	code size estimation:
+                                    1-  378     ;	   72+   31 =   103 instructions (  268 byte)
+                                    1-  380     	end
+
+SYMBOL TABLE            TYPE     VALUE
+__pin_count__           Constant 0000000E
+__processor__           Constant 00800544
+C                       Constant 00000000
+DC                      Constant 00000001
+ENABLE_RAM_BANK         Constant 00000001
+F                       Constant 00000001
+FSR                     Constant 00000004
+INDF                    Constant 00000000
+PCHBUF                  Constant 0000000A
+PCL                     Constant 00000002
+STATUS                  Constant 00000003
+USEFGOTO                Constant 00000000
+W                       Constant 00000000
+Z                       Constant 00000002
+
+
+SOURCE FILE TABLE
+001 OBJ/Charge.s
+002 ny8a054e.inc
+003 common.inc
+004 Charge.c
+
+PROCESSOR    = NY8A054E (8 bits)
+PROGRAM ROM  = 0x00000000 - 0x000007FF
+DATA ROM     = 0x00000000 - 0x000007FF
+SRAM / SFR   = 0x00000000 - 0x00000000

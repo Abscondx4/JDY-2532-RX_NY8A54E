@@ -1,0 +1,596 @@
+
+                    Nyquest Technology Co., Ltd.
+
+NYASM 2.50
+
+    ADDR  OPCODE/VALUE              LINE   TAG  SOURCE                   STATEMENT    
+
+                                    1-    1     ;--------------------------------------------------------
+                                    1-    2     ; File Created by SDCC : free open source ISO C Compiler 
+                                    1-    3     ; Version 4.2.2 #0 (MSVC)
+                                    1-    4     ;--------------------------------------------------------
+                                    1-    5     ; NY8A port
+                                    1-    6     ;--------------------------------------------------------
+                                    1-    7     	.file	"Power_Manage.c"
+                                    1-    8     	list	p=NY8A054E,c=on
+                                    1-    9     	#include "ny8a054e.inc"
+                                    2-    1     #include "common.inc"
+                                    3-    1     ;; header file for 8 bit series assembly -*- mode:asm; coding:utf-8; -*-
+                                    3-    2     ;; author    Ting
+                                    3-    3     ;; date      2020-12-24
+                                    3-    4     ;;
+                                    3-    5     ;; # constant definition
+                                    3-    6     ;;
+                                    3-    7     ;; ## instruction result store destination
+                                    3-    8     ;;  - W: the result is stored in the ACC.
+                                    3-    9     ;;  - F: the result is stored back in register.
+                                    3-   10     ;; ## flag name in STATUS register
+                                    3-   11     ;;  - C, DC, Z
+                                    3-   12     ;;
+                                    3-   13     ;; # macro define
+                                    3-   14     ;;
+                                    3-   15     ;; ## RETURN, used by C compiler, end of function
+                                    3-   16     ;; ## PAGESEL, empty macro, maybe used by C compiler (bug?)
+                                    3-   17     ;; ## BANKSEL, replace by .banksel pseudo command, empty if disable bank.
+                                    3-   18     ;; ## MGOTO, replace by LGOTO (ic<=2K word) or FGOTO (ic>2K word)
+                                    3-   19     ;; ## MCALL, same as above
+                                    3-   20     ;;
+                                    3-   21     W       EQU 0
+                                    3-   21     ;W = 0
+                                    3-   22     F       EQU 1
+                                    3-   22     ;F = 1
+                                    3-   23     C		EQU	0
+                                    3-   23     ;C = 0
+                                    3-   24     DC		EQU	1
+                                    3-   24     ;DC = 1
+                                    3-   25     Z		EQU	2
+                                    3-   25     ;Z = 2
+                                    3-   28     ;; common register for all series
+                                    3-   29     INDF    EQU 0x00
+                                    3-   29     ;INDF = 0
+                                    3-   30     PCL     EQU 0x02
+                                    3-   30     ;PCL = 2
+                                    3-   31     STATUS  EQU 0x03
+                                    3-   31     ;STATUS = 3
+                                    3-   32     FSR     EQU 0x04
+                                    3-   32     ;FSR = 4
+                                    3-   33     PCHBUF  EQU 0x0A
+                                    3-   33     ;PCHBUF = 10
+                                    1-   11     ;--------------------------------------------------------
+                                    1-   12     ; external declarations
+                                    1-   13     ;--------------------------------------------------------
+                                    1-   14     	extern	_Init
+                                    1-   15     	extern	_clear_ram
+                                    1-   16     	extern	_multi_16b
+                                    1-   17     	extern	_multi_8b
+                                    1-   18     	extern	_T0MD
+                                    1-   19     	extern	_PCON1
+                                    1-   20     	extern	_CMPCR
+                                    1-   21     	extern	_BODCON
+                                    1-   22     	extern	_PS0CV
+                                    1-   23     	extern	_APHCON
+                                    1-   24     	extern	_IOSTB
+                                    1-   25     	extern	_IOSTA
+                                    1-   26     	extern	_PWM5RH
+                                    1-   27     	extern	_PWM5DUTY
+                                    1-   28     	extern	_P5CR1
+                                    1-   29     	extern	_PWM4DUTY
+                                    1-   30     	extern	_P4CR1
+                                    1-   31     	extern	_PS3CV
+                                    1-   32     	extern	_PWM3DUTY
+                                    1-   33     	extern	_T3CR2
+                                    1-   34     	extern	_T3CR1
+                                    1-   35     	extern	_TMR3
+                                    1-   36     	extern	_OSCCR
+                                    1-   37     	extern	_PWM2DUTY
+                                    1-   38     	extern	_P2CR1
+                                    1-   39     	extern	_TBHD
+                                    1-   40     	extern	_TBHP
+                                    1-   41     	extern	_IRCR
+                                    1-   42     	extern	_BZ1CR
+                                    1-   43     	extern	_PS1CV
+                                    1-   44     	extern	_PWM1DUTY
+                                    1-   45     	extern	_T1CR2
+                                    1-   46     	extern	_T1CR1
+                                    1-   47     	extern	_TMR1
+                                    1-   48     	extern	_TM34RH
+                                    1-   49     	extern	_TMRH
+                                    1-   50     	extern	_PCHBUF
+                                    1-   51     	extern	_STATUS
+                                    1-   52     	extern	_PCL
+                                    1-   53     	extern	_TMR0
+                                    1-   54     	extern	_StandBy_ShutDown_Cnt
+                                    1-   55     	extern	_Low_Voltage_LED_Flash_Cnt
+                                    1-   56     	extern	_Low_Voltage_Cnt
+                                    1-   57     	extern	_Low_Voltage_Debounce_Cnt
+                                    1-   58     	extern	_TeleCon_LED_Flash_Cnt
+                                    1-   59     	extern	_TeleCon_Signal_Recv_Time_Cnt
+                                    1-   60     	extern	_TeleCon_Strength_change_Code
+                                    1-   61     	extern	_TeleCon_Data_Code
+                                    1-   62     	extern	_TeleCon_Check_Code
+                                    1-   63     	extern	_Analyze_Save3
+                                    1-   64     	extern	_Analyze_Save2
+                                    1-   65     	extern	_Analyze_Save1
+                                    1-   66     	extern	_TeleCon_Signal_Sbit_Cnt
+                                    1-   67     	extern	_TeleCon_Signal_Cnt
+                                    1-   68     	extern	_TeleCon_Signal_Save
+                                    1-   69     	extern	_Charge_3H_Time_Cnt
+                                    1-   70     	extern	_Low_Voltage_LED_Flash_Times_Cnt
+                                    1-   71     	extern	_Full_Cnt
+                                    1-   72     	extern	_Charge_Cnt
+                                    1-   73     	extern	_Charging_LED_Flashing_Time
+                                    1-   74     	extern	_M1_Cnt
+                                    1-   75     	extern	_Motor_Freq_Cnt2
+                                    1-   76     	extern	_Motor_Freq_Cnt1
+                                    1-   77     	extern	_Motor_Freq_Cnt0
+                                    1-   78     	extern	_M1_Freq_Change_Set
+                                    1-   79     	extern	_M1_Freq_Change
+                                    1-   80     	extern	_M1_1_Cycle_Set
+                                    1-   81     	extern	_M1_1_Duty_Set
+                                    1-   82     	extern	_M1_Duty
+                                    1-   83     	extern	_M1_Cycle
+                                    1-   84     	extern	_Motor_Freq_Change
+                                    1-   85     	extern	_M1_Duty_Set
+                                    1-   86     	extern	_M1_Cycle_Set
+                                    1-   87     	extern	_Key_Quick_Press_LED_Cnt
+                                    1-   88     	extern	_Key_Long_Cnt
+                                    1-   89     	extern	_Key_Press_Cnt
+                                    1-   90     	extern	_Clock_Save
+                                    1-   91     	extern	_Sleep_Cnt
+                                    1-   92     	extern	_T_1MIN
+                                    1-   93     	extern	_T_1S
+                                    1-   94     	extern	_T_100MS
+                                    1-   95     	extern	_T_10MS
+                                    1-   96     	extern	_T_1MS
+                                    1-   97     	extern	_T_100US
+                                    1-   98     	extern	_Time
+                                    1-   99     	extern	_INTE2bits
+                                    1-  100     	extern	_RFCbits
+                                    1-  101     	extern	_INTEDGbits
+                                    1-  102     	extern	_AWUCONbits
+                                    1-  103     	extern	_INTFbits
+                                    1-  104     	extern	_INTEbits
+                                    1-  105     	extern	_BPHCONbits
+                                    1-  106     	extern	_ABPLCONbits
+                                    1-  107     	extern	_BWUCONbits
+                                    1-  108     	extern	_PCONbits
+                                    1-  109     	extern	_PORTBbits
+                                    1-  110     	extern	_PORTAbits
+                                    1-  112     	extern PSAVE
+                                    1-  113     	extern SSAVE
+                                    1-  114     	extern WSAVE
+                                    1-  115     	extern STK12
+                                    1-  116     	extern ___STK12
+                                    1-  117     	extern STK11
+                                    1-  118     	extern ___STK11
+                                    1-  119     	extern STK10
+                                    1-  120     	extern ___STK10
+                                    1-  121     	extern STK09
+                                    1-  122     	extern ___STK09
+                                    1-  123     	extern STK08
+                                    1-  124     	extern ___STK08
+                                    1-  125     	extern STK07
+                                    1-  126     	extern ___STK07
+                                    1-  127     	extern STK06
+                                    1-  128     	extern ___STK06
+                                    1-  129     	extern STK05
+                                    1-  130     	extern ___STK05
+                                    1-  131     	extern STK04
+                                    1-  132     	extern ___STK04
+                                    1-  133     	extern STK03
+                                    1-  134     	extern ___STK03
+                                    1-  135     	extern STK02
+                                    1-  136     	extern ___STK02
+                                    1-  137     	extern STK01
+                                    1-  138     	extern ___STK01
+                                    1-  139     	extern STK00
+                                    1-  140     	extern ___STK00
+                                    1-  141     ;--------------------------------------------------------
+                                    1-  142     ; global declarations
+                                    1-  143     ;--------------------------------------------------------
+                                    1-  144     	extern	_Sys_Flag3
+                                    1-  145     	extern	_Sys_Flag2
+                                    1-  146     	extern	_Sys_Flag1
+                                    1-  147     	extern	_Sys_Flag4
+                                    1-  148     	extern	_Sys_Flag0
+                                    1-  149     	extern	_INTE2
+                                    1-  150     	extern	_RFC
+                                    1-  151     	extern	_INTEDG
+                                    1-  152     	extern	_AWUCON
+                                    1-  153     	extern	_INTF
+                                    1-  154     	extern	_INTE
+                                    1-  155     	extern	_BPHCON
+                                    1-  156     	extern	_ABPLCON
+                                    1-  157     	extern	_BWUCON
+                                    1-  158     	extern	_PCON
+                                    1-  159     	extern	_PORTB
+                                    1-  160     	extern	_PORTA
+                                    1-  161     	extern	_Power_Off
+                                    1-  162     	extern	_StandBy_Mode
+                                    1-  163     	extern	_StandBy_Check
+                                    1-  164     	extern	_StandBy_Exit
+                                    1-  165     	extern	_Battery_Voltage_Detect
+                                    1-  166     	extern	_Battery_Full_Process
+                                    1-  167     	extern	_Low_Voltage_Process
+                                    1-  169     ;--------------------------------------------------------
+                                    1-  170     ; global definitions
+                                    1-  171     ;--------------------------------------------------------
+                                    1-  172     ;--------------------------------------------------------
+                                    1-  173     ; absolute symbol definitions
+                                    1-  174     ;--------------------------------------------------------
+                                    1-  175     ;--------------------------------------------------------
+                                    1-  176     ; compiler-defined variables
+                                    1-  177     ;--------------------------------------------------------
+                                    1-  178     .segment "uninit"
+     0000                           1-  179     r0x100A:
+                                    1-  180     	.res	1
+                                    1-  181     .segment "uninit"
+     0000                           1-  182     r0x1009:
+                                    1-  183     	.res	1
+                                    1-  184     ;--------------------------------------------------------
+                                    1-  185     ; initialized data
+                                    1-  186     ;--------------------------------------------------------
+                                    1-  187     ;--------------------------------------------------------
+                                    1-  188     ; initialized absolute data
+                                    1-  189     ;--------------------------------------------------------
+                                    1-  190     ;--------------------------------------------------------
+                                    1-  191     ; overlayable items in internal ram 
+                                    1-  192     ;--------------------------------------------------------
+                                    1-  193     ;	udata_ovr
+                                    1-  194     ;--------------------------------------------------------
+                                    1-  195     ; code
+                                    1-  196     ;--------------------------------------------------------
+                                    1-  197     ; code_Power_Manage	code
+                                    1-  198     ;***
+                                    1-  199     ;  pBlock Stats: dbName = C
+                                    1-  200     ;***
+                                    1-  201     ;has an exit
+                                    1-  202     ;functions called:
+                                    1-  203     ;   _StandBy_Mode
+                                    1-  204     ;   _Power_Off
+                                    1-  205     ;   _StandBy_Mode
+                                    1-  206     ;   _Power_Off
+                                    1-  207     ;1 compiler assigned register :
+                                    1-  208     ;   r0x1009
+                                    1-  209     ;; Starting pCode block
+                                    1-  210     .segment "code"; module=Power_Manage, function=_Low_Voltage_Process
+     0000                           1-  212     _Low_Voltage_Process:
+                                    1-  213     ; 2 exit points
+                                    1-  214     	.line	72, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
+     0000 001r                      1-  215     	IOSTR	_PCON1
+                                    1-  216     	BANKSEL	r0x1009
+     0001 rrrr                      3-  109 m1      .banksel ram_address
+     0002 00rr                      1-  217     	MOVAR	r0x1009
+     0003 0Frr                      1-  218     	BTRSC	r0x1009,6
+                                    1-  219     	MGOTO	_02055_DS_
+     0004 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  220     ;;unsigned compare: left < lit(0x28=40), size=1
+                                    1-  221     	.line	74, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
+     0005 2128                      1-  222     	MOVIA	0x28
+                                    1-  223     	BANKSEL	_Low_Voltage_Debounce_Cnt
+     0006 rrrr                      3-  109 m1      .banksel ram_address
+     0007 04rr                      1-  224     	SUBAR	_Low_Voltage_Debounce_Cnt,W
+     0008 0803                      1-  225     	BTRSS	STATUS,0
+                                    1-  226     	MGOTO	_02056_DS_
+     0009 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  227     	.line	76, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
+                                    1-  228     	BANKSEL	_Sys_Flag4
+     000A rrrr                      3-  109 m1      .banksel ram_address
+     000B 19rr                      1-  229     	BSR	_Sys_Flag4,3
+                                    1-  230     	MGOTO	_02056_DS_
+     000C 3rrr                      3-   62 m1      LGOTO rom_address
+     000D                           1-  231     _02055_DS_:
+                                    1-  232     	.line	81, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
+                                    1-  233     	BANKSEL	_Low_Voltage_Debounce_Cnt
+     000D rrrr                      3-  109 m1      .banksel ram_address
+     000E 02rr                      1-  234     	CLRR	_Low_Voltage_Debounce_Cnt
+     000F                           1-  235     _02056_DS_:
+                                    1-  236     	.line	83, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
+                                    1-  237     	BANKSEL	_Sys_Flag4
+     000F rrrr                      3-  109 m1      .banksel ram_address
+     0010 09rr                      1-  238     	BTRSS	_Sys_Flag4,3
+                                    1-  239     	MGOTO	_02064_DS_
+     0011 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  240     ;;unsigned compare: left < lit(0xA=10), size=1
+                                    1-  241     	.line	85, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
+     0012 210A                      1-  242     	MOVIA	0x0a
+                                    1-  243     	BANKSEL	_Low_Voltage_Cnt
+     0013 rrrr                      3-  109 m1      .banksel ram_address
+     0014 04rr                      1-  244     	SUBAR	_Low_Voltage_Cnt,W
+     0015 0803                      1-  245     	BTRSS	STATUS,0
+                                    1-  246     	MGOTO	_02066_DS_
+     0016 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  247     	.line	87, "Power_Manage.c"; 	StandBy_Mode();
+                                    1-  248     	MCALL	_StandBy_Mode
+     0017 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  249     ;;unsigned compare: left < lit(0x19=25), size=1
+                                    1-  250     	.line	88, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
+     0018 2119                      1-  251     	MOVIA	0x19
+                                    1-  252     	BANKSEL	_Low_Voltage_LED_Flash_Cnt
+     0019 rrrr                      3-  109 m1      .banksel ram_address
+     001A 04rr                      1-  253     	SUBAR	_Low_Voltage_LED_Flash_Cnt,W
+     001B 0803                      1-  254     	BTRSS	STATUS,0
+                                    1-  255     	MGOTO	_02066_DS_
+     001C 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  256     	.line	90, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
+     001D 02rr                      1-  257     	CLRR	_Low_Voltage_LED_Flash_Cnt
+                                    1-  258     	.line	91, "Power_Manage.c"; 	LED1 =~ LED1;
+                                    1-  259     	BANKSEL	_PORTA
+     001E rrrr                      3-  109 m1      .banksel ram_address
+     001F 01rr                      1-  260     	MOVR	_PORTA,W
+     0020 2404                      1-  261     	XORIA	0x04
+     0021 00rr                      1-  262     	MOVAR	_PORTA
+                                    1-  263     	.line	92, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
+                                    1-  264     	BANKSEL	_Low_Voltage_LED_Flash_Times_Cnt
+     0022 rrrr                      3-  109 m1      .banksel ram_address
+     0023 05rr                      1-  265     	INCR	_Low_Voltage_LED_Flash_Times_Cnt,F
+                                    1-  266     ;;swapping arguments (AOP_TYPEs 1/3)
+                                    1-  267     ;;unsigned compare: left >= lit(0xB=11), size=1
+     0024 210B                      1-  268     	MOVIA	0x0b
+     0025 04rr                      1-  269     	SUBAR	_Low_Voltage_LED_Flash_Times_Cnt,W
+     0026 0803                      1-  270     	BTRSS	STATUS,0
+                                    1-  271     	MGOTO	_02066_DS_
+     0027 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  272     	.line	94, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
+     0028 02rr                      1-  273     	CLRR	_Low_Voltage_LED_Flash_Times_Cnt
+                                    1-  274     	.line	95, "Power_Manage.c"; 	Power_Off();
+                                    1-  275     	MCALL	_Power_Off
+     0029 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  276     	MGOTO	_02066_DS_
+     002A 3rrr                      3-   62 m1      LGOTO rom_address
+     002B                           1-  277     _02064_DS_:
+                                    1-  278     	.line	103, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
+                                    1-  279     	BANKSEL	_Low_Voltage_Cnt
+     002B rrrr                      3-  109 m1      .banksel ram_address
+     002C 02rr                      1-  280     	CLRR	_Low_Voltage_Cnt
+     002D                           1-  281     _02066_DS_:
+                                    1-  282     	.line	105, "Power_Manage.c"; 	}
+                                    1-  283     	RETURN	
+     002D 0010                      3-   39 m1      ret
+                                    1-  284     ; exit point of _Low_Voltage_Process
+                                    1-  286     ;***
+                                    1-  287     ;  pBlock Stats: dbName = C
+                                    1-  288     ;***
+                                    1-  289     ;has an exit
+                                    1-  290     ;1 compiler assigned register :
+                                    1-  291     ;   r0x100A
+                                    1-  292     ;; Starting pCode block
+                                    1-  293     .segment "code"; module=Power_Manage, function=_Battery_Full_Process
+     0000                           1-  295     _Battery_Full_Process:
+                                    1-  296     ; 2 exit points
+                                    1-  297     	.line	60, "Power_Manage.c"; 	if ((PCON1 & 0x40))
+     0000 001r                      1-  298     	IOSTR	_PCON1
+                                    1-  299     	BANKSEL	r0x100A
+     0001 rrrr                      3-  109 m1      .banksel ram_address
+     0002 00rr                      1-  300     	MOVAR	r0x100A
+     0003 0Brr                      1-  301     	BTRSS	r0x100A,6
+                                    1-  302     	MGOTO	_02045_DS_
+     0004 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  303     	.line	62, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
+                                    1-  304     	BANKSEL	_Sys_Flag4
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 1Arr                      1-  305     	BSR	_Sys_Flag4,5
+                                    1-  306     	MGOTO	_02047_DS_
+     0007 3rrr                      3-   62 m1      LGOTO rom_address
+     0008                           1-  307     _02045_DS_:
+                                    1-  308     	.line	66, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
+                                    1-  309     	BANKSEL	_Sys_Flag4
+     0008 rrrr                      3-  109 m1      .banksel ram_address
+     0009 1Err                      1-  310     	BCR	_Sys_Flag4,5
+     000A                           1-  311     _02047_DS_:
+                                    1-  312     	.line	68, "Power_Manage.c"; 	}
+                                    1-  313     	RETURN	
+     000A 0010                      3-   39 m1      ret
+                                    1-  314     ; exit point of _Battery_Full_Process
+                                    1-  316     ;***
+                                    1-  317     ;  pBlock Stats: dbName = C
+                                    1-  318     ;***
+                                    1-  319     ;has an exit
+                                    1-  320     ;functions called:
+                                    1-  321     ;   _Low_Voltage_Process
+                                    1-  322     ;   _Battery_Full_Process
+                                    1-  323     ;   _Low_Voltage_Process
+                                    1-  324     ;   _Battery_Full_Process
+                                    1-  325     ;; Starting pCode block
+                                    1-  326     .segment "code"; module=Power_Manage, function=_Battery_Voltage_Detect
+     0000                           1-  328     _Battery_Voltage_Detect:
+                                    1-  329     ; 2 exit points
+                                    1-  330     	.line	44, "Power_Manage.c"; 	if (Power_Onoff_FLAG)
+                                    1-  331     	BANKSEL	_Sys_Flag0
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 08rr                      1-  332     	BTRSS	_Sys_Flag0,0
+                                    1-  333     	MGOTO	_02036_DS_
+     0002 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  334     	.line	46, "Power_Manage.c"; 	PCON1 = C_LVD_3P0V; // 配置比较器
+     0003 211C                      1-  335     	MOVIA	0x1c
+     0004 000r                      1-  336     	IOST	_PCON1
+                                    1-  337     	.line	47, "Power_Manage.c"; 	Low_Voltage_Process();
+                                    1-  338     	MCALL	_Low_Voltage_Process
+     0005 2rrr                      3-   65 m1      LCALL rom_address
+     0006                           1-  339     _02036_DS_:
+                                    1-  340     	.line	50, "Power_Manage.c"; 	if (Charging_FLAG)
+                                    1-  341     	BANKSEL	_Sys_Flag1
+     0006 rrrr                      3-  109 m1      .banksel ram_address
+     0007 0Brr                      1-  342     	BTRSS	_Sys_Flag1,6
+                                    1-  343     	MGOTO	_02039_DS_
+     0008 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  344     	.line	52, "Power_Manage.c"; 	PCON1 = C_LVD_4P05V; // 配置比较器
+     0009 2138                      1-  345     	MOVIA	0x38
+     000A 000r                      1-  346     	IOST	_PCON1
+                                    1-  347     	.line	53, "Power_Manage.c"; 	Battery_Full_Process();
+                                    1-  348     	MCALL	_Battery_Full_Process
+     000B 2rrr                      3-   65 m1      LCALL rom_address
+     000C                           1-  349     _02039_DS_:
+                                    1-  350     	.line	56, "Power_Manage.c"; 	}
+                                    1-  351     	RETURN	
+     000C 0010                      3-   39 m1      ret
+                                    1-  352     ; exit point of _Battery_Voltage_Detect
+                                    1-  354     ;***
+                                    1-  355     ;  pBlock Stats: dbName = C
+                                    1-  356     ;***
+                                    1-  357     ;has an exit
+                                    1-  358     ;; Starting pCode block
+                                    1-  359     .segment "code"; module=Power_Manage, function=_StandBy_Exit
+     0000                           1-  361     _StandBy_Exit:
+                                    1-  362     ; 2 exit points
+                                    1-  363     	.line	40, "Power_Manage.c"; 	}
+                                    1-  364     	RETURN	
+     0000 0010                      3-   39 m1      ret
+                                    1-  365     ; exit point of _StandBy_Exit
+                                    1-  367     ;***
+                                    1-  368     ;  pBlock Stats: dbName = C
+                                    1-  369     ;***
+                                    1-  370     ;has an exit
+                                    1-  371     ;functions called:
+                                    1-  372     ;   _Power_Off
+                                    1-  373     ;   _Power_Off
+                                    1-  374     ;; Starting pCode block
+                                    1-  375     .segment "code"; module=Power_Manage, function=_StandBy_Check
+     0000                           1-  377     _StandBy_Check:
+                                    1-  378     ; 2 exit points
+                                    1-  379     	.line	29, "Power_Manage.c"; 	if (StandBy_FLAG && StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
+                                    1-  380     	BANKSEL	_Sys_Flag2
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 0Arr                      1-  381     	BTRSS	_Sys_Flag2,5
+                                    1-  382     	MGOTO	_02016_DS_
+     0002 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  383     ;;signed compare: left < lit(0x71C=1820), size=2, mask=ffff
+                                    1-  384     	BANKSEL	_StandBy_ShutDown_Cnt
+     0003 rrrr                      3-  109 m1      .banksel ram_address
+     0004 01rr                      1-  385     	MOVR	(_StandBy_ShutDown_Cnt + 1),W
+     0005 2580                      1-  386     	ADDIA	0x80
+     0006 2579                      1-  387     	ADDIA	0x79
+     0007 0903                      1-  388     	BTRSS	STATUS,2
+                                    1-  389     	MGOTO	_02026_DS_
+     0008 3rrr                      3-   62 m1      LGOTO rom_address
+     0009 211C                      1-  390     	MOVIA	0x1c
+     000A 04rr                      1-  391     	SUBAR	_StandBy_ShutDown_Cnt,W
+     000B                           1-  392     _02026_DS_:
+     000B 0803                      1-  393     	BTRSS	STATUS,0
+                                    1-  394     	MGOTO	_02016_DS_
+     000C 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  395     	.line	31, "Power_Manage.c"; 	StandBy_FLAG         = 0;
+                                    1-  396     	BANKSEL	_Sys_Flag2
+     000D rrrr                      3-  109 m1      .banksel ram_address
+     000E 1Err                      1-  397     	BCR	_Sys_Flag2,5
+                                    1-  398     	.line	32, "Power_Manage.c"; 	StandBy_ShutDown_Cnt = 0;
+                                    1-  399     	BANKSEL	_StandBy_ShutDown_Cnt
+     000F rrrr                      3-  109 m1      .banksel ram_address
+     0010 02rr                      1-  400     	CLRR	_StandBy_ShutDown_Cnt
+     0011 02rr                      1-  401     	CLRR	(_StandBy_ShutDown_Cnt + 1)
+                                    1-  402     	.line	33, "Power_Manage.c"; 	Power_Off();
+                                    1-  403     	MCALL	_Power_Off
+     0012 2rrr                      3-   65 m1      LCALL rom_address
+     0013                           1-  404     _02016_DS_:
+                                    1-  405     	.line	35, "Power_Manage.c"; 	}
+                                    1-  406     	RETURN	
+     0013 0010                      3-   39 m1      ret
+                                    1-  407     ; exit point of _StandBy_Check
+                                    1-  409     ;***
+                                    1-  410     ;  pBlock Stats: dbName = C
+                                    1-  411     ;***
+                                    1-  412     ;has an exit
+                                    1-  413     ;; Starting pCode block
+                                    1-  414     .segment "code"; module=Power_Manage, function=_StandBy_Mode
+     0000                           1-  416     _StandBy_Mode:
+                                    1-  417     ; 2 exit points
+                                    1-  418     	.line	19, "Power_Manage.c"; 	StandBy_FLAG      = 1;
+                                    1-  419     	BANKSEL	_Sys_Flag2
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 1Arr                      1-  420     	BSR	_Sys_Flag2,5
+                                    1-  421     	.line	20, "Power_Manage.c"; 	M1_Work_FLAG      = 0;
+                                    1-  422     	BANKSEL	_Sys_Flag1
+     0002 rrrr                      3-  109 m1      .banksel ram_address
+     0003 1Crr                      1-  423     	BCR	_Sys_Flag1,1
+                                    1-  424     	.line	21, "Power_Manage.c"; 	M1_PWM_Write_FLAG = 0;
+     0004 1Drr                      1-  425     	BCR	_Sys_Flag1,2
+                                    1-  426     	.line	22, "Power_Manage.c"; 	M1_Freq_Change    = 0;
+                                    1-  427     	BANKSEL	_M1_Freq_Change
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 02rr                      1-  428     	CLRR	_M1_Freq_Change
+                                    1-  429     	.line	23, "Power_Manage.c"; 	M1_Off;
+                                    1-  430     	BANKSEL	_PORTA
+     0007 rrrr                      3-  109 m1      .banksel ram_address
+     0008 1Err                      1-  431     	BCR	_PORTA,4
+                                    1-  432     	.line	24, "Power_Manage.c"; 	TeleCon_M1_Work_Once_FLAG = 0;
+                                    1-  433     	BANKSEL	_Sys_Flag4
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 1Err                      1-  434     	BCR	_Sys_Flag4,5
+                                    1-  435     	.line	25, "Power_Manage.c"; 	}
+                                    1-  436     	RETURN	
+     000B 0010                      3-   39 m1      ret
+                                    1-  437     ; exit point of _StandBy_Mode
+                                    1-  439     ;***
+                                    1-  440     ;  pBlock Stats: dbName = C
+                                    1-  441     ;***
+                                    1-  442     ;has an exit
+                                    1-  443     ;; Starting pCode block
+                                    1-  444     .segment "code"; module=Power_Manage, function=_Power_Off
+     0000                           1-  446     _Power_Off:
+                                    1-  447     ; 2 exit points
+                                    1-  448     	.line	5, "Power_Manage.c"; 	Power_Onoff_FLAG  = 0;
+                                    1-  449     	BANKSEL	_Sys_Flag0
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 1Crr                      1-  450     	BCR	_Sys_Flag0,0
+                                    1-  451     	.line	6, "Power_Manage.c"; 	Sleep_Cnt         = 0;
+                                    1-  452     	BANKSEL	_Sleep_Cnt
+     0002 rrrr                      3-  109 m1      .banksel ram_address
+     0003 02rr                      1-  453     	CLRR	_Sleep_Cnt
+     0004 02rr                      1-  454     	CLRR	(_Sleep_Cnt + 1)
+                                    1-  455     	.line	7, "Power_Manage.c"; 	M1_Work_FLAG      = 0;
+                                    1-  456     	BANKSEL	_Sys_Flag1
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 1Crr                      1-  457     	BCR	_Sys_Flag1,1
+                                    1-  458     	.line	8, "Power_Manage.c"; 	M1_PWM_Write_FLAG = 0;
+     0007 1Drr                      1-  459     	BCR	_Sys_Flag1,2
+                                    1-  460     	.line	9, "Power_Manage.c"; 	M1_Freq_Change    = 0;
+                                    1-  461     	BANKSEL	_M1_Freq_Change
+     0008 rrrr                      3-  109 m1      .banksel ram_address
+     0009 02rr                      1-  462     	CLRR	_M1_Freq_Change
+                                    1-  463     	.line	10, "Power_Manage.c"; 	TeleCon_M1_Work_Once_FLAG = 0;
+                                    1-  464     	BANKSEL	_Sys_Flag4
+     000A rrrr                      3-  109 m1      .banksel ram_address
+     000B 1Err                      1-  465     	BCR	_Sys_Flag4,5
+                                    1-  466     	.line	12, "Power_Manage.c"; 	RF_Control_Off;
+                                    1-  467     	BANKSEL	_PORTA
+     000C rrrr                      3-  109 m1      .banksel ram_address
+     000D 1Brr                      1-  468     	BSR	_PORTA,7
+                                    1-  469     	.line	13, "Power_Manage.c"; 	M1_Off;
+     000E 1Err                      1-  470     	BCR	_PORTA,4
+                                    1-  471     	.line	14, "Power_Manage.c"; 	LED_Off;
+     000F 19rr                      1-  472     	BSR	_PORTA,2
+                                    1-  473     	.line	15, "Power_Manage.c"; 	}
+                                    1-  474     	RETURN	
+     0010 0010                      3-   39 m1      ret
+                                    1-  475     ; exit point of _Power_Off
+                                    1-  478     ;	code size estimation:
+                                    1-  479     ;	   90+   30 =   120 instructions (  300 byte)
+                                    1-  481     	end
+
+SYMBOL TABLE            TYPE     VALUE
+__pin_count__           Constant 0000000E
+__processor__           Constant 00800544
+C                       Constant 00000000
+DC                      Constant 00000001
+ENABLE_RAM_BANK         Constant 00000001
+F                       Constant 00000001
+FSR                     Constant 00000004
+INDF                    Constant 00000000
+PCHBUF                  Constant 0000000A
+PCL                     Constant 00000002
+STATUS                  Constant 00000003
+USEFGOTO                Constant 00000000
+W                       Constant 00000000
+Z                       Constant 00000002
+
+
+SOURCE FILE TABLE
+001 OBJ/Power_Manage.s
+002 ny8a054e.inc
+003 common.inc
+004 Power_Manage.c
+
+PROCESSOR    = NY8A054E (8 bits)
+PROGRAM ROM  = 0x00000000 - 0x000007FF
+DATA ROM     = 0x00000000 - 0x000007FF
+SRAM / SFR   = 0x00000000 - 0x00000000

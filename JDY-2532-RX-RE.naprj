@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup Condition="">
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>JDY-2532-RX-RE</AssemblyName>
+    <Bank0Only>False</Bank0Only>
+    <BankselOptLevel>2</BankselOptLevel>
+    <BuildCCompilerVersion>NYC_NY8 1.90 [Build: 250527.00]</BuildCCompilerVersion>
+    <BuildNYASMVersion>NYASM 2.50 [Build: 250227.00]</BuildNYASMVersion>
+    <BuildNYIDEVersion>NYIDE 5.50 [Build: 250227.00]</BuildNYIDEVersion>
+    <CCompilerInstallDir>C:\Nyquest\NYC_NY8</CCompilerInstallDir>
+    <ChipId>NY8A054E</ChipId>
+    <ClientName>XXXXX</ClientName>
+    <Configuration>Debug</Configuration>
+    <GenAsmListFile>True</GenAsmListFile>
+    <GenListFile>True</GenListFile>
+    <GenMapFile>True</GenMapFile>
+    <InitializeBss>False</InitializeBss>
+    <NYASMInstallDir>D:\Nyquest\NYASM\</NYASMInstallDir>
+    <NYIDEInstallDir>D:\Nyquest\NYIDE\</NYIDEInstallDir>
+    <OutputType>bin</OutputType>
+    <Platform>CNy8</Platform>
+    <ProjectGuid>{2C1536D4-D61F-49EF-A2B8-CD571FC6CA5B}</ProjectGuid>
+    <ProjectOptionChanged>False</ProjectOptionChanged>
+    <ReservedInterruptRam>2</ReservedInterruptRam>
+    <RootNamespace>JDY_2532_RX_RE</RootNamespace>
+    <TrimSetting>+ 0%</TrimSetting>
+    <WarningMsgCode0>112</WarningMsgCode0>
+    <WarningMsgCode1>84</WarningMsgCode1>
+    <WarningMsgCode2>190</WarningMsgCode2>
+    <WarningMsgCode3>190</WarningMsgCode3>
+    <WarningMsgCode4>190</WarningMsgCode4>
+    <WarningMsgCode5>190</WarningMsgCode5>
+    <WarningMsgCode6>190</WarningMsgCode6>
+    <WarningMsgCode7>190</WarningMsgCode7>
+    <WarningMsgCount>0</WarningMsgCount>
+    <WarningMsgFileName0>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Clock.c</WarningMsgFileName0>
+    <WarningMsgFileName1>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Clock.c</WarningMsgFileName1>
+    <WarningMsgFileName2>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Init.c</WarningMsgFileName2>
+    <WarningMsgFileName3>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Key.c</WarningMsgFileName3>
+    <WarningMsgFileName4>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\LED.c</WarningMsgFileName4>
+    <WarningMsgFileName5>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Motor.c</WarningMsgFileName5>
+    <WarningMsgFileName6>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Power_Manage.c</WarningMsgFileName6>
+    <WarningMsgFileName7>C:\Users\Administrator\Desktop\新建文件夹\JDY-2532-RX-RE\JDY-2532-RX-RE\Telecontrol.c</WarningMsgFileName7>
+    <WarningMsgLineNumber0>67</WarningMsgLineNumber0>
+    <WarningMsgLineNumber1>67</WarningMsgLineNumber1>
+    <WarningMsgLineNumber2>1</WarningMsgLineNumber2>
+    <WarningMsgLineNumber3>1</WarningMsgLineNumber3>
+    <WarningMsgLineNumber4>1</WarningMsgLineNumber4>
+    <WarningMsgLineNumber5>1</WarningMsgLineNumber5>
+    <WarningMsgLineNumber6>1</WarningMsgLineNumber6>
+    <WarningMsgLineNumber7>1</WarningMsgLineNumber7>
+    <WarningMsgMessage0>Clock.c:67: warning 112: function 'Power_Off' implicit declaration</WarningMsgMessage0>
+    <WarningMsgMessage1>Clock.c:67: warning 84: 'auto' variable 'Power_Off' may be used before initialization</WarningMsgMessage1>
+    <WarningMsgMessage2>Init.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage2>
+    <WarningMsgMessage3>Key.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage3>
+    <WarningMsgMessage4>LED.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage4>
+    <WarningMsgMessage5>Motor.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage5>
+    <WarningMsgMessage6>Power_Manage.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage6>
+    <WarningMsgMessage7>Telecontrol.c:1: warning 190: ISO C forbids an empty source file</WarningMsgMessage7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Charge.c" EntryPoint="false" MetaData="" />
+    <Compile Include="Clock.c" EntryPoint="false" MetaData="" />
+    <Compile Include="Init.c" EntryPoint="false" MetaData="" />
+    <None Include="JDY-2532-RX-RE.cb" EntryPoint="false" MetaData="" />
+    <Compile Include="Key.c" EntryPoint="false" MetaData="" />
+    <Compile Include="LED.c" EntryPoint="false" MetaData="" />
+    <Compile Include="main.c" EntryPoint="false" MetaData="" />
+    <Compile Include="Motor.c" EntryPoint="false" MetaData="" />
+    <Compile Include="Power_Manage.c" EntryPoint="false" MetaData="" />
+    <Compile Include="Telecontrol.c" EntryPoint="false" MetaData="" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Client: XXXXX" EntryPoint="false" MetaData="" />
+    <Reference Include="Config Block: JDY-2532-RX-RE.cb" EntryPoint="false" MetaData="" />
+    <Reference Include="IC Body: NY8A054E" EntryPoint="false" MetaData="" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="..\..\..\..\..\..\Nyquest\NYC_NY8\include\NY8.h" EntryPoint="false" MetaData="Dependency Files\NY8.h" />
+    <ApplicationDefinition Include="..\..\..\..\..\..\Nyquest\NYC_NY8\include\ny8a054e.h" EntryPoint="false" MetaData="Dependency Files\ny8a054e.h" />
+    <ApplicationDefinition Include="..\..\..\..\..\..\Nyquest\NYC_NY8\include\ny8common.h" EntryPoint="false" MetaData="Dependency Files\ny8common.h" />
+    <ApplicationDefinition Include="Charge.h" EntryPoint="false" MetaData="Dependency Files\Charge.h" />
+    <ApplicationDefinition Include="Clock.h" EntryPoint="false" MetaData="Dependency Files\Clock.h" />
+    <ApplicationDefinition Include="D:\Nyquest\NY8_Example_Code\include\NY8 C\NY8_constant.h" EntryPoint="false" MetaData="Dependency Files\NY8_constant.h" />
+    <ApplicationDefinition Include="D:\Nyquest\NY8_Example_Code\include\NY8 C\ny8a054e_constant.h" EntryPoint="false" MetaData="Dependency Files\ny8a054e_constant.h" />
+    <Folder Include="Dependency Files" EntryPoint="false" MetaData="" />
+    <ApplicationDefinition Include="Init.h" EntryPoint="false" MetaData="Dependency Files\Init.h" />
+    <ApplicationDefinition Include="Key.h" EntryPoint="false" MetaData="Dependency Files\Key.h" />
+    <ApplicationDefinition Include="LED.h" EntryPoint="false" MetaData="Dependency Files\LED.h" />
+    <ApplicationDefinition Include="Motor.h" EntryPoint="false" MetaData="Dependency Files\Motor.h" />
+    <ApplicationDefinition Include="Power_Manage.h" EntryPoint="false" MetaData="Dependency Files\Power_Manage.h" />
+    <ApplicationDefinition Include="SysInc.h" EntryPoint="false" MetaData="Dependency Files\SysInc.h" />
+    <ApplicationDefinition Include="Telecontrol.h" EntryPoint="false" MetaData="Dependency Files\Telecontrol.h" />
+  </ItemGroup>
+  <Properties>
+    <Array name="ActionFiles" />
+    <Array name="bookmarks" />
+    <Array name="EEPROMOverwriteData" />
+    <Array name="ExternalResource" />
+    <Array name="files">
+      <Element value="main.c|False" />
+      <Element value="SysInc.h|False" />
+      <Element value="Init.h|True" />
+      <Element value="Charge.c|True" />
+      <Element value="Clock.c|False" />
+      <Element value="Init.c|False" />
+      <Element value="Key.c|False" />
+      <Element value="LED.c|True" />
+      <Element value="Motor.c|False" />
+      <Element value="Power_Manage.c|False" />
+      <Element value="Telecontrol.c|False" />
+    </Array>
+    <Array name="MelodyDatabaseFiles" />
+    <Array name="RegisterWindowExpandInfo">
+      <Element value="R-Page|False" />
+      <Element value="INDF@R-Page|False" />
+      <Element value="TMR0@R-Page|False" />
+      <Element value="PCL@R-Page|False" />
+      <Element value="STATUS@R-Page|False" />
+      <Element value="FSR@R-Page|False" />
+      <Element value="PORTA@R-Page|False" />
+      <Element value="PORTB@R-Page|False" />
+      <Element value="PCON@R-Page|False" />
+      <Element value="BWUCON@R-Page|False" />
+      <Element value="PCHBUF@R-Page|False" />
+      <Element value="ABPLCON@R-Page|False" />
+      <Element value="BPHCON@R-Page|False" />
+      <Element value="INTE@R-Page|False" />
+      <Element value="INTF@R-Page|False" />
+      <Element value="AWUCON@R-Page|False" />
+      <Element value="INTEDG@R-Page|False" />
+      <Element value="TMRH@R-Page|False" />
+      <Element value="RFC@R-Page|False" />
+      <Element value="TM34RH@R-Page|False" />
+      <Element value="INTE2@R-Page|False" />
+      <Element value="F-Page|False" />
+      <Element value="IOSTA@F-Page|False" />
+      <Element value="IOSTB@F-Page|False" />
+      <Element value="APHCON@F-Page|False" />
+      <Element value="PS0CV@F-Page|False" />
+      <Element value="BODCON@F-Page|False" />
+      <Element value="CMPCR@F-Page|False" />
+      <Element value="PCON1@F-Page|False" />
+      <Element value="S-Page|False" />
+      <Element value="TMR1@S-Page|False" />
+      <Element value="T1CR1@S-Page|False" />
+      <Element value="T1CR2@S-Page|False" />
+      <Element value="PWM1DUTY@S-Page|False" />
+      <Element value="PS1CV@S-Page|False" />
+      <Element value="BZ1CR@S-Page|False" />
+      <Element value="IRCR@S-Page|False" />
+      <Element value="TBHP@S-Page|False" />
+      <Element value="TBHD@S-Page|False" />
+      <Element value="P2CR1@S-Page|False" />
+      <Element value="PWM2DUTY@S-Page|False" />
+      <Element value="OSCCR@S-Page|False" />
+      <Element value="TMR3@S-Page|False" />
+      <Element value="T3CR1@S-Page|False" />
+      <Element value="T3CR2@S-Page|False" />
+      <Element value="PWM3DUTY@S-Page|False" />
+      <Element value="PS3CV@S-Page|False" />
+      <Element value="P4CR1@S-Page|False" />
+      <Element value="PWM4DUTY@S-Page|False" />
+      <Element value="P5CR1@S-Page|False" />
+      <Element value="PWM5DUTY@S-Page|False" />
+      <Element value="PWM5RH@S-Page|False" />
+    </Array>
+    <Array name="ResourceManager" />
+    <Array name="UpdateableResources" />
+    <Array name="VoiceFiles" />
+    <Array name="VRModule" />
+    <Array name="WatchItemInfo">
+      <Element value="Sleep_Cnt|0" />
+      <Element value="KEY_Full|0" />
+      <Element value="Key_Long_Cnt|0" />
+      <Element value="NewItem|0" />
+      <Element value="Analyze_Save1|0" />
+      <Element value="Analyze_Save2|0" />
+      <Element value="TeleCon_Signal_FLAG|0" />
+      <Element value="TeleCon_Signal_Cnt|0" />
+      <Element value="TeleCon_Signal_Save|0" />
+      <Element value="TeleCon_Signal_Sbit_Cnt|0" />
+      <Element value="TeleCon_Data_Code|0" />
+      <Element value="TeleCon_Error_FLAG|0" />
+      <Element value="T_1MIN" />
+      <Element value="Charge_Cnt" />
+      <Element value="Charge_3H_Time_Cnt" />
+    </Array>
+  </Properties>
+</Project>

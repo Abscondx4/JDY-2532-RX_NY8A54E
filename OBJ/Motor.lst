@@ -1,0 +1,1103 @@
+
+                    Nyquest Technology Co., Ltd.
+
+NYASM 2.50
+
+    ADDR  OPCODE/VALUE              LINE   TAG  SOURCE                   STATEMENT    
+
+                                    1-    1     ;--------------------------------------------------------
+                                    1-    2     ; File Created by SDCC : free open source ISO C Compiler 
+                                    1-    3     ; Version 4.2.2 #0 (MSVC)
+                                    1-    4     ;--------------------------------------------------------
+                                    1-    5     ; NY8A port
+                                    1-    6     ;--------------------------------------------------------
+                                    1-    7     	.file	"Motor.c"
+                                    1-    8     	list	p=NY8A054E,c=on
+                                    1-    9     	#include "ny8a054e.inc"
+                                    2-    1     #include "common.inc"
+                                    3-    1     ;; header file for 8 bit series assembly -*- mode:asm; coding:utf-8; -*-
+                                    3-    2     ;; author    Ting
+                                    3-    3     ;; date      2020-12-24
+                                    3-    4     ;;
+                                    3-    5     ;; # constant definition
+                                    3-    6     ;;
+                                    3-    7     ;; ## instruction result store destination
+                                    3-    8     ;;  - W: the result is stored in the ACC.
+                                    3-    9     ;;  - F: the result is stored back in register.
+                                    3-   10     ;; ## flag name in STATUS register
+                                    3-   11     ;;  - C, DC, Z
+                                    3-   12     ;;
+                                    3-   13     ;; # macro define
+                                    3-   14     ;;
+                                    3-   15     ;; ## RETURN, used by C compiler, end of function
+                                    3-   16     ;; ## PAGESEL, empty macro, maybe used by C compiler (bug?)
+                                    3-   17     ;; ## BANKSEL, replace by .banksel pseudo command, empty if disable bank.
+                                    3-   18     ;; ## MGOTO, replace by LGOTO (ic<=2K word) or FGOTO (ic>2K word)
+                                    3-   19     ;; ## MCALL, same as above
+                                    3-   20     ;;
+                                    3-   21     W       EQU 0
+                                    3-   21     ;W = 0
+                                    3-   22     F       EQU 1
+                                    3-   22     ;F = 1
+                                    3-   23     C		EQU	0
+                                    3-   23     ;C = 0
+                                    3-   24     DC		EQU	1
+                                    3-   24     ;DC = 1
+                                    3-   25     Z		EQU	2
+                                    3-   25     ;Z = 2
+                                    3-   28     ;; common register for all series
+                                    3-   29     INDF    EQU 0x00
+                                    3-   29     ;INDF = 0
+                                    3-   30     PCL     EQU 0x02
+                                    3-   30     ;PCL = 2
+                                    3-   31     STATUS  EQU 0x03
+                                    3-   31     ;STATUS = 3
+                                    3-   32     FSR     EQU 0x04
+                                    3-   32     ;FSR = 4
+                                    3-   33     PCHBUF  EQU 0x0A
+                                    3-   33     ;PCHBUF = 10
+                                    1-   11     ;--------------------------------------------------------
+                                    1-   12     ; external declarations
+                                    1-   13     ;--------------------------------------------------------
+                                    1-   14     	extern	_Init
+                                    1-   15     	extern	_clear_ram
+                                    1-   16     	extern	_multi_16b
+                                    1-   17     	extern	_multi_8b
+                                    1-   18     	extern	_T0MD
+                                    1-   19     	extern	_PCON1
+                                    1-   20     	extern	_CMPCR
+                                    1-   21     	extern	_BODCON
+                                    1-   22     	extern	_PS0CV
+                                    1-   23     	extern	_APHCON
+                                    1-   24     	extern	_IOSTB
+                                    1-   25     	extern	_IOSTA
+                                    1-   26     	extern	_PWM5RH
+                                    1-   27     	extern	_PWM5DUTY
+                                    1-   28     	extern	_P5CR1
+                                    1-   29     	extern	_PWM4DUTY
+                                    1-   30     	extern	_P4CR1
+                                    1-   31     	extern	_PS3CV
+                                    1-   32     	extern	_PWM3DUTY
+                                    1-   33     	extern	_T3CR2
+                                    1-   34     	extern	_T3CR1
+                                    1-   35     	extern	_TMR3
+                                    1-   36     	extern	_OSCCR
+                                    1-   37     	extern	_PWM2DUTY
+                                    1-   38     	extern	_P2CR1
+                                    1-   39     	extern	_TBHD
+                                    1-   40     	extern	_TBHP
+                                    1-   41     	extern	_IRCR
+                                    1-   42     	extern	_BZ1CR
+                                    1-   43     	extern	_PS1CV
+                                    1-   44     	extern	_PWM1DUTY
+                                    1-   45     	extern	_T1CR2
+                                    1-   46     	extern	_T1CR1
+                                    1-   47     	extern	_TMR1
+                                    1-   48     	extern	_TM34RH
+                                    1-   49     	extern	_TMRH
+                                    1-   50     	extern	_PCHBUF
+                                    1-   51     	extern	_STATUS
+                                    1-   52     	extern	_PCL
+                                    1-   53     	extern	_TMR0
+                                    1-   54     	extern	_StandBy_ShutDown_Cnt
+                                    1-   55     	extern	_Low_Voltage_LED_Flash_Cnt
+                                    1-   56     	extern	_Low_Voltage_Cnt
+                                    1-   57     	extern	_Low_Voltage_Debounce_Cnt
+                                    1-   58     	extern	_TeleCon_LED_Flash_Cnt
+                                    1-   59     	extern	_TeleCon_Signal_Recv_Time_Cnt
+                                    1-   60     	extern	_TeleCon_Strength_change_Code
+                                    1-   61     	extern	_TeleCon_Data_Code
+                                    1-   62     	extern	_TeleCon_Check_Code
+                                    1-   63     	extern	_Analyze_Save3
+                                    1-   64     	extern	_Analyze_Save2
+                                    1-   65     	extern	_Analyze_Save1
+                                    1-   66     	extern	_TeleCon_Signal_Sbit_Cnt
+                                    1-   67     	extern	_TeleCon_Signal_Cnt
+                                    1-   68     	extern	_TeleCon_Signal_Save
+                                    1-   69     	extern	_Charge_3H_Time_Cnt
+                                    1-   70     	extern	_Low_Voltage_LED_Flash_Times_Cnt
+                                    1-   71     	extern	_Full_Cnt
+                                    1-   72     	extern	_Charge_Cnt
+                                    1-   73     	extern	_Charging_LED_Flashing_Time
+                                    1-   74     	extern	_M1_Cnt
+                                    1-   75     	extern	_Motor_Freq_Cnt2
+                                    1-   76     	extern	_Motor_Freq_Cnt1
+                                    1-   77     	extern	_Motor_Freq_Cnt0
+                                    1-   78     	extern	_M1_Freq_Change_Set
+                                    1-   79     	extern	_M1_Freq_Change
+                                    1-   80     	extern	_M1_1_Cycle_Set
+                                    1-   81     	extern	_M1_1_Duty_Set
+                                    1-   82     	extern	_M1_Duty
+                                    1-   83     	extern	_M1_Cycle
+                                    1-   84     	extern	_Motor_Freq_Change
+                                    1-   85     	extern	_M1_Duty_Set
+                                    1-   86     	extern	_M1_Cycle_Set
+                                    1-   87     	extern	_Key_Quick_Press_LED_Cnt
+                                    1-   88     	extern	_Key_Long_Cnt
+                                    1-   89     	extern	_Key_Press_Cnt
+                                    1-   90     	extern	_Clock_Save
+                                    1-   91     	extern	_Sleep_Cnt
+                                    1-   92     	extern	_T_1MIN
+                                    1-   93     	extern	_T_1S
+                                    1-   94     	extern	_T_100MS
+                                    1-   95     	extern	_T_10MS
+                                    1-   96     	extern	_T_1MS
+                                    1-   97     	extern	_T_100US
+                                    1-   98     	extern	_Time
+                                    1-   99     	extern	_INTE2bits
+                                    1-  100     	extern	_RFCbits
+                                    1-  101     	extern	_INTEDGbits
+                                    1-  102     	extern	_AWUCONbits
+                                    1-  103     	extern	_INTFbits
+                                    1-  104     	extern	_INTEbits
+                                    1-  105     	extern	_BPHCONbits
+                                    1-  106     	extern	_ABPLCONbits
+                                    1-  107     	extern	_BWUCONbits
+                                    1-  108     	extern	_PCONbits
+                                    1-  109     	extern	_PORTBbits
+                                    1-  110     	extern	_PORTAbits
+                                    1-  112     	extern PSAVE
+                                    1-  113     	extern SSAVE
+                                    1-  114     	extern WSAVE
+                                    1-  115     	extern STK12
+                                    1-  116     	extern ___STK12
+                                    1-  117     	extern STK11
+                                    1-  118     	extern ___STK11
+                                    1-  119     	extern STK10
+                                    1-  120     	extern ___STK10
+                                    1-  121     	extern STK09
+                                    1-  122     	extern ___STK09
+                                    1-  123     	extern STK08
+                                    1-  124     	extern ___STK08
+                                    1-  125     	extern STK07
+                                    1-  126     	extern ___STK07
+                                    1-  127     	extern STK06
+                                    1-  128     	extern ___STK06
+                                    1-  129     	extern STK05
+                                    1-  130     	extern ___STK05
+                                    1-  131     	extern STK04
+                                    1-  132     	extern ___STK04
+                                    1-  133     	extern STK03
+                                    1-  134     	extern ___STK03
+                                    1-  135     	extern STK02
+                                    1-  136     	extern ___STK02
+                                    1-  137     	extern STK01
+                                    1-  138     	extern ___STK01
+                                    1-  139     	extern STK00
+                                    1-  140     	extern ___STK00
+                                    1-  141     ;--------------------------------------------------------
+                                    1-  142     ; global declarations
+                                    1-  143     ;--------------------------------------------------------
+                                    1-  144     	extern	_Sys_Flag3
+                                    1-  145     	extern	_Sys_Flag2
+                                    1-  146     	extern	_Sys_Flag1
+                                    1-  147     	extern	_Sys_Flag4
+                                    1-  148     	extern	_Sys_Flag0
+                                    1-  149     	extern	_INTE2
+                                    1-  150     	extern	_RFC
+                                    1-  151     	extern	_INTEDG
+                                    1-  152     	extern	_AWUCON
+                                    1-  153     	extern	_INTF
+                                    1-  154     	extern	_INTE
+                                    1-  155     	extern	_BPHCON
+                                    1-  156     	extern	_ABPLCON
+                                    1-  157     	extern	_BWUCON
+                                    1-  158     	extern	_PCON
+                                    1-  159     	extern	_PORTB
+                                    1-  160     	extern	_PORTA
+                                    1-  161     	extern	_Motor_PWM_Loop1
+                                    1-  162     	extern	_Motor_PWM_Loop2
+                                    1-  163     	extern	_M1_Work_Processs
+                                    1-  164     	extern	_M1_Reset
+                                    1-  165     	extern	_M1_Work
+                                    1-  167     ;--------------------------------------------------------
+                                    1-  168     ; global definitions
+                                    1-  169     ;--------------------------------------------------------
+                                    1-  170     ;--------------------------------------------------------
+                                    1-  171     ; absolute symbol definitions
+                                    1-  172     ;--------------------------------------------------------
+                                    1-  173     ;--------------------------------------------------------
+                                    1-  174     ; compiler-defined variables
+                                    1-  175     ;--------------------------------------------------------
+                                    1-  176     .segment "uninit"
+     0000                           1-  177     r0x1014:
+                                    1-  178     	.res	1
+                                    1-  179     .segment "uninit"
+     0000                           1-  180     r0x1013:
+                                    1-  181     	.res	1
+                                    1-  182     ;--------------------------------------------------------
+                                    1-  183     ; initialized data
+                                    1-  184     ;--------------------------------------------------------
+                                    1-  185     ;--------------------------------------------------------
+                                    1-  186     ; initialized absolute data
+                                    1-  187     ;--------------------------------------------------------
+                                    1-  188     ;--------------------------------------------------------
+                                    1-  189     ; overlayable items in internal ram 
+                                    1-  190     ;--------------------------------------------------------
+                                    1-  191     ;	udata_ovr
+                                    1-  192     ;--------------------------------------------------------
+                                    1-  193     ; code
+                                    1-  194     ;--------------------------------------------------------
+                                    1-  195     ; code_Motor	code
+                                    1-  196     ;***
+                                    1-  197     ;  pBlock Stats: dbName = C
+                                    1-  198     ;***
+                                    1-  199     ;has an exit
+                                    1-  200     ;functions called:
+                                    1-  201     ;   _Motor_PWM_Loop1
+                                    1-  202     ;   _Motor_PWM_Loop2
+                                    1-  203     ;   _Motor_PWM_Loop1
+                                    1-  204     ;   _Motor_PWM_Loop1
+                                    1-  205     ;   _Motor_PWM_Loop2
+                                    1-  206     ;   _Motor_PWM_Loop1
+                                    1-  207     ;   _Motor_PWM_Loop1
+                                    1-  208     ;   _Motor_PWM_Loop2
+                                    1-  209     ;   _Motor_PWM_Loop1
+                                    1-  210     ;   _Motor_PWM_Loop2
+                                    1-  211     ;   _Motor_PWM_Loop1
+                                    1-  212     ;   _Motor_PWM_Loop2
+                                    1-  213     ;   _Motor_PWM_Loop1
+                                    1-  214     ;   _Motor_PWM_Loop1
+                                    1-  215     ;   _Motor_PWM_Loop2
+                                    1-  216     ;   _Motor_PWM_Loop1
+                                    1-  217     ;   _Motor_PWM_Loop1
+                                    1-  218     ;   _Motor_PWM_Loop2
+                                    1-  219     ;   _Motor_PWM_Loop1
+                                    1-  220     ;   _Motor_PWM_Loop2
+                                    1-  221     ;1 compiler assigned register :
+                                    1-  222     ;   STK00
+                                    1-  223     ;; Starting pCode block
+                                    1-  224     .segment "code"; module=Motor, function=_M1_Work
+     0000                           1-  226     _M1_Work:
+                                    1-  227     ; 2 exit points
+                                    1-  228     	.line	114, "Motor.c"; 	if (M1_PWM_Write_FLAG)
+                                    1-  229     	BANKSEL	_Sys_Flag1
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 09rr                      1-  230     	BTRSS	_Sys_Flag1,2
+                                    1-  231     	MGOTO	_02081_DS_
+     0002 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  232     	.line	116, "Motor.c"; 	M1_PWM_Write_FLAG = 0;
+     0003 1Drr                      1-  233     	BCR	_Sys_Flag1,2
+                                    1-  234     	.line	117, "Motor.c"; 	M1_Work_FLAG      = 1;
+     0004 18rr                      1-  235     	BSR	_Sys_Flag1,1
+                                    1-  236     	.line	118, "Motor.c"; 	M1_Cnt            = 0;
+                                    1-  237     	BANKSEL	_M1_Cnt
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 02rr                      1-  238     	CLRR	_M1_Cnt
+     0007 02rr                      1-  239     	CLRR	(_M1_Cnt + 1)
+                                    1-  240     ;;swapping arguments (AOP_TYPEs 1/3)
+                                    1-  241     ;;unsigned compare: left >= lit(0xB=11), size=1
+                                    1-  242     	.line	120, "Motor.c"; 	switch (M1_Freq_Change)
+     0008 210B                      1-  243     	MOVIA	0x0b
+                                    1-  244     	BANKSEL	_M1_Freq_Change
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 04rr                      1-  245     	SUBAR	_M1_Freq_Change,W
+     000B 0C03                      1-  246     	BTRSC	STATUS,0
+                                    1-  247     	MGOTO	_02042_DS_
+     000C 3rrr                      3-   62 m1      LGOTO rom_address
+     000D 21rr                      1-  248     	MOVIA	((_02138_DS_ >> 8) & 0xff)
+     000E 008A                      1-  249     	MOVAR	PCHBUF
+     000F 01rr                      1-  250     	MOVR	_M1_Freq_Change,W
+     0010 25rr                      1-  251     	ADDIA	_02138_DS_
+     0011 0C03                      1-  252     	BTRSC	STATUS,0
+     0012 058A                      1-  253     	INCR	PCHBUF,F
+     0013 0082                      1-  254     	MOVAR	PCL
+     0014                           1-  255     _02138_DS_:
+                                    1-  256     	MGOTO	_02042_DS_
+     0014 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  257     	MGOTO	_02043_DS_
+     0015 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  258     	MGOTO	_02044_DS_
+     0016 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  259     	MGOTO	_02045_DS_
+     0017 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  260     	MGOTO	_02046_DS_
+     0018 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  261     	MGOTO	_02047_DS_
+     0019 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  262     	MGOTO	_02053_DS_
+     001A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  263     	MGOTO	_02062_DS_
+     001B 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  264     	MGOTO	_02071_DS_
+     001C 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  265     	MGOTO	_02072_DS_
+     001D 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  266     	MGOTO	_02073_DS_
+     001E 3rrr                      3-   62 m1      LGOTO rom_address
+     001F                           1-  267     _02042_DS_:
+                                    1-  268     	.line	124, "Motor.c"; 	Motor_Freq_Change = 1;
+     001F 2101                      1-  269     	MOVIA	0x01
+                                    1-  270     	BANKSEL	_Motor_Freq_Change
+     0020 rrrr                      3-  109 m1      .banksel ram_address
+     0021 00rr                      1-  271     	MOVAR	_Motor_Freq_Change
+     0022                           1-  272     _02043_DS_:
+                                    1-  273     	.line	128, "Motor.c"; 	M1_Cycle_Set = 19;
+     0022 2113                      1-  274     	MOVIA	0x13
+                                    1-  275     	BANKSEL	_M1_Cycle_Set
+     0023 rrrr                      3-  109 m1      .banksel ram_address
+     0024 00rr                      1-  276     	MOVAR	_M1_Cycle_Set
+     0025 02rr                      1-  277     	CLRR	(_M1_Cycle_Set + 1)
+                                    1-  278     	.line	129, "Motor.c"; 	M1_Duty_Set  = 9;
+     0026 2109                      1-  279     	MOVIA	0x09
+                                    1-  280     	BANKSEL	_M1_Duty_Set
+     0027 rrrr                      3-  109 m1      .banksel ram_address
+     0028 00rr                      1-  281     	MOVAR	_M1_Duty_Set
+     0029 02rr                      1-  282     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  283     	.line	130, "Motor.c"; 	break;
+                                    1-  284     	MGOTO	_02079_DS_
+     002A 3rrr                      3-   62 m1      LGOTO rom_address
+     002B                           1-  285     _02044_DS_:
+                                    1-  286     	.line	134, "Motor.c"; 	M1_Cycle_Set = 19;
+     002B 2113                      1-  287     	MOVIA	0x13
+                                    1-  288     	BANKSEL	_M1_Cycle_Set
+     002C rrrr                      3-  109 m1      .banksel ram_address
+     002D 00rr                      1-  289     	MOVAR	_M1_Cycle_Set
+     002E 02rr                      1-  290     	CLRR	(_M1_Cycle_Set + 1)
+                                    1-  291     	.line	135, "Motor.c"; 	M1_Duty_Set  = 15;
+     002F 210F                      1-  292     	MOVIA	0x0f
+                                    1-  293     	BANKSEL	_M1_Duty_Set
+     0030 rrrr                      3-  109 m1      .banksel ram_address
+     0031 00rr                      1-  294     	MOVAR	_M1_Duty_Set
+     0032 02rr                      1-  295     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  296     	.line	136, "Motor.c"; 	break;
+                                    1-  297     	MGOTO	_02079_DS_
+     0033 3rrr                      3-   62 m1      LGOTO rom_address
+     0034                           1-  298     _02045_DS_:
+                                    1-  299     	.line	140, "Motor.c"; 	M1_Cycle_Set = 19;
+     0034 2113                      1-  300     	MOVIA	0x13
+                                    1-  301     	BANKSEL	_M1_Cycle_Set
+     0035 rrrr                      3-  109 m1      .banksel ram_address
+     0036 00rr                      1-  302     	MOVAR	_M1_Cycle_Set
+     0037 02rr                      1-  303     	CLRR	(_M1_Cycle_Set + 1)
+                                    1-  304     	.line	141, "Motor.c"; 	M1_Duty_Set  = 19;
+     0038 2113                      1-  305     	MOVIA	0x13
+                                    1-  306     	BANKSEL	_M1_Duty_Set
+     0039 rrrr                      3-  109 m1      .banksel ram_address
+     003A 00rr                      1-  307     	MOVAR	_M1_Duty_Set
+     003B 02rr                      1-  308     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  309     	.line	142, "Motor.c"; 	break;
+                                    1-  310     	MGOTO	_02079_DS_
+     003C 3rrr                      3-   62 m1      LGOTO rom_address
+     003D                           1-  311     _02046_DS_:
+                                    1-  312     	.line	146, "Motor.c"; 	M1_Cycle_Set = 768;
+                                    1-  313     	BANKSEL	_M1_Cycle_Set
+     003D rrrr                      3-  109 m1      .banksel ram_address
+     003E 02rr                      1-  314     	CLRR	_M1_Cycle_Set
+     003F 2103                      1-  315     	MOVIA	0x03
+     0040 00rr                      1-  316     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  317     	.line	147, "Motor.c"; 	M1_Duty_Set  = 614;
+     0041 2166                      1-  318     	MOVIA	0x66
+                                    1-  319     	BANKSEL	_M1_Duty_Set
+     0042 rrrr                      3-  109 m1      .banksel ram_address
+     0043 00rr                      1-  320     	MOVAR	_M1_Duty_Set
+     0044 2102                      1-  321     	MOVIA	0x02
+     0045 00rr                      1-  322     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  323     	.line	148, "Motor.c"; 	break;
+                                    1-  324     	MGOTO	_02079_DS_
+     0046 3rrr                      3-   62 m1      LGOTO rom_address
+     0047                           1-  325     _02047_DS_:
+                                    1-  326     	.line	152, "Motor.c"; 	if (!Motor_Freq_Cnt0)
+                                    1-  327     	BANKSEL	_Motor_Freq_Cnt0
+     0047 rrrr                      3-  109 m1      .banksel ram_address
+     0048 01rr                      1-  328     	MOVR	_Motor_Freq_Cnt0,W
+     0049 0903                      1-  329     	BTRSS	STATUS,2
+                                    1-  330     	MGOTO	_02051_DS_
+     004A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  331     	.line	154, "Motor.c"; 	M1_Cycle_Set = 420;
+     004B 21A4                      1-  332     	MOVIA	0xa4
+                                    1-  333     	BANKSEL	_M1_Cycle_Set
+     004C rrrr                      3-  109 m1      .banksel ram_address
+     004D 00rr                      1-  334     	MOVAR	_M1_Cycle_Set
+     004E 2101                      1-  335     	MOVIA	0x01
+     004F 00rr                      1-  336     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  337     	.line	155, "Motor.c"; 	M1_Duty_Set  = 230;
+     0050 21E6                      1-  338     	MOVIA	0xe6
+                                    1-  339     	BANKSEL	_M1_Duty_Set
+     0051 rrrr                      3-  109 m1      .banksel ram_address
+     0052 00rr                      1-  340     	MOVAR	_M1_Duty_Set
+     0053 02rr                      1-  341     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  342     	.line	156, "Motor.c"; 	Motor_PWM_Loop1(16);
+     0054 2110                      1-  343     	MOVIA	0x10
+     0055 00rr                      1-  344     	MOVAR	STK00
+     0056 2100                      1-  345     	MOVIA	0x00
+                                    1-  346     	MCALL	_Motor_PWM_Loop1
+     0057 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  347     	MGOTO	_02079_DS_
+     0058 3rrr                      3-   62 m1      LGOTO rom_address
+     0059                           1-  348     _02051_DS_:
+                                    1-  349     	.line	158, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 1)
+                                    1-  350     	BANKSEL	_Motor_Freq_Cnt0
+     0059 rrrr                      3-  109 m1      .banksel ram_address
+     005A 01rr                      1-  351     	MOVR	_Motor_Freq_Cnt0,W
+     005B 2401                      1-  352     	XORIA	0x01
+     005C 0903                      1-  353     	BTRSS	STATUS,2
+                                    1-  354     	MGOTO	_02079_DS_
+     005D 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  355     	.line	160, "Motor.c"; 	M1_Cycle_Set = 19;
+     005E 2113                      1-  356     	MOVIA	0x13
+                                    1-  357     	BANKSEL	_M1_Cycle_Set
+     005F rrrr                      3-  109 m1      .banksel ram_address
+     0060 00rr                      1-  358     	MOVAR	_M1_Cycle_Set
+     0061 02rr                      1-  359     	CLRR	(_M1_Cycle_Set + 1)
+                                    1-  360     	.line	161, "Motor.c"; 	M1_Duty_Set  = 10;
+     0062 210A                      1-  361     	MOVIA	0x0a
+                                    1-  362     	BANKSEL	_M1_Duty_Set
+     0063 rrrr                      3-  109 m1      .banksel ram_address
+     0064 00rr                      1-  363     	MOVAR	_M1_Duty_Set
+     0065 02rr                      1-  364     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  365     	.line	162, "Motor.c"; 	Motor_PWM_Loop2(300);
+     0066 212C                      1-  366     	MOVIA	0x2c
+     0067 00rr                      1-  367     	MOVAR	STK00
+     0068 2101                      1-  368     	MOVIA	0x01
+                                    1-  369     	MCALL	_Motor_PWM_Loop2
+     0069 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  370     	.line	164, "Motor.c"; 	break;
+                                    1-  371     	MGOTO	_02079_DS_
+     006A 3rrr                      3-   62 m1      LGOTO rom_address
+     006B                           1-  372     _02053_DS_:
+                                    1-  373     	.line	168, "Motor.c"; 	if (!Motor_Freq_Cnt0)
+                                    1-  374     	BANKSEL	_Motor_Freq_Cnt0
+     006B rrrr                      3-  109 m1      .banksel ram_address
+     006C 01rr                      1-  375     	MOVR	_Motor_Freq_Cnt0,W
+     006D 0903                      1-  376     	BTRSS	STATUS,2
+                                    1-  377     	MGOTO	_02060_DS_
+     006E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  378     	.line	170, "Motor.c"; 	M1_Cycle_Set = 2077;
+     006F 211D                      1-  379     	MOVIA	0x1d
+                                    1-  380     	BANKSEL	_M1_Cycle_Set
+     0070 rrrr                      3-  109 m1      .banksel ram_address
+     0071 00rr                      1-  381     	MOVAR	_M1_Cycle_Set
+     0072 2108                      1-  382     	MOVIA	0x08
+     0073 00rr                      1-  383     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  384     	.line	171, "Motor.c"; 	M1_Duty_Set  = 1039;
+     0074 210F                      1-  385     	MOVIA	0x0f
+                                    1-  386     	BANKSEL	_M1_Duty_Set
+     0075 rrrr                      3-  109 m1      .banksel ram_address
+     0076 00rr                      1-  387     	MOVAR	_M1_Duty_Set
+     0077 2104                      1-  388     	MOVIA	0x04
+     0078 00rr                      1-  389     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  390     	.line	172, "Motor.c"; 	Motor_PWM_Loop1(5);
+     0079 2105                      1-  391     	MOVIA	0x05
+     007A 00rr                      1-  392     	MOVAR	STK00
+     007B 2100                      1-  393     	MOVIA	0x00
+                                    1-  394     	MCALL	_Motor_PWM_Loop1
+     007C 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  395     	MGOTO	_02079_DS_
+     007D 3rrr                      3-   62 m1      LGOTO rom_address
+     007E                           1-  396     _02060_DS_:
+                                    1-  397     	.line	174, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 1)
+                                    1-  398     	BANKSEL	_Motor_Freq_Cnt0
+     007E rrrr                      3-  109 m1      .banksel ram_address
+     007F 01rr                      1-  399     	MOVR	_Motor_Freq_Cnt0,W
+     0080 2401                      1-  400     	XORIA	0x01
+     0081 0903                      1-  401     	BTRSS	STATUS,2
+                                    1-  402     	MGOTO	_02057_DS_
+     0082 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  403     	.line	176, "Motor.c"; 	M1_Cycle_Set = 1653;
+     0083 2175                      1-  404     	MOVIA	0x75
+                                    1-  405     	BANKSEL	_M1_Cycle_Set
+     0084 rrrr                      3-  109 m1      .banksel ram_address
+     0085 00rr                      1-  406     	MOVAR	_M1_Cycle_Set
+     0086 2106                      1-  407     	MOVIA	0x06
+     0087 00rr                      1-  408     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  409     	.line	177, "Motor.c"; 	M1_Duty_Set  = 615;
+     0088 2167                      1-  410     	MOVIA	0x67
+                                    1-  411     	BANKSEL	_M1_Duty_Set
+     0089 rrrr                      3-  109 m1      .banksel ram_address
+     008A 00rr                      1-  412     	MOVAR	_M1_Duty_Set
+     008B 2102                      1-  413     	MOVIA	0x02
+     008C 00rr                      1-  414     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  415     	.line	178, "Motor.c"; 	Motor_PWM_Loop1(5);
+     008D 2105                      1-  416     	MOVIA	0x05
+     008E 00rr                      1-  417     	MOVAR	STK00
+     008F 2100                      1-  418     	MOVIA	0x00
+                                    1-  419     	MCALL	_Motor_PWM_Loop1
+     0090 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  420     	MGOTO	_02079_DS_
+     0091 3rrr                      3-   62 m1      LGOTO rom_address
+     0092                           1-  421     _02057_DS_:
+                                    1-  422     	.line	180, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 2)
+                                    1-  423     	BANKSEL	_Motor_Freq_Cnt0
+     0092 rrrr                      3-  109 m1      .banksel ram_address
+     0093 01rr                      1-  424     	MOVR	_Motor_Freq_Cnt0,W
+     0094 2402                      1-  425     	XORIA	0x02
+     0095 0903                      1-  426     	BTRSS	STATUS,2
+                                    1-  427     	MGOTO	_02079_DS_
+     0096 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  428     	.line	182, "Motor.c"; 	M1_Cycle_Set = 360;
+     0097 2168                      1-  429     	MOVIA	0x68
+                                    1-  430     	BANKSEL	_M1_Cycle_Set
+     0098 rrrr                      3-  109 m1      .banksel ram_address
+     0099 00rr                      1-  431     	MOVAR	_M1_Cycle_Set
+     009A 2101                      1-  432     	MOVIA	0x01
+     009B 00rr                      1-  433     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  434     	.line	183, "Motor.c"; 	M1_Duty_Set  = 189;
+     009C 21BD                      1-  435     	MOVIA	0xbd
+                                    1-  436     	BANKSEL	_M1_Duty_Set
+     009D rrrr                      3-  109 m1      .banksel ram_address
+     009E 00rr                      1-  437     	MOVAR	_M1_Duty_Set
+     009F 02rr                      1-  438     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  439     	.line	184, "Motor.c"; 	Motor_PWM_Loop2(20);
+     00A0 2114                      1-  440     	MOVIA	0x14
+     00A1 00rr                      1-  441     	MOVAR	STK00
+     00A2 2100                      1-  442     	MOVIA	0x00
+                                    1-  443     	MCALL	_Motor_PWM_Loop2
+     00A3 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  444     	.line	186, "Motor.c"; 	break;
+                                    1-  445     	MGOTO	_02079_DS_
+     00A4 3rrr                      3-   62 m1      LGOTO rom_address
+     00A5                           1-  446     _02062_DS_:
+                                    1-  447     	.line	190, "Motor.c"; 	if (!Motor_Freq_Cnt0)
+                                    1-  448     	BANKSEL	_Motor_Freq_Cnt0
+     00A5 rrrr                      3-  109 m1      .banksel ram_address
+     00A6 01rr                      1-  449     	MOVR	_Motor_Freq_Cnt0,W
+     00A7 0903                      1-  450     	BTRSS	STATUS,2
+                                    1-  451     	MGOTO	_02069_DS_
+     00A8 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  452     	.line	192, "Motor.c"; 	M1_Cycle_Set = 1357;
+     00A9 214D                      1-  453     	MOVIA	0x4d
+                                    1-  454     	BANKSEL	_M1_Cycle_Set
+     00AA rrrr                      3-  109 m1      .banksel ram_address
+     00AB 00rr                      1-  455     	MOVAR	_M1_Cycle_Set
+     00AC 2105                      1-  456     	MOVIA	0x05
+     00AD 00rr                      1-  457     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  458     	.line	193, "Motor.c"; 	M1_Duty_Set  = 1132;
+     00AE 216C                      1-  459     	MOVIA	0x6c
+                                    1-  460     	BANKSEL	_M1_Duty_Set
+     00AF rrrr                      3-  109 m1      .banksel ram_address
+     00B0 00rr                      1-  461     	MOVAR	_M1_Duty_Set
+     00B1 2104                      1-  462     	MOVIA	0x04
+     00B2 00rr                      1-  463     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  464     	.line	194, "Motor.c"; 	Motor_PWM_Loop1(10);
+     00B3 210A                      1-  465     	MOVIA	0x0a
+     00B4 00rr                      1-  466     	MOVAR	STK00
+     00B5 2100                      1-  467     	MOVIA	0x00
+                                    1-  468     	MCALL	_Motor_PWM_Loop1
+     00B6 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  469     	MGOTO	_02079_DS_
+     00B7 3rrr                      3-   62 m1      LGOTO rom_address
+     00B8                           1-  470     _02069_DS_:
+                                    1-  471     	.line	196, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 1)
+                                    1-  472     	BANKSEL	_Motor_Freq_Cnt0
+     00B8 rrrr                      3-  109 m1      .banksel ram_address
+     00B9 01rr                      1-  473     	MOVR	_Motor_Freq_Cnt0,W
+     00BA 2401                      1-  474     	XORIA	0x01
+     00BB 0903                      1-  475     	BTRSS	STATUS,2
+                                    1-  476     	MGOTO	_02066_DS_
+     00BC 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  477     	.line	198, "Motor.c"; 	M1_Cycle_Set = 258;
+     00BD 2102                      1-  478     	MOVIA	0x02
+                                    1-  479     	BANKSEL	_M1_Cycle_Set
+     00BE rrrr                      3-  109 m1      .banksel ram_address
+     00BF 00rr                      1-  480     	MOVAR	_M1_Cycle_Set
+     00C0 2101                      1-  481     	MOVIA	0x01
+     00C1 00rr                      1-  482     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  483     	.line	199, "Motor.c"; 	M1_Duty_Set  = 128;
+     00C2 2180                      1-  484     	MOVIA	0x80
+                                    1-  485     	BANKSEL	_M1_Duty_Set
+     00C3 rrrr                      3-  109 m1      .banksel ram_address
+     00C4 00rr                      1-  486     	MOVAR	_M1_Duty_Set
+     00C5 02rr                      1-  487     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  488     	.line	200, "Motor.c"; 	Motor_PWM_Loop1(5);
+     00C6 2105                      1-  489     	MOVIA	0x05
+     00C7 00rr                      1-  490     	MOVAR	STK00
+     00C8 2100                      1-  491     	MOVIA	0x00
+                                    1-  492     	MCALL	_Motor_PWM_Loop1
+     00C9 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  493     	MGOTO	_02079_DS_
+     00CA 3rrr                      3-   62 m1      LGOTO rom_address
+     00CB                           1-  494     _02066_DS_:
+                                    1-  495     	.line	202, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 2)
+                                    1-  496     	BANKSEL	_Motor_Freq_Cnt0
+     00CB rrrr                      3-  109 m1      .banksel ram_address
+     00CC 01rr                      1-  497     	MOVR	_Motor_Freq_Cnt0,W
+     00CD 2402                      1-  498     	XORIA	0x02
+     00CE 0903                      1-  499     	BTRSS	STATUS,2
+                                    1-  500     	MGOTO	_02079_DS_
+     00CF 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  501     	.line	204, "Motor.c"; 	M1_Cycle_Set = 713;
+     00D0 21C9                      1-  502     	MOVIA	0xc9
+                                    1-  503     	BANKSEL	_M1_Cycle_Set
+     00D1 rrrr                      3-  109 m1      .banksel ram_address
+     00D2 00rr                      1-  504     	MOVAR	_M1_Cycle_Set
+     00D3 2102                      1-  505     	MOVIA	0x02
+     00D4 00rr                      1-  506     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  507     	.line	205, "Motor.c"; 	M1_Duty_Set  = 250;
+     00D5 21FA                      1-  508     	MOVIA	0xfa
+                                    1-  509     	BANKSEL	_M1_Duty_Set
+     00D6 rrrr                      3-  109 m1      .banksel ram_address
+     00D7 00rr                      1-  510     	MOVAR	_M1_Duty_Set
+     00D8 02rr                      1-  511     	CLRR	(_M1_Duty_Set + 1)
+                                    1-  512     	.line	206, "Motor.c"; 	Motor_PWM_Loop2(10);
+     00D9 210A                      1-  513     	MOVIA	0x0a
+     00DA 00rr                      1-  514     	MOVAR	STK00
+     00DB 2100                      1-  515     	MOVIA	0x00
+                                    1-  516     	MCALL	_Motor_PWM_Loop2
+     00DC 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  517     	.line	208, "Motor.c"; 	break;
+                                    1-  518     	MGOTO	_02079_DS_
+     00DD 3rrr                      3-   62 m1      LGOTO rom_address
+     00DE                           1-  519     _02071_DS_:
+                                    1-  520     	.line	212, "Motor.c"; 	M1_Cycle_Set = 1823;
+     00DE 211F                      1-  521     	MOVIA	0x1f
+                                    1-  522     	BANKSEL	_M1_Cycle_Set
+     00DF rrrr                      3-  109 m1      .banksel ram_address
+     00E0 00rr                      1-  523     	MOVAR	_M1_Cycle_Set
+     00E1 2107                      1-  524     	MOVIA	0x07
+     00E2 00rr                      1-  525     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  526     	.line	213, "Motor.c"; 	M1_Duty_Set  = 1216;
+     00E3 21C0                      1-  527     	MOVIA	0xc0
+                                    1-  528     	BANKSEL	_M1_Duty_Set
+     00E4 rrrr                      3-  109 m1      .banksel ram_address
+     00E5 00rr                      1-  529     	MOVAR	_M1_Duty_Set
+     00E6 2104                      1-  530     	MOVIA	0x04
+     00E7 00rr                      1-  531     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  532     	.line	214, "Motor.c"; 	break;
+                                    1-  533     	MGOTO	_02079_DS_
+     00E8 3rrr                      3-   62 m1      LGOTO rom_address
+     00E9                           1-  534     _02072_DS_:
+                                    1-  535     	.line	218, "Motor.c"; 	M1_Cycle_Set = 700;
+     00E9 21BC                      1-  536     	MOVIA	0xbc
+                                    1-  537     	BANKSEL	_M1_Cycle_Set
+     00EA rrrr                      3-  109 m1      .banksel ram_address
+     00EB 00rr                      1-  538     	MOVAR	_M1_Cycle_Set
+     00EC 2102                      1-  539     	MOVIA	0x02
+     00ED 00rr                      1-  540     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  541     	.line	219, "Motor.c"; 	M1_Duty_Set  = 323;
+     00EE 2143                      1-  542     	MOVIA	0x43
+                                    1-  543     	BANKSEL	_M1_Duty_Set
+     00EF rrrr                      3-  109 m1      .banksel ram_address
+     00F0 00rr                      1-  544     	MOVAR	_M1_Duty_Set
+     00F1 2101                      1-  545     	MOVIA	0x01
+     00F2 00rr                      1-  546     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  547     	.line	220, "Motor.c"; 	break;
+                                    1-  548     	MGOTO	_02079_DS_
+     00F3 3rrr                      3-   62 m1      LGOTO rom_address
+     00F4                           1-  549     _02073_DS_:
+                                    1-  550     	.line	224, "Motor.c"; 	if (!Motor_Freq_Cnt0)
+                                    1-  551     	BANKSEL	_Motor_Freq_Cnt0
+     00F4 rrrr                      3-  109 m1      .banksel ram_address
+     00F5 01rr                      1-  552     	MOVR	_Motor_Freq_Cnt0,W
+     00F6 0903                      1-  553     	BTRSS	STATUS,2
+                                    1-  554     	MGOTO	_02077_DS_
+     00F7 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  555     	.line	226, "Motor.c"; 	M1_Cycle_Set = 2025;
+     00F8 21E9                      1-  556     	MOVIA	0xe9
+                                    1-  557     	BANKSEL	_M1_Cycle_Set
+     00F9 rrrr                      3-  109 m1      .banksel ram_address
+     00FA 00rr                      1-  558     	MOVAR	_M1_Cycle_Set
+     00FB 2107                      1-  559     	MOVIA	0x07
+     00FC 00rr                      1-  560     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  561     	.line	227, "Motor.c"; 	M1_Duty_Set  = 1012;
+     00FD 21F4                      1-  562     	MOVIA	0xf4
+                                    1-  563     	BANKSEL	_M1_Duty_Set
+     00FE rrrr                      3-  109 m1      .banksel ram_address
+     00FF 00rr                      1-  564     	MOVAR	_M1_Duty_Set
+     0100 2103                      1-  565     	MOVIA	0x03
+     0101 00rr                      1-  566     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  567     	.line	228, "Motor.c"; 	Motor_PWM_Loop1(5);
+     0102 2105                      1-  568     	MOVIA	0x05
+     0103 00rr                      1-  569     	MOVAR	STK00
+     0104 2100                      1-  570     	MOVIA	0x00
+                                    1-  571     	MCALL	_Motor_PWM_Loop1
+     0105 2rrr                      3-   65 m1      LCALL rom_address
+                                    1-  572     	MGOTO	_02079_DS_
+     0106 3rrr                      3-   62 m1      LGOTO rom_address
+     0107                           1-  573     _02077_DS_:
+                                    1-  574     	.line	230, "Motor.c"; 	else if (Motor_Freq_Cnt0 == 1)
+                                    1-  575     	BANKSEL	_Motor_Freq_Cnt0
+     0107 rrrr                      3-  109 m1      .banksel ram_address
+     0108 01rr                      1-  576     	MOVR	_Motor_Freq_Cnt0,W
+     0109 2401                      1-  577     	XORIA	0x01
+     010A 0903                      1-  578     	BTRSS	STATUS,2
+                                    1-  579     	MGOTO	_02079_DS_
+     010B 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  580     	.line	232, "Motor.c"; 	M1_Cycle_Set = 1215;
+     010C 21BF                      1-  581     	MOVIA	0xbf
+                                    1-  582     	BANKSEL	_M1_Cycle_Set
+     010D rrrr                      3-  109 m1      .banksel ram_address
+     010E 00rr                      1-  583     	MOVAR	_M1_Cycle_Set
+     010F 2104                      1-  584     	MOVIA	0x04
+     0110 00rr                      1-  585     	MOVAR	(_M1_Cycle_Set + 1)
+                                    1-  586     	.line	233, "Motor.c"; 	M1_Duty_Set  = 607;
+     0111 215F                      1-  587     	MOVIA	0x5f
+                                    1-  588     	BANKSEL	_M1_Duty_Set
+     0112 rrrr                      3-  109 m1      .banksel ram_address
+     0113 00rr                      1-  589     	MOVAR	_M1_Duty_Set
+     0114 2102                      1-  590     	MOVIA	0x02
+     0115 00rr                      1-  591     	MOVAR	(_M1_Duty_Set + 1)
+                                    1-  592     	.line	234, "Motor.c"; 	Motor_PWM_Loop2(10);
+     0116 210A                      1-  593     	MOVIA	0x0a
+     0117 00rr                      1-  594     	MOVAR	STK00
+     0118 2100                      1-  595     	MOVIA	0x00
+                                    1-  596     	MCALL	_Motor_PWM_Loop2
+     0119 2rrr                      3-   65 m1      LCALL rom_address
+     011A                           1-  597     _02079_DS_:
+                                    1-  598     	.line	239, "Motor.c"; 	M1_Work_FLAG = 1;
+                                    1-  599     	BANKSEL	_Sys_Flag1
+     011A rrrr                      3-  109 m1      .banksel ram_address
+     011B 18rr                      1-  600     	BSR	_Sys_Flag1,1
+     011C                           1-  601     _02081_DS_:
+                                    1-  602     	.line	241, "Motor.c"; 	if (Power_Onoff_FLAG)
+                                    1-  603     	BANKSEL	_Sys_Flag0
+     011C rrrr                      3-  109 m1      .banksel ram_address
+     011D 08rr                      1-  604     	BTRSS	_Sys_Flag0,0
+                                    1-  605     	MGOTO	_02084_DS_
+     011E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  606     	.line	243, "Motor.c"; 	Sleep_Cnt = 0;
+                                    1-  607     	BANKSEL	_Sleep_Cnt
+     011F rrrr                      3-  109 m1      .banksel ram_address
+     0120 02rr                      1-  608     	CLRR	_Sleep_Cnt
+     0121 02rr                      1-  609     	CLRR	(_Sleep_Cnt + 1)
+     0122                           1-  610     _02084_DS_:
+                                    1-  611     	.line	245, "Motor.c"; 	}
+                                    1-  612     	RETURN	
+     0122 0010                      3-   39 m1      ret
+                                    1-  613     ; exit point of _M1_Work
+                                    1-  615     ;***
+                                    1-  616     ;  pBlock Stats: dbName = C
+                                    1-  617     ;***
+                                    1-  618     ;has an exit
+                                    1-  619     ;; Starting pCode block
+                                    1-  620     .segment "code"; module=Motor, function=_M1_Reset
+     0000                           1-  622     _M1_Reset:
+                                    1-  623     ; 2 exit points
+                                    1-  624     	.line	65, "Motor.c"; 	Motor_Freq_Cnt0 = 0;
+                                    1-  625     	BANKSEL	_Motor_Freq_Cnt0
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 02rr                      1-  626     	CLRR	_Motor_Freq_Cnt0
+                                    1-  627     	.line	66, "Motor.c"; 	Motor_Freq_Cnt1 = 0;
+                                    1-  628     	BANKSEL	_Motor_Freq_Cnt1
+     0002 rrrr                      3-  109 m1      .banksel ram_address
+     0003 02rr                      1-  629     	CLRR	_Motor_Freq_Cnt1
+     0004 02rr                      1-  630     	CLRR	(_Motor_Freq_Cnt1 + 1)
+                                    1-  631     	.line	67, "Motor.c"; 	Motor_Freq_Cnt2 = 0;
+                                    1-  632     	BANKSEL	_Motor_Freq_Cnt2
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 02rr                      1-  633     	CLRR	_Motor_Freq_Cnt2
+     0007 02rr                      1-  634     	CLRR	(_Motor_Freq_Cnt2 + 1)
+                                    1-  635     	.line	68, "Motor.c"; 	M1_Cnt          = 0;
+                                    1-  636     	BANKSEL	_M1_Cnt
+     0008 rrrr                      3-  109 m1      .banksel ram_address
+     0009 02rr                      1-  637     	CLRR	_M1_Cnt
+     000A 02rr                      1-  638     	CLRR	(_M1_Cnt + 1)
+                                    1-  639     	.line	69, "Motor.c"; 	M1_Cycle        = 1;
+     000B 2101                      1-  640     	MOVIA	0x01
+                                    1-  641     	BANKSEL	_M1_Cycle
+     000C rrrr                      3-  109 m1      .banksel ram_address
+     000D 00rr                      1-  642     	MOVAR	_M1_Cycle
+     000E 02rr                      1-  643     	CLRR	(_M1_Cycle + 1)
+                                    1-  644     	.line	70, "Motor.c"; 	}
+                                    1-  645     	RETURN	
+     000F 0010                      3-   39 m1      ret
+                                    1-  646     ; exit point of _M1_Reset
+                                    1-  648     ;***
+                                    1-  649     ;  pBlock Stats: dbName = C
+                                    1-  650     ;***
+                                    1-  651     ;; Starting pCode block
+                                    1-  652     .segment "code"; module=Motor, function=_M1_Work_Processs
+     0000                           1-  654     _M1_Work_Processs:
+                                    1-  655     ; 0 exit points
+                                    1-  656     	.line	25, "Motor.c"; 	if (Power_On_Notice_FLAG)
+                                    1-  657     	BANKSEL	_Sys_Flag4
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 0Arr                      1-  658     	BTRSS	_Sys_Flag4,4
+                                    1-  659     	MGOTO	_02022_DS_
+     0002 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  660     	.line	27, "Motor.c"; 	M1_Cnt++;
+                                    1-  661     	BANKSEL	_M1_Cnt
+     0003 rrrr                      3-  109 m1      .banksel ram_address
+     0004 05rr                      1-  662     	INCR	_M1_Cnt,F
+     0005 0D03                      1-  663     	BTRSC	STATUS,2
+     0006 05rr                      1-  664     	INCR	(_M1_Cnt + 1),F
+                                    1-  665     	.line	28, "Motor.c"; 	M1_On;
+                                    1-  666     	BANKSEL	_PORTA
+     0007 rrrr                      3-  109 m1      .banksel ram_address
+     0008 1Arr                      1-  667     	BSR	_PORTA,4
+                                    1-  668     	.line	29, "Motor.c"; 	if (M1_Cnt == M1_Power_On_Hit)
+                                    1-  669     	BANKSEL	_M1_Cnt
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 01rr                      1-  670     	MOVR	_M1_Cnt,W
+     000B 24D0                      1-  671     	XORIA	0xd0
+     000C 0903                      1-  672     	BTRSS	STATUS,2
+                                    1-  673     	MGOTO	_02022_DS_
+     000D 3rrr                      3-   62 m1      LGOTO rom_address
+     000E 01rr                      1-  674     	MOVR	(_M1_Cnt + 1),W
+     000F 2407                      1-  675     	XORIA	0x07
+     0010 0903                      1-  676     	BTRSS	STATUS,2
+                                    1-  677     	MGOTO	_02022_DS_
+     0011 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  678     	.line	31, "Motor.c"; 	M1_Cnt               = 0;
+     0012 02rr                      1-  679     	CLRR	_M1_Cnt
+     0013 02rr                      1-  680     	CLRR	(_M1_Cnt + 1)
+                                    1-  681     	.line	32, "Motor.c"; 	Power_On_Notice_FLAG = 0;
+                                    1-  682     	BANKSEL	_Sys_Flag4
+     0014 rrrr                      3-  109 m1      .banksel ram_address
+     0015 1Err                      1-  683     	BCR	_Sys_Flag4,4
+                                    1-  684     	.line	33, "Motor.c"; 	M1_Off;
+                                    1-  685     	BANKSEL	_PORTA
+     0016 rrrr                      3-  109 m1      .banksel ram_address
+     0017 1Err                      1-  686     	BCR	_PORTA,4
+     0018                           1-  687     _02022_DS_:
+                                    1-  688     	.line	37, "Motor.c"; 	if (M1_Work_FLAG)
+                                    1-  689     	BANKSEL	_Sys_Flag1
+     0018 rrrr                      3-  109 m1      .banksel ram_address
+     0019 08rr                      1-  690     	BTRSS	_Sys_Flag1,1
+                                    1-  691     	MGOTO	_00001_DS_
+     001A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  692     	.line	39, "Motor.c"; 	M1_Cnt++;
+                                    1-  693     	BANKSEL	_M1_Cnt
+     001B rrrr                      3-  109 m1      .banksel ram_address
+     001C 05rr                      1-  694     	INCR	_M1_Cnt,F
+     001D 0D03                      1-  695     	BTRSC	STATUS,2
+     001E 05rr                      1-  696     	INCR	(_M1_Cnt + 1),F
+                                    1-  697     	.line	40, "Motor.c"; 	if (M1_Cnt == M1_Cycle)
+                                    1-  698     	BANKSEL	_M1_Cycle
+     001F rrrr                      3-  109 m1      .banksel ram_address
+     0020 01rr                      1-  699     	MOVR	_M1_Cycle,W
+                                    1-  700     	BANKSEL	_M1_Cnt
+     0021 rrrr                      3-  109 m1      .banksel ram_address
+     0022 12rr                      1-  701     	XORAR	_M1_Cnt,W
+     0023 0903                      1-  702     	BTRSS	STATUS,2
+                                    1-  703     	MGOTO	_02029_DS_
+     0024 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  704     	BANKSEL	_M1_Cycle
+     0025 rrrr                      3-  109 m1      .banksel ram_address
+     0026 01rr                      1-  705     	MOVR	(_M1_Cycle + 1),W
+                                    1-  706     	BANKSEL	_M1_Cnt
+     0027 rrrr                      3-  109 m1      .banksel ram_address
+     0028 12rr                      1-  707     	XORAR	(_M1_Cnt + 1),W
+     0029 0903                      1-  708     	BTRSS	STATUS,2
+                                    1-  709     	MGOTO	_02029_DS_
+     002A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  710     	.line	42, "Motor.c"; 	M1_Cnt = 0;
+     002B 02rr                      1-  711     	CLRR	_M1_Cnt
+     002C 02rr                      1-  712     	CLRR	(_M1_Cnt + 1)
+                                    1-  713     	.line	43, "Motor.c"; 	if (M1_Duty)
+                                    1-  714     	BANKSEL	_M1_Duty
+     002D rrrr                      3-  109 m1      .banksel ram_address
+     002E 01rr                      1-  715     	MOVR	(_M1_Duty + 1),W
+     002F 11rr                      1-  716     	IORAR	_M1_Duty,W
+     0030 0D03                      1-  717     	BTRSC	STATUS,2
+                                    1-  718     	MGOTO	_02024_DS_
+     0031 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  719     	.line	45, "Motor.c"; 	M1_On;
+                                    1-  720     	BANKSEL	_PORTA
+     0032 rrrr                      3-  109 m1      .banksel ram_address
+     0033 1Arr                      1-  721     	BSR	_PORTA,4
+                                    1-  722     	MGOTO	_02025_DS_
+     0034 3rrr                      3-   62 m1      LGOTO rom_address
+     0035                           1-  723     _02024_DS_:
+                                    1-  724     	.line	49, "Motor.c"; 	M1_Off;
+                                    1-  725     	BANKSEL	_PORTA
+     0035 rrrr                      3-  109 m1      .banksel ram_address
+     0036 1Err                      1-  726     	BCR	_PORTA,4
+     0037                           1-  727     _02025_DS_:
+                                    1-  728     	.line	52, "Motor.c"; 	M1_Cycle          = M1_Cycle_Set;
+                                    1-  729     	BANKSEL	_M1_Cycle_Set
+     0037 rrrr                      3-  109 m1      .banksel ram_address
+     0038 01rr                      1-  730     	MOVR	_M1_Cycle_Set,W
+                                    1-  731     	BANKSEL	_M1_Cycle
+     0039 rrrr                      3-  109 m1      .banksel ram_address
+     003A 00rr                      1-  732     	MOVAR	_M1_Cycle
+                                    1-  733     	BANKSEL	_M1_Cycle_Set
+     003B rrrr                      3-  109 m1      .banksel ram_address
+     003C 01rr                      1-  734     	MOVR	(_M1_Cycle_Set + 1),W
+                                    1-  735     	BANKSEL	_M1_Cycle
+     003D rrrr                      3-  109 m1      .banksel ram_address
+     003E 00rr                      1-  736     	MOVAR	(_M1_Cycle + 1)
+                                    1-  737     	.line	53, "Motor.c"; 	M1_Duty           = M1_Duty_Set;
+                                    1-  738     	BANKSEL	_M1_Duty_Set
+     003F rrrr                      3-  109 m1      .banksel ram_address
+     0040 01rr                      1-  739     	MOVR	_M1_Duty_Set,W
+                                    1-  740     	BANKSEL	_M1_Duty
+     0041 rrrr                      3-  109 m1      .banksel ram_address
+     0042 00rr                      1-  741     	MOVAR	_M1_Duty
+                                    1-  742     	BANKSEL	_M1_Duty_Set
+     0043 rrrr                      3-  109 m1      .banksel ram_address
+     0044 01rr                      1-  743     	MOVR	(_M1_Duty_Set + 1),W
+                                    1-  744     	BANKSEL	_M1_Duty
+     0045 rrrr                      3-  109 m1      .banksel ram_address
+     0046 00rr                      1-  745     	MOVAR	(_M1_Duty + 1)
+                                    1-  746     	.line	54, "Motor.c"; 	M1_PWM_Write_FLAG = 1;
+                                    1-  747     	BANKSEL	_Sys_Flag1
+     0047 rrrr                      3-  109 m1      .banksel ram_address
+     0048 19rr                      1-  748     	BSR	_Sys_Flag1,2
+                                    1-  749     	MGOTO	_00001_DS_
+     0049 3rrr                      3-   62 m1      LGOTO rom_address
+     004A                           1-  750     _02029_DS_:
+                                    1-  751     	.line	56, "Motor.c"; 	else if (M1_Cnt == M1_Duty)
+                                    1-  752     	BANKSEL	_M1_Duty
+     004A rrrr                      3-  109 m1      .banksel ram_address
+     004B 01rr                      1-  753     	MOVR	_M1_Duty,W
+                                    1-  754     	BANKSEL	_M1_Cnt
+     004C rrrr                      3-  109 m1      .banksel ram_address
+     004D 12rr                      1-  755     	XORAR	_M1_Cnt,W
+     004E 0903                      1-  756     	BTRSS	STATUS,2
+                                    1-  757     	MGOTO	_00001_DS_
+     004F 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  758     	BANKSEL	_M1_Duty
+     0050 rrrr                      3-  109 m1      .banksel ram_address
+     0051 01rr                      1-  759     	MOVR	(_M1_Duty + 1),W
+                                    1-  760     	BANKSEL	_M1_Cnt
+     0052 rrrr                      3-  109 m1      .banksel ram_address
+     0053 12rr                      1-  761     	XORAR	(_M1_Cnt + 1),W
+     0054 0903                      1-  762     	BTRSS	STATUS,2
+                                    1-  763     	MGOTO	_00001_DS_
+     0055 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  764     	.line	58, "Motor.c"; 	M1_Off;
+                                    1-  765     	BANKSEL	_PORTA
+     0056 rrrr                      3-  109 m1      .banksel ram_address
+     0057 1Err                      1-  766     	BCR	_PORTA,4
+     0058                           1-  767     _00001_DS_:
+                                    1-  768     	.line	61, "Motor.c"; 	}
+                                    1-  769     	RETURN	
+     0058 0010                      3-   39 m1      ret
+                                    1-  771     ;***
+                                    1-  772     ;  pBlock Stats: dbName = C
+                                    1-  773     ;***
+                                    1-  774     ;has an exit
+                                    1-  775     ;3 compiler assigned registers:
+                                    1-  776     ;   r0x1013
+                                    1-  777     ;   STK00
+                                    1-  778     ;   r0x1014
+                                    1-  779     ;; Starting pCode block
+                                    1-  780     .segment "code"; module=Motor, function=_Motor_PWM_Loop2
+                                    1-  782     ;local variable name mapping:
+     0000                           1-  784     _Motor_PWM_Loop2:
+                                    1-  785     ; 2 exit points
+                                    1-  786     	.line	13, "Motor.c"; 	void Motor_PWM_Loop2(short x)
+                                    1-  787     	BANKSEL	r0x1013
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 00rr                      1-  788     	MOVAR	r0x1013
+     0002 01rr                      1-  789     	MOVR	STK00,W
+                                    1-  790     	BANKSEL	r0x1014
+     0003 rrrr                      3-  109 m1      .banksel ram_address
+     0004 00rr                      1-  791     	MOVAR	r0x1014
+                                    1-  792     	.line	15, "Motor.c"; 	Motor_Freq_Cnt1++;
+                                    1-  793     	BANKSEL	_Motor_Freq_Cnt1
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 05rr                      1-  794     	INCR	_Motor_Freq_Cnt1,F
+     0007 0D03                      1-  795     	BTRSC	STATUS,2
+     0008 05rr                      1-  796     	INCR	(_Motor_Freq_Cnt1 + 1),F
+                                    1-  797     	.line	16, "Motor.c"; 	if (Motor_Freq_Cnt1 == x)
+                                    1-  798     	BANKSEL	r0x1014
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 01rr                      1-  799     	MOVR	r0x1014,W
+                                    1-  800     	BANKSEL	_Motor_Freq_Cnt1
+     000B rrrr                      3-  109 m1      .banksel ram_address
+     000C 12rr                      1-  801     	XORAR	_Motor_Freq_Cnt1,W
+     000D 0903                      1-  802     	BTRSS	STATUS,2
+                                    1-  803     	MGOTO	_02014_DS_
+     000E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  804     	BANKSEL	r0x1013
+     000F rrrr                      3-  109 m1      .banksel ram_address
+     0010 01rr                      1-  805     	MOVR	r0x1013,W
+                                    1-  806     	BANKSEL	_Motor_Freq_Cnt1
+     0011 rrrr                      3-  109 m1      .banksel ram_address
+     0012 12rr                      1-  807     	XORAR	(_Motor_Freq_Cnt1 + 1),W
+     0013 0903                      1-  808     	BTRSS	STATUS,2
+                                    1-  809     	MGOTO	_02014_DS_
+     0014 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  810     	.line	18, "Motor.c"; 	Motor_Freq_Cnt1 = 0;
+     0015 02rr                      1-  811     	CLRR	_Motor_Freq_Cnt1
+     0016 02rr                      1-  812     	CLRR	(_Motor_Freq_Cnt1 + 1)
+                                    1-  813     	.line	19, "Motor.c"; 	Motor_Freq_Cnt0 = 0;
+                                    1-  814     	BANKSEL	_Motor_Freq_Cnt0
+     0017 rrrr                      3-  109 m1      .banksel ram_address
+     0018 02rr                      1-  815     	CLRR	_Motor_Freq_Cnt0
+     0019                           1-  816     _02014_DS_:
+                                    1-  817     	.line	21, "Motor.c"; 	}
+                                    1-  818     	RETURN	
+     0019 0010                      3-   39 m1      ret
+                                    1-  819     ; exit point of _Motor_PWM_Loop2
+                                    1-  821     ;***
+                                    1-  822     ;  pBlock Stats: dbName = C
+                                    1-  823     ;***
+                                    1-  824     ;has an exit
+                                    1-  825     ;3 compiler assigned registers:
+                                    1-  826     ;   r0x1013
+                                    1-  827     ;   STK00
+                                    1-  828     ;   r0x1014
+                                    1-  829     ;; Starting pCode block
+                                    1-  830     .segment "code"; module=Motor, function=_Motor_PWM_Loop1
+                                    1-  832     ;local variable name mapping:
+     0000                           1-  834     _Motor_PWM_Loop1:
+                                    1-  835     ; 2 exit points
+                                    1-  836     	.line	3, "Motor.c"; 	void Motor_PWM_Loop1(short x)
+                                    1-  837     	BANKSEL	r0x1013
+     0000 rrrr                      3-  109 m1      .banksel ram_address
+     0001 00rr                      1-  838     	MOVAR	r0x1013
+     0002 01rr                      1-  839     	MOVR	STK00,W
+                                    1-  840     	BANKSEL	r0x1014
+     0003 rrrr                      3-  109 m1      .banksel ram_address
+     0004 00rr                      1-  841     	MOVAR	r0x1014
+                                    1-  842     	.line	5, "Motor.c"; 	Motor_Freq_Cnt1++;
+                                    1-  843     	BANKSEL	_Motor_Freq_Cnt1
+     0005 rrrr                      3-  109 m1      .banksel ram_address
+     0006 05rr                      1-  844     	INCR	_Motor_Freq_Cnt1,F
+     0007 0D03                      1-  845     	BTRSC	STATUS,2
+     0008 05rr                      1-  846     	INCR	(_Motor_Freq_Cnt1 + 1),F
+                                    1-  847     	.line	6, "Motor.c"; 	if (Motor_Freq_Cnt1 == x)
+                                    1-  848     	BANKSEL	r0x1014
+     0009 rrrr                      3-  109 m1      .banksel ram_address
+     000A 01rr                      1-  849     	MOVR	r0x1014,W
+                                    1-  850     	BANKSEL	_Motor_Freq_Cnt1
+     000B rrrr                      3-  109 m1      .banksel ram_address
+     000C 12rr                      1-  851     	XORAR	_Motor_Freq_Cnt1,W
+     000D 0903                      1-  852     	BTRSS	STATUS,2
+                                    1-  853     	MGOTO	_02007_DS_
+     000E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  854     	BANKSEL	r0x1013
+     000F rrrr                      3-  109 m1      .banksel ram_address
+     0010 01rr                      1-  855     	MOVR	r0x1013,W
+                                    1-  856     	BANKSEL	_Motor_Freq_Cnt1
+     0011 rrrr                      3-  109 m1      .banksel ram_address
+     0012 12rr                      1-  857     	XORAR	(_Motor_Freq_Cnt1 + 1),W
+     0013 0903                      1-  858     	BTRSS	STATUS,2
+                                    1-  859     	MGOTO	_02007_DS_
+     0014 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  860     	.line	8, "Motor.c"; 	Motor_Freq_Cnt1 = 0;
+     0015 02rr                      1-  861     	CLRR	_Motor_Freq_Cnt1
+     0016 02rr                      1-  862     	CLRR	(_Motor_Freq_Cnt1 + 1)
+                                    1-  863     	.line	9, "Motor.c"; 	Motor_Freq_Cnt0++;
+                                    1-  864     	BANKSEL	_Motor_Freq_Cnt0
+     0017 rrrr                      3-  109 m1      .banksel ram_address
+     0018 05rr                      1-  865     	INCR	_Motor_Freq_Cnt0,F
+     0019                           1-  866     _02007_DS_:
+                                    1-  867     	.line	11, "Motor.c"; 	}
+                                    1-  868     	RETURN	
+     0019 0010                      3-   39 m1      ret
+                                    1-  869     ; exit point of _Motor_PWM_Loop1
+                                    1-  872     ;	code size estimation:
+                                    1-  873     ;	  349+   99 =   448 instructions ( 1094 byte)
+                                    1-  875     	end
+
+SYMBOL TABLE            TYPE     VALUE
+__pin_count__           Constant 0000000E
+__processor__           Constant 00800544
+C                       Constant 00000000
+DC                      Constant 00000001
+ENABLE_RAM_BANK         Constant 00000001
+F                       Constant 00000001
+FSR                     Constant 00000004
+INDF                    Constant 00000000
+PCHBUF                  Constant 0000000A
+PCL                     Constant 00000002
+STATUS                  Constant 00000003
+USEFGOTO                Constant 00000000
+W                       Constant 00000000
+Z                       Constant 00000002
+
+
+SOURCE FILE TABLE
+001 OBJ/Motor.s
+002 ny8a054e.inc
+003 common.inc
+004 Motor.c
+
+PROCESSOR    = NY8A054E (8 bits)
+PROGRAM ROM  = 0x00000000 - 0x000007FF
+DATA ROM     = 0x00000000 - 0x000007FF
+SRAM / SFR   = 0x00000000 - 0x00000000

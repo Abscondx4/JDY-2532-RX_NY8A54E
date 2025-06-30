@@ -1,0 +1,709 @@
+# memory map file, output by NYASM 2.50 [Build: 250227.00] linker.
+#
+# address start from 0 is ROM
+# address start from 20000000 is RAM (R-page)
+# address start from 20800000 is RAM (F-page)
+# address start from 21000000 is RAM (S-page)
+# address start from 21800000 is RAM (T-page)
+# address = 0xFFFFFFFF means that there is no space to allocate.
+#
+
+Module list:
+------------
+Charge.o:
+    .debug_line          offset:0x0        size:0x2b5 (693)
+    .debug_info          offset:0x0        size:0x46 (70)
+    .debug_abbrev        offset:0x0        size:0x15 (21)
+    .debug_ranges        offset:0x0        size:0xc (12)
+    .debug_aranges       offset:0x0        size:0x14 (20)
+    code                 offset:0x3a5      size:0x4a (74)
+    code                 offset:0x50d      size:0x1d (29)
+
+Clock.o:
+    .debug_line          offset:0x2b5      size:0x285 (645)
+    .debug_info          offset:0x46       size:0x34 (52)
+    .debug_abbrev        offset:0x15       size:0x15 (21)
+    .debug_ranges        offset:0xc        size:0x8
+    .debug_aranges       offset:0x14       size:0x10 (16)
+    code                 offset:0x26f      size:0x73 (115)
+
+Init.o:
+    .debug_line          offset:0x53a      size:0x252 (594)
+    .debug_info          offset:0x7a       size:0x5fa (1530)
+    .debug_abbrev        offset:0x2a       size:0x24 (36)
+    .debug_ranges        offset:0x14       size:0xd0 (208)
+    .debug_aranges       offset:0x24       size:0xd8 (216)
+    idata                offset:0x20000041 size:0x1
+    idata                offset:0x20000042 size:0x1
+    idata                offset:0x20000043 size:0x1
+    idata                offset:0x20000044 size:0x1
+    idata                offset:0x20000045 size:0x1
+    idata                offset:0x20000046 size:0x1
+    idata                offset:0x20000047 size:0x1
+    idata                offset:0x20000048 size:0x1
+    idata                offset:0x20000049 size:0x1
+    idata                offset:0x20000027 size:0x2
+    idata                offset:0x2000004a size:0x1
+    idata                offset:0x2000004b size:0x1
+    idata                offset:0x2000004c size:0x1
+    idata                offset:0x20000029 size:0x2
+    idata                offset:0x2000002b size:0x2
+    idata                offset:0x2000004d size:0x1
+    idata                offset:0x2000002d size:0x2
+    idata                offset:0x2000002f size:0x2
+    idata                offset:0x2000004e size:0x1
+    idata                offset:0x2000004f size:0x1
+    idata                offset:0x20000031 size:0x2
+    idata                offset:0x20000033 size:0x2
+    idata                offset:0x20000035 size:0x2
+    idata                offset:0x20000050 size:0x1
+    idata                offset:0x20000051 size:0x1
+    idata                offset:0x20000052 size:0x1
+    idata                offset:0x20000053 size:0x1
+    idata                offset:0x20000054 size:0x1
+    idata                offset:0x20000037 size:0x2
+    idata                offset:0x20000055 size:0x1
+    idata                offset:0x20000039 size:0x2
+    idata                offset:0x20000056 size:0x1
+    idata                offset:0x20000057 size:0x1
+    idata                offset:0x20000058 size:0x1
+    idata                offset:0x20000059 size:0x1
+    idata                offset:0x2000005a size:0x1
+    idata                offset:0x2000003b size:0x2
+    idata                offset:0x2000003d size:0x2
+    idata                offset:0x2000005b size:0x1
+    idata                offset:0x2000005c size:0x1
+    idata                offset:0x2000003f size:0x2
+    code                 offset:0x52a      size:0x1b (27)
+
+Key.o:
+    .debug_line          offset:0x78c      size:0x2b3 (691)
+    .debug_info          offset:0x675      size:0x35 (53)
+    .debug_abbrev        offset:0x4e       size:0x15 (21)
+    .debug_ranges        offset:0xe4       size:0x8
+    .debug_aranges       offset:0xfc       size:0x10 (16)
+    code                 offset:0x2e2      size:0x6a (106)
+
+LED.o:
+    .debug_line          offset:0xa3f      size:0x1fc (508)
+    .debug_info          offset:0x6aa      size:0x32 (50)
+    .debug_abbrev        offset:0x63       size:0x15 (21)
+    .debug_ranges        offset:0xec       size:0x8
+    .debug_aranges       offset:0x10c      size:0x10 (16)
+    code                 offset:0x3ef      size:0x4a (74)
+
+Motor.o:
+    .debug_line          offset:0xc3c      size:0x87a (2170)
+    .debug_info          offset:0x6dc      size:0x8e (142)
+    .debug_abbrev        offset:0x78       size:0x24 (36)
+    .debug_ranges        offset:0xf4       size:0x20 (32)
+    .debug_aranges       offset:0x11c      size:0x28 (40)
+    uninit               offset:0x20000020 size:0x1
+    uninit               offset:0x20000021 size:0x1
+    code                 offset:0x9        size:0x123 (291)
+    code                 offset:0x58a      size:0x10 (16)
+    code                 offset:0x34c      size:0x59 (89)
+    code                 offset:0x545      size:0x1a (26)
+    code                 offset:0x55f      size:0x1a (26)
+
+Power_Manage.o:
+    .debug_line          offset:0x14b6     size:0x322 (802)
+    .debug_info          offset:0x76b      size:0x8f (143)
+    .debug_abbrev        offset:0x9d       size:0x15 (21)
+    .debug_ranges        offset:0x114      size:0x28 (40)
+    .debug_aranges       offset:0x144      size:0x30 (48)
+    uninit               offset:0x20000022 size:0x1
+    uninit               offset:0x20000023 size:0x1
+    code                 offset:0x4df      size:0x2e (46)
+    code                 offset:0x5b3      size:0xb (11)
+    code                 offset:0x59a      size:0xd (13)
+    code                 offset:0x5a7      size:0xc (12)
+    code                 offset:0x579      size:0x11 (17)
+
+Telecontrol.o:
+    .debug_line          offset:0x17d9     size:0x68c (1676)
+    .debug_info          offset:0x7fa      size:0x4e (78)
+    .debug_abbrev        offset:0xb2       size:0x15 (21)
+    .debug_ranges        offset:0x13c      size:0xc (12)
+    .debug_aranges       offset:0x174      size:0x14 (20)
+    code                 offset:0x1eb      size:0x84 (132)
+    code                 offset:0x12c      size:0xbf (191)
+
+main.o:
+    .debug_line          offset:0x1e65     size:0x2c0 (704)
+    .debug_info          offset:0x848      size:0x8d (141)
+    .debug_abbrev        offset:0xc7       size:0x24 (36)
+    .debug_ranges        offset:0x148      size:0x60 (96)
+    .debug_aranges       offset:0x188      size:0x68 (104)
+    share_bank           offset:0x2000007f size:0x1
+    share_bank           offset:0x2000007e size:0x1
+    share_bank           offset:0x2000007d size:0x1
+    share_bank           offset:0x2000007c size:0x1
+    share_bank           offset:0x2000007b size:0x1
+    uninit               offset:0x20000024 size:0x1
+    uninit               offset:0x20000025 size:0x1
+    uninit               offset:0x20000026 size:0x1
+    .text                offset:0x0        size:0x1
+    .text                offset:0x8        size:0x1
+    code                 offset:0x4ab      size:0x34 (52)
+    code                 offset:0x439      size:0x3a (58)
+
+NY8A054E.a:
+    .debug_line          offset:0x2125     size:0x345 (837)
+    .debug_info          offset:0x8d5      size:0x2d (45)
+    .debug_abbrev        offset:0xeb       size:0xf (15)
+    .debug_ranges        offset:0x1a8      size:0x17c (380)
+    .debug_aranges       offset:0x1f0      size:0x184 (388)
+    .text                offset:0x20000000 size:0x1
+    .text                offset:0x20000001 size:0x1
+    .text                offset:0x20000002 size:0x1
+    .text                offset:0x20000003 size:0x1
+    .text                offset:0x20000004 size:0x1
+    .text                offset:0x20000005 size:0x1
+    .text                offset:0x20000006 size:0x1
+    .text                offset:0x20000007 size:0x1
+    .text                offset:0x20000008 size:0x1
+    .text                offset:0x20000009 size:0x1
+    .text                offset:0x2000000a size:0x1
+    .text                offset:0x2000000b size:0x1
+    .text                offset:0x2000000c size:0x1
+    .text                offset:0x2000000d size:0x1
+    .text                offset:0x2000000e size:0x1
+    .text                offset:0x2000000f size:0x1
+    .text                offset:0x20000010 size:0x1
+    .text                offset:0x20000011 size:0x1
+    .text                offset:0x20000012 size:0x1
+    .text                offset:0x20000013 size:0x1
+    .text                offset:0x20000014 size:0x1
+    .text                offset:0x20000015 size:0x1
+    .text                offset:0x20000016 size:0x1
+    .text                offset:0x20000017 size:0x1
+    .text                offset:0x20000018 size:0x1
+    .text                offset:0x20000019 size:0x1
+    .text                offset:0x2000001a size:0x1
+    .text                offset:0x2000001b size:0x1
+    .text                offset:0x2000001c size:0x1
+    .text                offset:0x2000001d size:0x1
+    .text                offset:0x2000001e size:0x1
+    .text                offset:0x2000001f size:0x1
+    .text                offset:0x20000080 size:0x1
+    .text                offset:0x20000081 size:0x1
+    .text                offset:0x20000082 size:0x1
+    .text                offset:0x20000083 size:0x1
+    .text                offset:0x20000084 size:0x1
+    .text                offset:0x20000085 size:0x1
+    .text                offset:0x20000086 size:0x1
+    .text                offset:0x20000087 size:0x1
+    .text                offset:0x20000088 size:0x1
+    .text                offset:0x20000089 size:0x1
+    .text                offset:0x2000008a size:0x1
+    .text                offset:0x2000008b size:0x1
+    .text                offset:0x2000008c size:0x1
+    .text                offset:0x2000008d size:0x1
+    .text                offset:0x2000008e size:0x1
+    .text                offset:0x2000008f size:0x1
+    .text                offset:0x20000090 size:0x1
+    .text                offset:0x20000091 size:0x1
+    .text                offset:0x20000092 size:0x1
+    .text                offset:0x20000093 size:0x1
+    .text                offset:0x20000094 size:0x1
+    .text                offset:0x20000095 size:0x1
+    .text                offset:0x20000096 size:0x1
+    .text                offset:0x20000097 size:0x1
+    .text                offset:0x20000098 size:0x1
+    .text                offset:0x20000099 size:0x1
+    .text                offset:0x2000009a size:0x1
+    .text                offset:0x2000009b size:0x1
+    .text                offset:0x2000009c size:0x1
+    .text                offset:0x2000009d size:0x1
+    .text                offset:0x2000009e size:0x1
+    .text                offset:0x2000009f size:0x1
+    .text                offset:0x20800000 size:0x1
+    .text                offset:0x20800005 size:0x1
+    .text                offset:0x20800006 size:0x1
+    .text                offset:0x20800009 size:0x1
+    .text                offset:0x2080000a size:0x1
+    .text                offset:0x2080000c size:0x1
+    .text                offset:0x2080000e size:0x1
+    .text                offset:0x2080000f size:0x1
+    .text                offset:0x21000000 size:0x1
+    .text                offset:0x21000001 size:0x1
+    .text                offset:0x21000002 size:0x1
+    .text                offset:0x21000003 size:0x1
+    .text                offset:0x21000004 size:0x1
+    .text                offset:0x21000005 size:0x1
+    .text                offset:0x21000006 size:0x1
+    .text                offset:0x21000007 size:0x1
+    .text                offset:0x21000008 size:0x1
+    .text                offset:0x2100000a size:0x1
+    .text                offset:0x2100000c size:0x1
+    .text                offset:0x2100000f size:0x1
+    .text                offset:0x21000010 size:0x1
+    .text                offset:0x21000011 size:0x1
+    .text                offset:0x21000012 size:0x1
+    .text                offset:0x21000013 size:0x1
+    .text                offset:0x21000014 size:0x1
+    .text                offset:0x21000016 size:0x1
+    .text                offset:0x21000018 size:0x1
+    .text                offset:0x2100001b size:0x1
+    .text                offset:0x2100001d size:0x1
+    .text                offset:0x2100001f size:0x1
+
+libsdcc_bankram.a:
+
+bank2_8b.a:
+    .debug_line          offset:0x246a     size:0x3c (60)
+    .debug_info          offset:0x903      size:0x2b (43)
+    .debug_abbrev        offset:0xfb       size:0xf (15)
+    .debug_ranges        offset:0x324      size:0x8
+    .debug_aranges       offset:0x374      size:0x10 (16)
+    startup              offset:0x1        size:0x2
+
+cb_file:
+
+
+Segment list:
+Name                 Start      Size
+-----------------------------------
+.text                0x20000000 0x1
+.text                0x20000001 0x1
+.text                0x20000002 0x1
+.text                0x20000003 0x1
+.text                0x20000004 0x1
+.text                0x20000005 0x1
+.text                0x20000006 0x1
+.text                0x20000007 0x1
+.text                0x20000008 0x1
+.text                0x20000009 0x1
+.text                0x2000000a 0x1
+.text                0x2000000b 0x1
+.text                0x2000000c 0x1
+.text                0x2000000d 0x1
+.text                0x2000000e 0x1
+.text                0x2000000f 0x1
+.text                0x20000010 0x1
+.text                0x20000011 0x1
+.text                0x20000012 0x1
+.text                0x20000013 0x1
+.text                0x20000014 0x1
+.text                0x20000015 0x1
+.text                0x20000016 0x1
+.text                0x20000017 0x1
+.text                0x20000018 0x1
+.text                0x20000019 0x1
+.text                0x2000001a 0x1
+.text                0x2000001b 0x1
+.text                0x2000001c 0x1
+.text                0x2000001d 0x1
+.text                0x2000001e 0x1
+.text                0x2000001f 0x1
+uninit               0x20000020 0x1
+uninit               0x20000021 0x1
+uninit               0x20000022 0x1
+uninit               0x20000023 0x1
+uninit               0x20000024 0x1
+uninit               0x20000025 0x1
+uninit               0x20000026 0x1
+idata                0x20000027 0x2
+idata                0x20000029 0x2
+idata                0x2000002b 0x2
+idata                0x2000002d 0x2
+idata                0x2000002f 0x2
+idata                0x20000031 0x2
+idata                0x20000033 0x2
+idata                0x20000035 0x2
+idata                0x20000037 0x2
+idata                0x20000039 0x2
+idata                0x2000003b 0x2
+idata                0x2000003d 0x2
+idata                0x2000003f 0x2
+idata                0x20000041 0x1
+idata                0x20000042 0x1
+idata                0x20000043 0x1
+idata                0x20000044 0x1
+idata                0x20000045 0x1
+idata                0x20000046 0x1
+idata                0x20000047 0x1
+idata                0x20000048 0x1
+idata                0x20000049 0x1
+idata                0x2000004a 0x1
+idata                0x2000004b 0x1
+idata                0x2000004c 0x1
+idata                0x2000004d 0x1
+idata                0x2000004e 0x1
+idata                0x2000004f 0x1
+idata                0x20000050 0x1
+idata                0x20000051 0x1
+idata                0x20000052 0x1
+idata                0x20000053 0x1
+idata                0x20000054 0x1
+idata                0x20000055 0x1
+idata                0x20000056 0x1
+idata                0x20000057 0x1
+idata                0x20000058 0x1
+idata                0x20000059 0x1
+idata                0x2000005a 0x1
+idata                0x2000005b 0x1
+idata                0x2000005c 0x1
+share_bank           0x2000007b 0x1
+share_bank           0x2000007c 0x1
+share_bank           0x2000007d 0x1
+share_bank           0x2000007e 0x1
+share_bank           0x2000007f 0x1
+.text                0x20000080 0x1
+.text                0x20000081 0x1
+.text                0x20000082 0x1
+.text                0x20000083 0x1
+.text                0x20000084 0x1
+.text                0x20000085 0x1
+.text                0x20000086 0x1
+.text                0x20000087 0x1
+.text                0x20000088 0x1
+.text                0x20000089 0x1
+.text                0x2000008a 0x1
+.text                0x2000008b 0x1
+.text                0x2000008c 0x1
+.text                0x2000008d 0x1
+.text                0x2000008e 0x1
+.text                0x2000008f 0x1
+.text                0x20000090 0x1
+.text                0x20000091 0x1
+.text                0x20000092 0x1
+.text                0x20000093 0x1
+.text                0x20000094 0x1
+.text                0x20000095 0x1
+.text                0x20000096 0x1
+.text                0x20000097 0x1
+.text                0x20000098 0x1
+.text                0x20000099 0x1
+.text                0x2000009a 0x1
+.text                0x2000009b 0x1
+.text                0x2000009c 0x1
+.text                0x2000009d 0x1
+.text                0x2000009e 0x1
+.text                0x2000009f 0x1
+.text                0x20800000 0x1
+.text                0x20800005 0x1
+.text                0x20800006 0x1
+.text                0x20800009 0x1
+.text                0x2080000a 0x1
+.text                0x2080000c 0x1
+.text                0x2080000e 0x1
+.text                0x2080000f 0x1
+.text                0x21000000 0x1
+.text                0x21000001 0x1
+.text                0x21000002 0x1
+.text                0x21000003 0x1
+.text                0x21000004 0x1
+.text                0x21000005 0x1
+.text                0x21000006 0x1
+.text                0x21000007 0x1
+.text                0x21000008 0x1
+.text                0x2100000a 0x1
+.text                0x2100000c 0x1
+.text                0x2100000f 0x1
+.text                0x21000010 0x1
+.text                0x21000011 0x1
+.text                0x21000012 0x1
+.text                0x21000013 0x1
+.text                0x21000014 0x1
+.text                0x21000016 0x1
+.text                0x21000018 0x1
+.text                0x2100001b 0x1
+.text                0x2100001d 0x1
+.text                0x2100001f 0x1
+
+Symbol list by name:
+Name                      Value
+--------------------------------
+___cinit_load__           0x371 (881)
+___cinit_run__            0x371 (881)
+___cinit_size__           0x38 (56)
+___fs2schar               no used
+___fs2sint                no used
+___fs2slong               no used
+___fs2uchar               no used
+___fs2uint                no used
+___fs2ulong               no used
+___fsadd                  no used
+___fsdiv                  no used
+___fseq                   no used
+___fslt                   no used
+___fsmul                  no used
+___fsneq                  no used
+___fssub                  no used
+___math_temp_1            no used
+___math_temp_2            no used
+___math_temp_3            no used
+___math_temp_4            no used
+___math_temp_5            no used
+___math_temp_6            no used
+___math_temp_7            no used
+___math_temp_8            no used
+___math_temp_9            no used
+___rsv80                  0x20000080
+___rsv81                  0x20000081
+___rsv82                  0x20000082
+___rsv83                  0x20000083
+___rsv84                  0x20000084
+___rsv85                  0x20000085
+___rsv86                  0x20000086
+___rsv87                  0x20000087
+___rsv88                  0x20000088
+___rsv89                  0x20000089
+___rsv8a                  0x2000008a
+___rsv8b                  0x2000008b
+___rsv8c                  0x2000008c
+___rsv8d                  0x2000008d
+___rsv8e                  0x2000008e
+___rsv8f                  0x2000008f
+___rsv90                  0x20000090
+___rsv91                  0x20000091
+___rsv92                  0x20000092
+___rsv93                  0x20000093
+___rsv94                  0x20000094
+___rsv95                  0x20000095
+___rsv96                  0x20000096
+___rsv97                  0x20000097
+___rsv98                  0x20000098
+___rsv99                  0x20000099
+___rsv9a                  0x2000009a
+___rsv9b                  0x2000009b
+___rsv9c                  0x2000009c
+___rsv9d                  0x2000009d
+___rsv9e                  0x2000009e
+___rsv9f                  0x2000009f
+___schar2fs               no used
+___sint2fs                no used
+___slong2fs               no used
+___STK00                  0x2000007b
+___STK01                  0x2000007c
+___STK02                  no used
+___STK03                  no used
+___STK04                  no used
+___STK05                  no used
+___STK06                  no used
+___STK07                  no used
+___STK08                  no used
+___STK09                  no used
+___STK10                  no used
+___STK11                  no used
+___STK12                  no used
+___uchar2fs               no used
+___uint2fs                no used
+___ulong2fs               no used
+__checksum                0x478 (1144)
+__CHECKSUM_ADDR__         0x478 (1144)
+__codeptrget1             no used
+__divschar                no used
+__divsint                 no used
+__divslong                no used
+__divsuchar               no used
+__divsuint                no used
+__divsulong               no used
+__divuchar                no used
+__divuint                 no used
+__divulong                no used
+__divuschar               no used
+__divusint                no used
+__divuslong               no used
+__gptrget                 no used
+__gptrget1                no used
+__gptrget2                no used
+__gptrget3                no used
+__gptrget4                no used
+__gptrput                 no used
+__gptrput1                no used
+__gptrput2                no used
+__gptrput3                no used
+__gptrput4                no used
+__idata_total_size__      0x36 (54)
+__modschar                no used
+__modsint                 no used
+__modslong                no used
+__modsuchar               no used
+__modsuint                no used
+__modsulong               no used
+__moduchar                no used
+__moduint                 no used
+__modulong                no used
+__moduschar               no used
+__modusint                no used
+__moduslong               no used
+__mulchar                 no used
+__mulint                  no used
+__mullong                 no used
+__mulschar                no used
+__mulsuchar               no used
+__muluchar                no used
+__muluschar               no used
+__nyc_ny8_startup         0x1
+__reserved_sfr_0x0007     0x20000007
+__reserved_sfr_0x000d     0x2000000d
+__reserved_sfr_0x0010     0x20000010
+__reserved_sfr_0x0011     0x20000011
+__reserved_sfr_0x0012     0x20000012
+__reserved_sfr_0x0013     0x20000013
+__reserved_sfr_0x0014     0x20000014
+__reserved_sfr_0x0016     0x20000016
+__reserved_sfr_0x0017     0x20000017
+__reserved_sfr_0x001a     0x2000001a
+__reserved_sfr_0x001d     0x2000001d
+__reserved_sfr_0x001e     0x2000001e
+__share_bank_total_size__ 0x5
+__uninit_total_size__     0x7
+_ABPLCON                  0x2000000b
+_ABPLCONbits              0x2000000b
+_Analyze_Save1            0x20000057
+_Analyze_Save2            0x20000058
+_Analyze_Save3            no used
+_APHCON                   0x20800009
+_AWUCON                   0x20000015
+_AWUCONbits               0x20000015
+_Battery_Full_Process     0x470 (1136)
+_Battery_Voltage_Detect   0x45e (1118)
+_BODCON                   0x2080000c
+_BPHCON                   0x2000000c
+_BPHCONbits               0x2000000c
+_BWUCON                   0x20000009
+_BWUCONbits               0x20000009
+_BZ1CR                    0x21000005
+_Charge_3H_Time_Cnt       0x20000037
+_Charge_Cnt               0x20000051
+_Charge_Detect            0x3f6 (1014)
+_Charge_Process           0x2d2 (722)
+_Charging_LED_Flashing_Time 0x20000050
+_clear_ram                no used
+_Clock                    0x1f4 (500)
+_Clock_Save               no used
+_CMPCR                    0x2080000e
+_FSR                      0x20000004
+_Full_Cnt                 0x20000052
+_INDF                     0x20000000
+_Init                     0x40a (1034)
+_INTE                     0x2000000e
+_INTE2                    0x2000001f
+_INTE2bits                0x2000001f
+_INTEbits                 0x2000000e
+_INTEDG                   0x20000018
+_INTEDGbits               0x20000018
+_INTF                     0x2000000f
+_INTFbits                 0x2000000f
+_IOSTA                    0x20800005
+_IOSTB                    0x20800006
+_IRCR                     0x21000006
+_isr                      0x3a9 (937)
+_Key_Long_Cnt             0x2000004b
+_Key_Press_Cnt            0x2000004a
+_Key_Quick_Press_LED_Cnt  0x2000004c
+_Key_Scan                 0x249 (585)
+_LED                      0x306 (774)
+_Low_Voltage_Cnt          0x2000005c
+_Low_Voltage_Debounce_Cnt 0x2000005b
+_Low_Voltage_LED_Flash_Cnt 0x20000053
+_Low_Voltage_LED_Flash_Times_Cnt 0x20000054
+_Low_Voltage_Process      0x3d2 (978)
+_M1_1_Cycle_Set           no used
+_M1_1_Duty_Set            no used
+_M1_Cnt                   0x20000035
+_M1_Cycle                 0x2000002d
+_M1_Cycle_Set             0x20000029
+_M1_Duty                  0x2000002f
+_M1_Duty_Set              0x2000002b
+_M1_Freq_Change           0x2000004e
+_M1_Freq_Change_Set       no used
+_M1_Reset                 0x453 (1107)
+_M1_Work                  0x9
+_M1_Work_Processs         0x296 (662)
+_main                     0x33b (827)
+_Motor_Freq_Change        0x2000004d
+_Motor_Freq_Cnt0          0x2000004f
+_Motor_Freq_Cnt1          0x20000031
+_Motor_Freq_Cnt2          0x20000033
+_Motor_PWM_Loop1          0x436 (1078)
+_Motor_PWM_Loop2          0x424 (1060)
+_multi_16b                no used
+_multi_8b                 no used
+_OSCCR                    0x2100000f
+_P2CR1                    0x2100000a
+_P4CR1                    0x21000016
+_P5CR1                    0x2100001b
+_PCHBUF                   0x2000000a
+_PCL                      0x20000002
+_PCON                     0x20000008
+_PCON1                    0x2080000f
+_PCONbits                 0x20000008
+_PORTA                    0x20000005
+_PORTAbits                0x20000005
+_PORTB                    0x20000006
+_PORTBbits                0x20000006
+_Power_Off                0x448 (1096)
+_PS0CV                    0x2080000a
+_PS1CV                    0x21000004
+_PS3CV                    0x21000014
+_PWM1DUTY                 0x21000003
+_PWM2DUTY                 0x2100000c
+_PWM3DUTY                 0x21000013
+_PWM4DUTY                 0x21000018
+_PWM5DUTY                 0x2100001d
+_PWM5RH                   0x2100001f
+_read_14bit_rom           no used
+_RFC                      0x2000001b
+_RFCbits                  0x2000001b
+_Sleep_Cnt                0x20000027
+_StandBy_Check            no used
+_StandBy_Exit             no used
+_StandBy_Mode             0x469 (1129)
+_StandBy_ShutDown_Cnt     0x2000003f
+_STATUS                   0x20000003
+_Sys_Flag0                0x20000041
+_Sys_Flag1                0x20000042
+_Sys_Flag2                0x20000043
+_Sys_Flag3                0x20000044
+_Sys_Flag4                0x20000045
+_T_100MS                  0x20000048
+_T_100US                  no used
+_T_10MS                   0x20000047
+_T_1MIN                   no used
+_T_1MS                    no used
+_T_1S                     0x20000049
+_T0MD                     0x20800000
+_T1CR1                    0x21000001
+_T1CR2                    0x21000002
+_T3CR1                    0x21000011
+_T3CR2                    0x21000012
+_TBHD                     0x21000008
+_TBHP                     0x21000007
+_TeleCon_Check_Code       0x20000059
+_TeleCon_Data_Code        0x2000005a
+_TeleCon_Data_Recv        0xfb (251)
+_TeleCon_LED_Flash_Cnt    0x2000003d
+_TeleCon_Signal_Cnt       0x20000039
+_TeleCon_Signal_Process   0x18f (399)
+_TeleCon_Signal_Recv_Time_Cnt 0x2000003b
+_TeleCon_Signal_Save      0x20000055
+_TeleCon_Signal_Sbit_Cnt  0x20000056
+_TeleCon_Strength_change_Code no used
+_Time                     0x20000046
+_TM34RH                   0x2000001c
+_TMR0                     0x20000001
+_TMR1                     0x21000000
+_TMR3                     0x21000010
+_TMRH                     0x20000019
+PSAVE                     0x2000007f
+SSAVE                     0x2000007e
+STK00                     0x2000007b
+STK01                     0x2000007c
+STK02                     no used
+STK03                     no used
+STK04                     no used
+STK05                     no used
+STK06                     no used
+STK07                     no used
+STK08                     no used
+STK09                     no used
+STK10                     no used
+STK11                     no used
+STK12                     no used
+WSAVE                     0x2000007d
+
