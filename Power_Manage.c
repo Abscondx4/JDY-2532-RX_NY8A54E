@@ -52,7 +52,6 @@ void Battery_Voltage_Detect()
         PCON1 = C_LVD_4P05V; // 配置比较器
         Battery_Full_Process();
     }
-    
 }
 
 void Battery_Full_Process()
@@ -94,7 +93,6 @@ void Low_Voltage_Process()
                     Low_Voltage_LED_Flash_Times_Cnt = 0;
                     Power_Off();
                 }
-                
             }
         }
     }

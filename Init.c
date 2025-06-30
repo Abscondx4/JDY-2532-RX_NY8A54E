@@ -95,5 +95,4 @@ void Init()
     //T3IE = 1;
     INTF   = 0;
     ENI();
-
 }

@@ -76,8 +76,7 @@ void TeleCon_Data_Recv()
                 }
                 TeleCon_Signal_Sbit_Cnt = 0; //清空__sbit计数器
                 TeleCon_Signal_Cnt      = 0;
-            }
-            
+            }  
         }
     }
 }
