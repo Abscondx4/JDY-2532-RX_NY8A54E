@@ -208,7 +208,7 @@ _Clock:
 	BANKSEL	_Time
 	SUBAR	_Time,W
 	BTRSS	STATUS,0
-	MGOTO	_02030_DS_
+	MGOTO	_02032_DS_
 	.line	7, "Clock.c"; 	Time = 0; // 清空计时器
 	CLRR	_Time
 	.line	8, "Clock.c"; 	T_10MS++; // 10ms计时器+1
@@ -245,7 +245,7 @@ _02007_DS_:
 	BANKSEL	_T_10MS
 	SUBAR	_T_10MS,W
 	BTRSS	STATUS,0
-	MGOTO	_02030_DS_
+	MGOTO	_02032_DS_
 	.line	25, "Clock.c"; 	T_10MS = 0; // 清空10ms计时器
 	CLRR	_T_10MS
 	.line	26, "Clock.c"; 	T_100MS++;  // 100ms计时器
@@ -266,10 +266,10 @@ _02007_DS_:
 	ADDIA	0x80
 	ADDIA	0x80
 	BTRSS	STATUS,2
-	MGOTO	_02080_DS_
+	MGOTO	_02086_DS_
 	MOVIA	0x37
 	SUBAR	_TeleCon_Signal_Recv_Time_Cnt,W
-_02080_DS_:
+_02086_DS_:
 	BTRSS	STATUS,0
 	MGOTO	_02011_DS_
 	.line	33, "Clock.c"; 	Signal_Recv_Time_FLAG = 0;
@@ -302,77 +302,82 @@ _00002_DS_:
 	BANKSEL	_T_100MS
 	SUBAR	_T_100MS,W
 	BTRSS	STATUS,0
-	MGOTO	_02030_DS_
+	MGOTO	_02032_DS_
 	.line	51, "Clock.c"; 	Charging_LED_Flashing_Time++;
 	BANKSEL	_Charging_LED_Flashing_Time
 	INCR	_Charging_LED_Flashing_Time,F
-	.line	52, "Clock.c"; 	Low_Voltage_Cnt++;
+	.line	52, "Clock.c"; 	if (Low_Voltage_3P0_FLAG)
+	BANKSEL	_Sys_Flag4
+	BTRSS	_Sys_Flag4,3
+	MGOTO	_00003_DS_
+	.line	54, "Clock.c"; 	Low_Voltage_Cnt++;
 	BANKSEL	_Low_Voltage_Cnt
 	INCR	_Low_Voltage_Cnt,F
-	.line	53, "Clock.c"; 	T_100MS = 0; // 清空100ms计时器
+_00003_DS_:
+	.line	56, "Clock.c"; 	T_100MS = 0; // 清空100ms计时器
 	BANKSEL	_T_100MS
 	CLRR	_T_100MS
-	.line	54, "Clock.c"; 	T_1S++;      // 1s计时器+1
+	.line	57, "Clock.c"; 	T_1S++;      // 1s计时器+1
 	BANKSEL	_T_1S
 	INCR	_T_1S,F
 ;;unsigned compare: left < lit(0xA=10), size=1
-	.line	57, "Clock.c"; 	if (T_1S >= Time_1S) // 1s计时器溢出
+	.line	60, "Clock.c"; 	if (T_1S >= Time_1S) // 1s计时器溢出
 	MOVIA	0x0a
 	SUBAR	_T_1S,W
 	BTRSS	STATUS,0
-	MGOTO	_02030_DS_
-	.line	59, "Clock.c"; 	T_1S = 0; // 清空1s计时器
+	MGOTO	_02032_DS_
+	.line	62, "Clock.c"; 	T_1S = 0; // 清空1s计时器
 	CLRR	_T_1S
-	.line	61, "Clock.c"; 	Full_Cnt++;
+	.line	64, "Clock.c"; 	Full_Cnt++;
 	BANKSEL	_Full_Cnt
 	INCR	_Full_Cnt,F
-	.line	62, "Clock.c"; 	if (Charging_FLAG)
+	.line	65, "Clock.c"; 	if (Charging_FLAG)
 	BANKSEL	_Sys_Flag1
 	BTRSS	_Sys_Flag1,6
-	MGOTO	_02017_DS_
-	.line	64, "Clock.c"; 	Charge_3H_Time_Cnt++;
+	MGOTO	_02019_DS_
+	.line	67, "Clock.c"; 	Charge_3H_Time_Cnt++;
 	BANKSEL	_Charge_3H_Time_Cnt
 	INCR	_Charge_3H_Time_Cnt,F
 	BTRSC	STATUS,2
 	INCR	(_Charge_3H_Time_Cnt + 1),F
-_02017_DS_:
-	.line	66, "Clock.c"; 	if (StandBy_FLAG)
+_02019_DS_:
+	.line	69, "Clock.c"; 	if (StandBy_FLAG)
 	BANKSEL	_Sys_Flag2
 	BTRSS	_Sys_Flag2,5
-	MGOTO	_02030_DS_
-	.line	68, "Clock.c"; 	StandBy_ShutDown_Cnt++;
+	MGOTO	_02032_DS_
+	.line	71, "Clock.c"; 	StandBy_ShutDown_Cnt++;
 	BANKSEL	_StandBy_ShutDown_Cnt
 	INCR	_StandBy_ShutDown_Cnt,F
 	BTRSC	STATUS,2
 	INCR	(_StandBy_ShutDown_Cnt + 1),F
 ;;signed compare: left < lit(0x71C=1820), size=2, mask=ffff
-	.line	69, "Clock.c"; 	if (StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
+	.line	72, "Clock.c"; 	if (StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
 	MOVR	(_StandBy_ShutDown_Cnt + 1),W
 	ADDIA	0x80
 	ADDIA	0x79
 	BTRSS	STATUS,2
-	MGOTO	_02081_DS_
+	MGOTO	_02087_DS_
 	MOVIA	0x1c
 	SUBAR	_StandBy_ShutDown_Cnt,W
-_02081_DS_:
+_02087_DS_:
 	BTRSS	STATUS,0
-	MGOTO	_02030_DS_
-	.line	71, "Clock.c"; 	StandBy_FLAG         = 0;
+	MGOTO	_02032_DS_
+	.line	74, "Clock.c"; 	StandBy_FLAG         = 0;
 	BANKSEL	_Sys_Flag2
 	BCR	_Sys_Flag2,5
-	.line	72, "Clock.c"; 	StandBy_ShutDown_Cnt = 0;
+	.line	75, "Clock.c"; 	StandBy_ShutDown_Cnt = 0;
 	BANKSEL	_StandBy_ShutDown_Cnt
 	CLRR	_StandBy_ShutDown_Cnt
 	CLRR	(_StandBy_ShutDown_Cnt + 1)
-	.line	73, "Clock.c"; 	Power_Off();
+	.line	76, "Clock.c"; 	Power_Off();
 	MCALL	_Power_Off
-_02030_DS_:
-	.line	80, "Clock.c"; 	}
+_02032_DS_:
+	.line	83, "Clock.c"; 	}
 	RETURN	
 ; exit point of _Clock
 
 
 ;	code size estimation:
-;	   85+   30 =   115 instructions (  290 byte)
+;	   87+   31 =   118 instructions (  298 byte)
 
 	end

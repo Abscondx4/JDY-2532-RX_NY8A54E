@@ -49,7 +49,10 @@ void Clock()
             if (T_100MS >= Time_100MS) // 100ms计时器溢出
             {
                 Charging_LED_Flashing_Time++;
-                Low_Voltage_Cnt++;
+                if (Low_Voltage_3P0_FLAG)
+                {
+                    Low_Voltage_Cnt++;
+                }
                 T_100MS = 0; // 清空100ms计时器
                 T_1S++;      // 1s计时器+1
 

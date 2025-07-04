@@ -2,15 +2,18 @@
 
 void Power_Off()
 {
-    Power_Onoff_FLAG  = 0;
-    Sleep_Cnt         = 0;
-    M1_Work_FLAG      = 0;
-    M1_PWM_Write_FLAG = 0;
-    M1_Freq_Change    = 0;
+    Power_Onoff_FLAG          = 0;
+    Sleep_Cnt                 = 0;
+    M1_Work_FLAG              = 0;
+    M1_PWM_Write_FLAG         = 0;
+    M1_Freq_Change            = 0;
     TeleCon_M1_Work_Once_FLAG = 0;
+    Low_Voltage_3P0_FLAG      = 0;
+    Low_Voltage_Cnt           = 0;
 
     RF_Control_Off;
     M1_Off;
+    LED_Off;
     LED_Off;
 }
 

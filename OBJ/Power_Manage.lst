@@ -1,7 +1,7 @@
 
                     Nyquest Technology Co., Ltd.
 
-NYASM 2.50
+NYASM 2.61
 
     ADDR  OPCODE/VALUE              LINE   TAG  SOURCE                   STATEMENT    
 
@@ -256,7 +256,7 @@ NYASM 2.50
                                     1-  210     .segment "code"; module=Power_Manage, function=_Low_Voltage_Process
      0000                           1-  212     _Low_Voltage_Process:
                                     1-  213     ; 2 exit points
-                                    1-  214     	.line	71, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
+                                    1-  214     	.line	74, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
      0000 001r                      1-  215     	IOSTR	_PCON1
                                     1-  216     	BANKSEL	r0x1009
      0001 rrrr                      3-  109 m1      .banksel ram_address
@@ -265,7 +265,7 @@ NYASM 2.50
                                     1-  219     	MGOTO	_02055_DS_
      0004 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  220     ;;unsigned compare: left < lit(0x28=40), size=1
-                                    1-  221     	.line	73, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
+                                    1-  221     	.line	76, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
      0005 2128                      1-  222     	MOVIA	0x28
                                     1-  223     	BANKSEL	_Low_Voltage_Debounce_Cnt
      0006 rrrr                      3-  109 m1      .banksel ram_address
@@ -273,38 +273,38 @@ NYASM 2.50
      0008 0803                      1-  225     	BTRSS	STATUS,0
                                     1-  226     	MGOTO	_02056_DS_
      0009 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  227     	.line	75, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
+                                    1-  227     	.line	78, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
                                     1-  228     	BANKSEL	_Sys_Flag4
      000A rrrr                      3-  109 m1      .banksel ram_address
      000B 19rr                      1-  229     	BSR	_Sys_Flag4,3
                                     1-  230     	MGOTO	_02056_DS_
      000C 3rrr                      3-   62 m1      LGOTO rom_address
      000D                           1-  231     _02055_DS_:
-                                    1-  232     	.line	80, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
+                                    1-  232     	.line	83, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
                                     1-  233     	BANKSEL	_Low_Voltage_Debounce_Cnt
      000D rrrr                      3-  109 m1      .banksel ram_address
      000E 02rr                      1-  234     	CLRR	_Low_Voltage_Debounce_Cnt
      000F                           1-  235     _02056_DS_:
-                                    1-  236     	.line	82, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
+                                    1-  236     	.line	85, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
                                     1-  237     	BANKSEL	_Sys_Flag4
      000F rrrr                      3-  109 m1      .banksel ram_address
      0010 09rr                      1-  238     	BTRSS	_Sys_Flag4,3
                                     1-  239     	MGOTO	_02064_DS_
      0011 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  240     ;;unsigned compare: left < lit(0xA=10), size=1
-                                    1-  241     	.line	84, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
-     0012 210A                      1-  242     	MOVIA	0x0a
+                                    1-  240     ;;unsigned compare: left < lit(0x1E=30), size=1
+                                    1-  241     	.line	87, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
+     0012 211E                      1-  242     	MOVIA	0x1e
                                     1-  243     	BANKSEL	_Low_Voltage_Cnt
      0013 rrrr                      3-  109 m1      .banksel ram_address
      0014 04rr                      1-  244     	SUBAR	_Low_Voltage_Cnt,W
      0015 0803                      1-  245     	BTRSS	STATUS,0
                                     1-  246     	MGOTO	_02066_DS_
      0016 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  247     	.line	86, "Power_Manage.c"; 	StandBy_Mode();
+                                    1-  247     	.line	89, "Power_Manage.c"; 	StandBy_Mode();
                                     1-  248     	MCALL	_StandBy_Mode
      0017 2rrr                      3-   65 m1      LCALL rom_address
                                     1-  249     ;;unsigned compare: left < lit(0x19=25), size=1
-                                    1-  250     	.line	87, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
+                                    1-  250     	.line	90, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
      0018 2119                      1-  251     	MOVIA	0x19
                                     1-  252     	BANKSEL	_Low_Voltage_LED_Flash_Cnt
      0019 rrrr                      3-  109 m1      .banksel ram_address
@@ -312,15 +312,15 @@ NYASM 2.50
      001B 0803                      1-  254     	BTRSS	STATUS,0
                                     1-  255     	MGOTO	_02066_DS_
      001C 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  256     	.line	89, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
+                                    1-  256     	.line	92, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
      001D 02rr                      1-  257     	CLRR	_Low_Voltage_LED_Flash_Cnt
-                                    1-  258     	.line	90, "Power_Manage.c"; 	LED1 =~ LED1;
+                                    1-  258     	.line	93, "Power_Manage.c"; 	LED1 =~ LED1;
                                     1-  259     	BANKSEL	_PORTA
      001E rrrr                      3-  109 m1      .banksel ram_address
      001F 01rr                      1-  260     	MOVR	_PORTA,W
      0020 2404                      1-  261     	XORIA	0x04
      0021 00rr                      1-  262     	MOVAR	_PORTA
-                                    1-  263     	.line	91, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
+                                    1-  263     	.line	94, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
                                     1-  264     	BANKSEL	_Low_Voltage_LED_Flash_Times_Cnt
      0022 rrrr                      3-  109 m1      .banksel ram_address
      0023 05rr                      1-  265     	INCR	_Low_Voltage_LED_Flash_Times_Cnt,F
@@ -331,20 +331,20 @@ NYASM 2.50
      0026 0803                      1-  270     	BTRSS	STATUS,0
                                     1-  271     	MGOTO	_02066_DS_
      0027 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  272     	.line	93, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
+                                    1-  272     	.line	96, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
      0028 02rr                      1-  273     	CLRR	_Low_Voltage_LED_Flash_Times_Cnt
-                                    1-  274     	.line	94, "Power_Manage.c"; 	Power_Off();
+                                    1-  274     	.line	97, "Power_Manage.c"; 	Power_Off();
                                     1-  275     	MCALL	_Power_Off
      0029 2rrr                      3-   65 m1      LCALL rom_address
                                     1-  276     	MGOTO	_02066_DS_
      002A 3rrr                      3-   62 m1      LGOTO rom_address
      002B                           1-  277     _02064_DS_:
-                                    1-  278     	.line	101, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
+                                    1-  278     	.line	104, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
                                     1-  279     	BANKSEL	_Low_Voltage_Cnt
      002B rrrr                      3-  109 m1      .banksel ram_address
      002C 02rr                      1-  280     	CLRR	_Low_Voltage_Cnt
      002D                           1-  281     _02066_DS_:
-                                    1-  282     	.line	103, "Power_Manage.c"; 	}
+                                    1-  282     	.line	106, "Power_Manage.c"; 	}
                                     1-  283     	RETURN	
      002D 0010                      3-   39 m1      ret
                                     1-  284     ; exit point of _Low_Voltage_Process
@@ -358,7 +358,7 @@ NYASM 2.50
                                     1-  293     .segment "code"; module=Power_Manage, function=_Battery_Full_Process
      0000                           1-  295     _Battery_Full_Process:
                                     1-  296     ; 2 exit points
-                                    1-  297     	.line	59, "Power_Manage.c"; 	if ((PCON1 & 0x40))
+                                    1-  297     	.line	62, "Power_Manage.c"; 	if ((PCON1 & 0x40))
      0000 001r                      1-  298     	IOSTR	_PCON1
                                     1-  299     	BANKSEL	r0x100A
      0001 rrrr                      3-  109 m1      .banksel ram_address
@@ -366,19 +366,19 @@ NYASM 2.50
      0003 0Brr                      1-  301     	BTRSS	r0x100A,6
                                     1-  302     	MGOTO	_02045_DS_
      0004 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  303     	.line	61, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
+                                    1-  303     	.line	64, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
                                     1-  304     	BANKSEL	_Sys_Flag4
      0005 rrrr                      3-  109 m1      .banksel ram_address
      0006 1Arr                      1-  305     	BSR	_Sys_Flag4,5
                                     1-  306     	MGOTO	_02047_DS_
      0007 3rrr                      3-   62 m1      LGOTO rom_address
      0008                           1-  307     _02045_DS_:
-                                    1-  308     	.line	65, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
+                                    1-  308     	.line	68, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
                                     1-  309     	BANKSEL	_Sys_Flag4
      0008 rrrr                      3-  109 m1      .banksel ram_address
      0009 1Err                      1-  310     	BCR	_Sys_Flag4,5
      000A                           1-  311     _02047_DS_:
-                                    1-  312     	.line	67, "Power_Manage.c"; 	}
+                                    1-  312     	.line	70, "Power_Manage.c"; 	}
                                     1-  313     	RETURN	
      000A 0010                      3-   39 m1      ret
                                     1-  314     ; exit point of _Battery_Full_Process
@@ -395,33 +395,33 @@ NYASM 2.50
                                     1-  326     .segment "code"; module=Power_Manage, function=_Battery_Voltage_Detect
      0000                           1-  328     _Battery_Voltage_Detect:
                                     1-  329     ; 2 exit points
-                                    1-  330     	.line	44, "Power_Manage.c"; 	if (Power_Onoff_FLAG)
+                                    1-  330     	.line	47, "Power_Manage.c"; 	if (Power_Onoff_FLAG)
                                     1-  331     	BANKSEL	_Sys_Flag0
      0000 rrrr                      3-  109 m1      .banksel ram_address
      0001 08rr                      1-  332     	BTRSS	_Sys_Flag0,0
                                     1-  333     	MGOTO	_02036_DS_
      0002 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  334     	.line	46, "Power_Manage.c"; 	PCON1 = C_LVD_3P0V; // 配置比较器
+                                    1-  334     	.line	49, "Power_Manage.c"; 	PCON1 = C_LVD_3P0V; // 配置比较器
      0003 211C                      1-  335     	MOVIA	0x1c
      0004 000r                      1-  336     	IOST	_PCON1
-                                    1-  337     	.line	47, "Power_Manage.c"; 	Low_Voltage_Process();
+                                    1-  337     	.line	50, "Power_Manage.c"; 	Low_Voltage_Process();
                                     1-  338     	MCALL	_Low_Voltage_Process
      0005 2rrr                      3-   65 m1      LCALL rom_address
      0006                           1-  339     _02036_DS_:
-                                    1-  340     	.line	50, "Power_Manage.c"; 	if (Charging_FLAG)
+                                    1-  340     	.line	53, "Power_Manage.c"; 	if (Charging_FLAG)
                                     1-  341     	BANKSEL	_Sys_Flag1
      0006 rrrr                      3-  109 m1      .banksel ram_address
      0007 0Brr                      1-  342     	BTRSS	_Sys_Flag1,6
                                     1-  343     	MGOTO	_02039_DS_
      0008 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  344     	.line	52, "Power_Manage.c"; 	PCON1 = C_LVD_4P05V; // 配置比较器
+                                    1-  344     	.line	55, "Power_Manage.c"; 	PCON1 = C_LVD_4P05V; // 配置比较器
      0009 2138                      1-  345     	MOVIA	0x38
      000A 000r                      1-  346     	IOST	_PCON1
-                                    1-  347     	.line	53, "Power_Manage.c"; 	Battery_Full_Process();
+                                    1-  347     	.line	56, "Power_Manage.c"; 	Battery_Full_Process();
                                     1-  348     	MCALL	_Battery_Full_Process
      000B 2rrr                      3-   65 m1      LCALL rom_address
      000C                           1-  349     _02039_DS_:
-                                    1-  350     	.line	55, "Power_Manage.c"; 	}
+                                    1-  350     	.line	58, "Power_Manage.c"; 	}
                                     1-  351     	RETURN	
      000C 0010                      3-   39 m1      ret
                                     1-  352     ; exit point of _Battery_Voltage_Detect
@@ -433,7 +433,7 @@ NYASM 2.50
                                     1-  359     .segment "code"; module=Power_Manage, function=_StandBy_Exit
      0000                           1-  361     _StandBy_Exit:
                                     1-  362     ; 2 exit points
-                                    1-  363     	.line	40, "Power_Manage.c"; 	}
+                                    1-  363     	.line	43, "Power_Manage.c"; 	}
                                     1-  364     	RETURN	
      0000 0010                      3-   39 m1      ret
                                     1-  365     ; exit point of _StandBy_Exit
@@ -448,7 +448,7 @@ NYASM 2.50
                                     1-  375     .segment "code"; module=Power_Manage, function=_StandBy_Check
      0000                           1-  377     _StandBy_Check:
                                     1-  378     ; 2 exit points
-                                    1-  379     	.line	29, "Power_Manage.c"; 	if (StandBy_FLAG && StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
+                                    1-  379     	.line	32, "Power_Manage.c"; 	if (StandBy_FLAG && StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
                                     1-  380     	BANKSEL	_Sys_Flag2
      0000 rrrr                      3-  109 m1      .banksel ram_address
      0001 0Arr                      1-  381     	BTRSS	_Sys_Flag2,5
@@ -469,20 +469,20 @@ NYASM 2.50
      000B 0803                      1-  393     	BTRSS	STATUS,0
                                     1-  394     	MGOTO	_02016_DS_
      000C 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  395     	.line	31, "Power_Manage.c"; 	StandBy_FLAG         = 0;
+                                    1-  395     	.line	34, "Power_Manage.c"; 	StandBy_FLAG         = 0;
                                     1-  396     	BANKSEL	_Sys_Flag2
      000D rrrr                      3-  109 m1      .banksel ram_address
      000E 1Err                      1-  397     	BCR	_Sys_Flag2,5
-                                    1-  398     	.line	32, "Power_Manage.c"; 	StandBy_ShutDown_Cnt = 0;
+                                    1-  398     	.line	35, "Power_Manage.c"; 	StandBy_ShutDown_Cnt = 0;
                                     1-  399     	BANKSEL	_StandBy_ShutDown_Cnt
      000F rrrr                      3-  109 m1      .banksel ram_address
      0010 02rr                      1-  400     	CLRR	_StandBy_ShutDown_Cnt
      0011 02rr                      1-  401     	CLRR	(_StandBy_ShutDown_Cnt + 1)
-                                    1-  402     	.line	33, "Power_Manage.c"; 	Power_Off();
+                                    1-  402     	.line	36, "Power_Manage.c"; 	Power_Off();
                                     1-  403     	MCALL	_Power_Off
      0012 2rrr                      3-   65 m1      LCALL rom_address
      0013                           1-  404     _02016_DS_:
-                                    1-  405     	.line	35, "Power_Manage.c"; 	}
+                                    1-  405     	.line	38, "Power_Manage.c"; 	}
                                     1-  406     	RETURN	
      0013 0010                      3-   39 m1      ret
                                     1-  407     ; exit point of _StandBy_Check
@@ -494,29 +494,29 @@ NYASM 2.50
                                     1-  414     .segment "code"; module=Power_Manage, function=_StandBy_Mode
      0000                           1-  416     _StandBy_Mode:
                                     1-  417     ; 2 exit points
-                                    1-  418     	.line	19, "Power_Manage.c"; 	StandBy_FLAG      = 1;
+                                    1-  418     	.line	22, "Power_Manage.c"; 	StandBy_FLAG      = 1;
                                     1-  419     	BANKSEL	_Sys_Flag2
      0000 rrrr                      3-  109 m1      .banksel ram_address
      0001 1Arr                      1-  420     	BSR	_Sys_Flag2,5
-                                    1-  421     	.line	20, "Power_Manage.c"; 	M1_Work_FLAG      = 0;
+                                    1-  421     	.line	23, "Power_Manage.c"; 	M1_Work_FLAG      = 0;
                                     1-  422     	BANKSEL	_Sys_Flag1
      0002 rrrr                      3-  109 m1      .banksel ram_address
      0003 1Crr                      1-  423     	BCR	_Sys_Flag1,1
-                                    1-  424     	.line	21, "Power_Manage.c"; 	M1_PWM_Write_FLAG = 0;
+                                    1-  424     	.line	24, "Power_Manage.c"; 	M1_PWM_Write_FLAG = 0;
      0004 1Drr                      1-  425     	BCR	_Sys_Flag1,2
-                                    1-  426     	.line	22, "Power_Manage.c"; 	M1_Freq_Change    = 0;
+                                    1-  426     	.line	25, "Power_Manage.c"; 	M1_Freq_Change    = 0;
                                     1-  427     	BANKSEL	_M1_Freq_Change
      0005 rrrr                      3-  109 m1      .banksel ram_address
      0006 02rr                      1-  428     	CLRR	_M1_Freq_Change
-                                    1-  429     	.line	23, "Power_Manage.c"; 	M1_Off;
+                                    1-  429     	.line	26, "Power_Manage.c"; 	M1_Off;
                                     1-  430     	BANKSEL	_PORTA
      0007 rrrr                      3-  109 m1      .banksel ram_address
      0008 1Err                      1-  431     	BCR	_PORTA,4
-                                    1-  432     	.line	24, "Power_Manage.c"; 	TeleCon_M1_Work_Once_FLAG = 0;
+                                    1-  432     	.line	27, "Power_Manage.c"; 	TeleCon_M1_Work_Once_FLAG = 0;
                                     1-  433     	BANKSEL	_Sys_Flag4
      0009 rrrr                      3-  109 m1      .banksel ram_address
      000A 1Err                      1-  434     	BCR	_Sys_Flag4,5
-                                    1-  435     	.line	25, "Power_Manage.c"; 	}
+                                    1-  435     	.line	28, "Power_Manage.c"; 	}
                                     1-  436     	RETURN	
      000B 0010                      3-   39 m1      ret
                                     1-  437     ; exit point of _StandBy_Mode
@@ -528,22 +528,22 @@ NYASM 2.50
                                     1-  444     .segment "code"; module=Power_Manage, function=_Power_Off
      0000                           1-  446     _Power_Off:
                                     1-  447     ; 2 exit points
-                                    1-  448     	.line	5, "Power_Manage.c"; 	Power_Onoff_FLAG  = 0;
+                                    1-  448     	.line	5, "Power_Manage.c"; 	Power_Onoff_FLAG          = 0;
                                     1-  449     	BANKSEL	_Sys_Flag0
      0000 rrrr                      3-  109 m1      .banksel ram_address
      0001 1Crr                      1-  450     	BCR	_Sys_Flag0,0
-                                    1-  451     	.line	6, "Power_Manage.c"; 	Sleep_Cnt         = 0;
+                                    1-  451     	.line	6, "Power_Manage.c"; 	Sleep_Cnt                 = 0;
                                     1-  452     	BANKSEL	_Sleep_Cnt
      0002 rrrr                      3-  109 m1      .banksel ram_address
      0003 02rr                      1-  453     	CLRR	_Sleep_Cnt
      0004 02rr                      1-  454     	CLRR	(_Sleep_Cnt + 1)
-                                    1-  455     	.line	7, "Power_Manage.c"; 	M1_Work_FLAG      = 0;
+                                    1-  455     	.line	7, "Power_Manage.c"; 	M1_Work_FLAG              = 0;
                                     1-  456     	BANKSEL	_Sys_Flag1
      0005 rrrr                      3-  109 m1      .banksel ram_address
      0006 1Crr                      1-  457     	BCR	_Sys_Flag1,1
-                                    1-  458     	.line	8, "Power_Manage.c"; 	M1_PWM_Write_FLAG = 0;
+                                    1-  458     	.line	8, "Power_Manage.c"; 	M1_PWM_Write_FLAG         = 0;
      0007 1Drr                      1-  459     	BCR	_Sys_Flag1,2
-                                    1-  460     	.line	9, "Power_Manage.c"; 	M1_Freq_Change    = 0;
+                                    1-  460     	.line	9, "Power_Manage.c"; 	M1_Freq_Change            = 0;
                                     1-  461     	BANKSEL	_M1_Freq_Change
      0008 rrrr                      3-  109 m1      .banksel ram_address
      0009 02rr                      1-  462     	CLRR	_M1_Freq_Change
@@ -551,21 +551,29 @@ NYASM 2.50
                                     1-  464     	BANKSEL	_Sys_Flag4
      000A rrrr                      3-  109 m1      .banksel ram_address
      000B 1Err                      1-  465     	BCR	_Sys_Flag4,5
-                                    1-  466     	.line	12, "Power_Manage.c"; 	RF_Control_Off;
-                                    1-  467     	BANKSEL	_PORTA
-     000C rrrr                      3-  109 m1      .banksel ram_address
-     000D 1Brr                      1-  468     	BSR	_PORTA,7
-                                    1-  469     	.line	13, "Power_Manage.c"; 	M1_Off;
-     000E 1Err                      1-  470     	BCR	_PORTA,4
-                                    1-  471     	.line	14, "Power_Manage.c"; 	LED_Off;
-     000F 19rr                      1-  472     	BSR	_PORTA,2
-                                    1-  473     	.line	15, "Power_Manage.c"; 	}
-                                    1-  474     	RETURN	
-     0010 0010                      3-   39 m1      ret
-                                    1-  475     ; exit point of _Power_Off
-                                    1-  478     ;	code size estimation:
-                                    1-  479     ;	   90+   30 =   120 instructions (  300 byte)
-                                    1-  481     	end
+                                    1-  466     	.line	11, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG      = 0;
+     000C 1Drr                      1-  467     	BCR	_Sys_Flag4,3
+                                    1-  468     	.line	12, "Power_Manage.c"; 	Low_Voltage_Cnt           = 0;
+                                    1-  469     	BANKSEL	_Low_Voltage_Cnt
+     000D rrrr                      3-  109 m1      .banksel ram_address
+     000E 02rr                      1-  470     	CLRR	_Low_Voltage_Cnt
+                                    1-  471     	.line	14, "Power_Manage.c"; 	RF_Control_Off;
+                                    1-  472     	BANKSEL	_PORTA
+     000F rrrr                      3-  109 m1      .banksel ram_address
+     0010 1Brr                      1-  473     	BSR	_PORTA,7
+                                    1-  474     	.line	15, "Power_Manage.c"; 	M1_Off;
+     0011 1Err                      1-  475     	BCR	_PORTA,4
+                                    1-  476     	.line	16, "Power_Manage.c"; 	LED_Off;
+     0012 19rr                      1-  477     	BSR	_PORTA,2
+                                    1-  478     	.line	17, "Power_Manage.c"; 	LED_Off;
+     0013 19rr                      1-  479     	BSR	_PORTA,2
+                                    1-  480     	.line	18, "Power_Manage.c"; 	}
+                                    1-  481     	RETURN	
+     0014 0010                      3-   39 m1      ret
+                                    1-  482     ; exit point of _Power_Off
+                                    1-  485     ;	code size estimation:
+                                    1-  486     ;	   93+   31 =   124 instructions (  310 byte)
+                                    1-  488     	end
 
 SYMBOL TABLE            TYPE     VALUE
 __pin_count__           Constant 0000000E

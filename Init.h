@@ -34,7 +34,7 @@
 #define Charge_LED_Flashing_Time 5     // LED充电闪烁频率 500ms亮500ms灭，频率1Hz
 #define Full_Debounce_Time       5     // 充满检测消抖时间 5s
 
-#define Low_Voltage_Time            10 // 低电压检测时间 1s
+#define Low_Voltage_Time            30 // 低电压检测时间 3s
 #define Low_Voltage_Debounce_Time   40 // 低电压检测消抖时间 40ms
 #define Low_Voltage_LED_Notice_Freq 25 // 低电压LED提示闪烁频率 2Hz
 

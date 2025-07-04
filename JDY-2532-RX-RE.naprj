@@ -6,7 +6,7 @@
     <Bank0Only>False</Bank0Only>
     <BankselOptLevel>2</BankselOptLevel>
     <BuildCCompilerVersion>NYC_NY8 1.90 [Build: 250527.00]</BuildCCompilerVersion>
-    <BuildNYASMVersion>NYASM 2.50 [Build: 250227.00]</BuildNYASMVersion>
+    <BuildNYASMVersion>NYASM 2.61 [Build: 250703.00]</BuildNYASMVersion>
     <BuildNYIDEVersion>NYIDE 5.50 [Build: 250227.00]</BuildNYIDEVersion>
     <CCompilerInstallDir>C:\Nyquest\NYC_NY8</CCompilerInstallDir>
     <ChipId>NY8A054E</ChipId>
@@ -16,7 +16,7 @@
     <GenListFile>True</GenListFile>
     <GenMapFile>True</GenMapFile>
     <InitializeBss>False</InitializeBss>
-    <NYASMInstallDir>D:\Nyquest\NYASM\</NYASMInstallDir>
+    <NYASMInstallDir>C:\Nyquest\NYASM\</NYASMInstallDir>
     <NYIDEInstallDir>D:\Nyquest\NYIDE\</NYIDEInstallDir>
     <OutputType>bin</OutputType>
     <Platform>CNy8</Platform>

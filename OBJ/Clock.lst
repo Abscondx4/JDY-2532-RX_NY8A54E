@@ -1,7 +1,7 @@
 
                     Nyquest Technology Co., Ltd.
 
-NYASM 2.50
+NYASM 2.61
 
     ADDR  OPCODE/VALUE              LINE   TAG  SOURCE                   STATEMENT    
 
@@ -254,7 +254,7 @@ NYASM 2.50
      0001 rrrr                      3-  109 m1      .banksel ram_address
      0002 04rr                      1-  209     	SUBAR	_Time,W
      0003 0803                      1-  210     	BTRSS	STATUS,0
-                                    1-  211     	MGOTO	_02030_DS_
+                                    1-  211     	MGOTO	_02032_DS_
      0004 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  212     	.line	7, "Clock.c"; 	Time = 0; // 清空计时器
      0005 02rr                      1-  213     	CLRR	_Time
@@ -302,7 +302,7 @@ NYASM 2.50
      001A rrrr                      3-  109 m1      .banksel ram_address
      001B 04rr                      1-  246     	SUBAR	_T_10MS,W
      001C 0803                      1-  247     	BTRSS	STATUS,0
-                                    1-  248     	MGOTO	_02030_DS_
+                                    1-  248     	MGOTO	_02032_DS_
      001D 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  249     	.line	25, "Clock.c"; 	T_10MS = 0; // 清空10ms计时器
      001E 02rr                      1-  250     	CLRR	_T_10MS
@@ -328,11 +328,11 @@ NYASM 2.50
      0029 2580                      1-  266     	ADDIA	0x80
      002A 2580                      1-  267     	ADDIA	0x80
      002B 0903                      1-  268     	BTRSS	STATUS,2
-                                    1-  269     	MGOTO	_02080_DS_
+                                    1-  269     	MGOTO	_02086_DS_
      002C 3rrr                      3-   62 m1      LGOTO rom_address
      002D 2137                      1-  270     	MOVIA	0x37
      002E 04rr                      1-  271     	SUBAR	_TeleCon_Signal_Recv_Time_Cnt,W
-     002F                           1-  272     _02080_DS_:
+     002F                           1-  272     _02086_DS_:
      002F 0803                      1-  273     	BTRSS	STATUS,0
                                     1-  274     	MGOTO	_02011_DS_
      0030 3rrr                      3-   62 m1      LGOTO rom_address
@@ -375,96 +375,103 @@ NYASM 2.50
      0042 rrrr                      3-  109 m1      .banksel ram_address
      0043 04rr                      1-  303     	SUBAR	_T_100MS,W
      0044 0803                      1-  304     	BTRSS	STATUS,0
-                                    1-  305     	MGOTO	_02030_DS_
+                                    1-  305     	MGOTO	_02032_DS_
      0045 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  306     	.line	51, "Clock.c"; 	Charging_LED_Flashing_Time++;
                                     1-  307     	BANKSEL	_Charging_LED_Flashing_Time
      0046 rrrr                      3-  109 m1      .banksel ram_address
      0047 05rr                      1-  308     	INCR	_Charging_LED_Flashing_Time,F
-                                    1-  309     	.line	52, "Clock.c"; 	Low_Voltage_Cnt++;
-                                    1-  310     	BANKSEL	_Low_Voltage_Cnt
+                                    1-  309     	.line	52, "Clock.c"; 	if (Low_Voltage_3P0_FLAG)
+                                    1-  310     	BANKSEL	_Sys_Flag4
      0048 rrrr                      3-  109 m1      .banksel ram_address
-     0049 05rr                      1-  311     	INCR	_Low_Voltage_Cnt,F
-                                    1-  312     	.line	53, "Clock.c"; 	T_100MS = 0; // 清空100ms计时器
-                                    1-  313     	BANKSEL	_T_100MS
-     004A rrrr                      3-  109 m1      .banksel ram_address
-     004B 02rr                      1-  314     	CLRR	_T_100MS
-                                    1-  315     	.line	54, "Clock.c"; 	T_1S++;      // 1s计时器+1
-                                    1-  316     	BANKSEL	_T_1S
-     004C rrrr                      3-  109 m1      .banksel ram_address
-     004D 05rr                      1-  317     	INCR	_T_1S,F
-                                    1-  318     ;;unsigned compare: left < lit(0xA=10), size=1
-                                    1-  319     	.line	57, "Clock.c"; 	if (T_1S >= Time_1S) // 1s计时器溢出
-     004E 210A                      1-  320     	MOVIA	0x0a
-     004F 04rr                      1-  321     	SUBAR	_T_1S,W
-     0050 0803                      1-  322     	BTRSS	STATUS,0
-                                    1-  323     	MGOTO	_02030_DS_
-     0051 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  324     	.line	59, "Clock.c"; 	T_1S = 0; // 清空1s计时器
-     0052 02rr                      1-  325     	CLRR	_T_1S
-                                    1-  326     	.line	61, "Clock.c"; 	Full_Cnt++;
-                                    1-  327     	BANKSEL	_Full_Cnt
-     0053 rrrr                      3-  109 m1      .banksel ram_address
-     0054 05rr                      1-  328     	INCR	_Full_Cnt,F
-                                    1-  329     	.line	62, "Clock.c"; 	if (Charging_FLAG)
-                                    1-  330     	BANKSEL	_Sys_Flag1
-     0055 rrrr                      3-  109 m1      .banksel ram_address
-     0056 0Brr                      1-  331     	BTRSS	_Sys_Flag1,6
-                                    1-  332     	MGOTO	_02017_DS_
-     0057 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  333     	.line	64, "Clock.c"; 	Charge_3H_Time_Cnt++;
-                                    1-  334     	BANKSEL	_Charge_3H_Time_Cnt
+     0049 09rr                      1-  311     	BTRSS	_Sys_Flag4,3
+                                    1-  312     	MGOTO	_00003_DS_
+     004A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  313     	.line	54, "Clock.c"; 	Low_Voltage_Cnt++;
+                                    1-  314     	BANKSEL	_Low_Voltage_Cnt
+     004B rrrr                      3-  109 m1      .banksel ram_address
+     004C 05rr                      1-  315     	INCR	_Low_Voltage_Cnt,F
+     004D                           1-  316     _00003_DS_:
+                                    1-  317     	.line	56, "Clock.c"; 	T_100MS = 0; // 清空100ms计时器
+                                    1-  318     	BANKSEL	_T_100MS
+     004D rrrr                      3-  109 m1      .banksel ram_address
+     004E 02rr                      1-  319     	CLRR	_T_100MS
+                                    1-  320     	.line	57, "Clock.c"; 	T_1S++;      // 1s计时器+1
+                                    1-  321     	BANKSEL	_T_1S
+     004F rrrr                      3-  109 m1      .banksel ram_address
+     0050 05rr                      1-  322     	INCR	_T_1S,F
+                                    1-  323     ;;unsigned compare: left < lit(0xA=10), size=1
+                                    1-  324     	.line	60, "Clock.c"; 	if (T_1S >= Time_1S) // 1s计时器溢出
+     0051 210A                      1-  325     	MOVIA	0x0a
+     0052 04rr                      1-  326     	SUBAR	_T_1S,W
+     0053 0803                      1-  327     	BTRSS	STATUS,0
+                                    1-  328     	MGOTO	_02032_DS_
+     0054 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  329     	.line	62, "Clock.c"; 	T_1S = 0; // 清空1s计时器
+     0055 02rr                      1-  330     	CLRR	_T_1S
+                                    1-  331     	.line	64, "Clock.c"; 	Full_Cnt++;
+                                    1-  332     	BANKSEL	_Full_Cnt
+     0056 rrrr                      3-  109 m1      .banksel ram_address
+     0057 05rr                      1-  333     	INCR	_Full_Cnt,F
+                                    1-  334     	.line	65, "Clock.c"; 	if (Charging_FLAG)
+                                    1-  335     	BANKSEL	_Sys_Flag1
      0058 rrrr                      3-  109 m1      .banksel ram_address
-     0059 05rr                      1-  335     	INCR	_Charge_3H_Time_Cnt,F
-     005A 0D03                      1-  336     	BTRSC	STATUS,2
-     005B 05rr                      1-  337     	INCR	(_Charge_3H_Time_Cnt + 1),F
-     005C                           1-  338     _02017_DS_:
-                                    1-  339     	.line	66, "Clock.c"; 	if (StandBy_FLAG)
-                                    1-  340     	BANKSEL	_Sys_Flag2
-     005C rrrr                      3-  109 m1      .banksel ram_address
-     005D 0Arr                      1-  341     	BTRSS	_Sys_Flag2,5
-                                    1-  342     	MGOTO	_02030_DS_
-     005E 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  343     	.line	68, "Clock.c"; 	StandBy_ShutDown_Cnt++;
-                                    1-  344     	BANKSEL	_StandBy_ShutDown_Cnt
+     0059 0Brr                      1-  336     	BTRSS	_Sys_Flag1,6
+                                    1-  337     	MGOTO	_02019_DS_
+     005A 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  338     	.line	67, "Clock.c"; 	Charge_3H_Time_Cnt++;
+                                    1-  339     	BANKSEL	_Charge_3H_Time_Cnt
+     005B rrrr                      3-  109 m1      .banksel ram_address
+     005C 05rr                      1-  340     	INCR	_Charge_3H_Time_Cnt,F
+     005D 0D03                      1-  341     	BTRSC	STATUS,2
+     005E 05rr                      1-  342     	INCR	(_Charge_3H_Time_Cnt + 1),F
+     005F                           1-  343     _02019_DS_:
+                                    1-  344     	.line	69, "Clock.c"; 	if (StandBy_FLAG)
+                                    1-  345     	BANKSEL	_Sys_Flag2
      005F rrrr                      3-  109 m1      .banksel ram_address
-     0060 05rr                      1-  345     	INCR	_StandBy_ShutDown_Cnt,F
-     0061 0D03                      1-  346     	BTRSC	STATUS,2
-     0062 05rr                      1-  347     	INCR	(_StandBy_ShutDown_Cnt + 1),F
-                                    1-  348     ;;signed compare: left < lit(0x71C=1820), size=2, mask=ffff
-                                    1-  349     	.line	69, "Clock.c"; 	if (StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
-     0063 01rr                      1-  350     	MOVR	(_StandBy_ShutDown_Cnt + 1),W
-     0064 2580                      1-  351     	ADDIA	0x80
-     0065 2579                      1-  352     	ADDIA	0x79
-     0066 0903                      1-  353     	BTRSS	STATUS,2
-                                    1-  354     	MGOTO	_02081_DS_
-     0067 3rrr                      3-   62 m1      LGOTO rom_address
-     0068 211C                      1-  355     	MOVIA	0x1c
-     0069 04rr                      1-  356     	SUBAR	_StandBy_ShutDown_Cnt,W
-     006A                           1-  357     _02081_DS_:
-     006A 0803                      1-  358     	BTRSS	STATUS,0
-                                    1-  359     	MGOTO	_02030_DS_
-     006B 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  360     	.line	71, "Clock.c"; 	StandBy_FLAG         = 0;
-                                    1-  361     	BANKSEL	_Sys_Flag2
-     006C rrrr                      3-  109 m1      .banksel ram_address
-     006D 1Err                      1-  362     	BCR	_Sys_Flag2,5
-                                    1-  363     	.line	72, "Clock.c"; 	StandBy_ShutDown_Cnt = 0;
-                                    1-  364     	BANKSEL	_StandBy_ShutDown_Cnt
-     006E rrrr                      3-  109 m1      .banksel ram_address
-     006F 02rr                      1-  365     	CLRR	_StandBy_ShutDown_Cnt
-     0070 02rr                      1-  366     	CLRR	(_StandBy_ShutDown_Cnt + 1)
-                                    1-  367     	.line	73, "Clock.c"; 	Power_Off();
-                                    1-  368     	MCALL	_Power_Off
-     0071 2rrr                      3-   65 m1      LCALL rom_address
-     0072                           1-  369     _02030_DS_:
-                                    1-  370     	.line	80, "Clock.c"; 	}
-                                    1-  371     	RETURN	
-     0072 0010                      3-   39 m1      ret
-                                    1-  372     ; exit point of _Clock
-                                    1-  375     ;	code size estimation:
-                                    1-  376     ;	   85+   30 =   115 instructions (  290 byte)
-                                    1-  378     	end
+     0060 0Arr                      1-  346     	BTRSS	_Sys_Flag2,5
+                                    1-  347     	MGOTO	_02032_DS_
+     0061 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  348     	.line	71, "Clock.c"; 	StandBy_ShutDown_Cnt++;
+                                    1-  349     	BANKSEL	_StandBy_ShutDown_Cnt
+     0062 rrrr                      3-  109 m1      .banksel ram_address
+     0063 05rr                      1-  350     	INCR	_StandBy_ShutDown_Cnt,F
+     0064 0D03                      1-  351     	BTRSC	STATUS,2
+     0065 05rr                      1-  352     	INCR	(_StandBy_ShutDown_Cnt + 1),F
+                                    1-  353     ;;signed compare: left < lit(0x71C=1820), size=2, mask=ffff
+                                    1-  354     	.line	72, "Clock.c"; 	if (StandBy_ShutDown_Cnt >= StandBy_ShutDown_Time)
+     0066 01rr                      1-  355     	MOVR	(_StandBy_ShutDown_Cnt + 1),W
+     0067 2580                      1-  356     	ADDIA	0x80
+     0068 2579                      1-  357     	ADDIA	0x79
+     0069 0903                      1-  358     	BTRSS	STATUS,2
+                                    1-  359     	MGOTO	_02087_DS_
+     006A 3rrr                      3-   62 m1      LGOTO rom_address
+     006B 211C                      1-  360     	MOVIA	0x1c
+     006C 04rr                      1-  361     	SUBAR	_StandBy_ShutDown_Cnt,W
+     006D                           1-  362     _02087_DS_:
+     006D 0803                      1-  363     	BTRSS	STATUS,0
+                                    1-  364     	MGOTO	_02032_DS_
+     006E 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  365     	.line	74, "Clock.c"; 	StandBy_FLAG         = 0;
+                                    1-  366     	BANKSEL	_Sys_Flag2
+     006F rrrr                      3-  109 m1      .banksel ram_address
+     0070 1Err                      1-  367     	BCR	_Sys_Flag2,5
+                                    1-  368     	.line	75, "Clock.c"; 	StandBy_ShutDown_Cnt = 0;
+                                    1-  369     	BANKSEL	_StandBy_ShutDown_Cnt
+     0071 rrrr                      3-  109 m1      .banksel ram_address
+     0072 02rr                      1-  370     	CLRR	_StandBy_ShutDown_Cnt
+     0073 02rr                      1-  371     	CLRR	(_StandBy_ShutDown_Cnt + 1)
+                                    1-  372     	.line	76, "Clock.c"; 	Power_Off();
+                                    1-  373     	MCALL	_Power_Off
+     0074 2rrr                      3-   65 m1      LCALL rom_address
+     0075                           1-  374     _02032_DS_:
+                                    1-  375     	.line	83, "Clock.c"; 	}
+                                    1-  376     	RETURN	
+     0075 0010                      3-   39 m1      ret
+                                    1-  377     ; exit point of _Clock
+                                    1-  380     ;	code size estimation:
+                                    1-  381     ;	   87+   31 =   118 instructions (  298 byte)
+                                    1-  383     	end
 
 SYMBOL TABLE            TYPE     VALUE
 __pin_count__           Constant 0000000E
