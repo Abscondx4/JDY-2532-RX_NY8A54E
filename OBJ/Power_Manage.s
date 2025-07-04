@@ -211,56 +211,56 @@ r0x1009:
 	.debuginfo subprogram _Low_Voltage_Process
 _Low_Voltage_Process:
 ; 2 exit points
-	.line	72, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
+	.line	71, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
 	IOSTR	_PCON1
 	BANKSEL	r0x1009
 	MOVAR	r0x1009
 	BTRSC	r0x1009,6
 	MGOTO	_02055_DS_
 ;;unsigned compare: left < lit(0x28=40), size=1
-	.line	74, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
+	.line	73, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
 	MOVIA	0x28
 	BANKSEL	_Low_Voltage_Debounce_Cnt
 	SUBAR	_Low_Voltage_Debounce_Cnt,W
 	BTRSS	STATUS,0
 	MGOTO	_02056_DS_
-	.line	76, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
+	.line	75, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
 	BANKSEL	_Sys_Flag4
 	BSR	_Sys_Flag4,3
 	MGOTO	_02056_DS_
 _02055_DS_:
-	.line	81, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
+	.line	80, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
 	BANKSEL	_Low_Voltage_Debounce_Cnt
 	CLRR	_Low_Voltage_Debounce_Cnt
 _02056_DS_:
-	.line	83, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
+	.line	82, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
 	BANKSEL	_Sys_Flag4
 	BTRSS	_Sys_Flag4,3
 	MGOTO	_02064_DS_
 ;;unsigned compare: left < lit(0xA=10), size=1
-	.line	85, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
+	.line	84, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
 	MOVIA	0x0a
 	BANKSEL	_Low_Voltage_Cnt
 	SUBAR	_Low_Voltage_Cnt,W
 	BTRSS	STATUS,0
 	MGOTO	_02066_DS_
-	.line	87, "Power_Manage.c"; 	StandBy_Mode();
+	.line	86, "Power_Manage.c"; 	StandBy_Mode();
 	MCALL	_StandBy_Mode
 ;;unsigned compare: left < lit(0x19=25), size=1
-	.line	88, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
+	.line	87, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
 	MOVIA	0x19
 	BANKSEL	_Low_Voltage_LED_Flash_Cnt
 	SUBAR	_Low_Voltage_LED_Flash_Cnt,W
 	BTRSS	STATUS,0
 	MGOTO	_02066_DS_
-	.line	90, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
+	.line	89, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
 	CLRR	_Low_Voltage_LED_Flash_Cnt
-	.line	91, "Power_Manage.c"; 	LED1 =~ LED1;
+	.line	90, "Power_Manage.c"; 	LED1 =~ LED1;
 	BANKSEL	_PORTA
 	MOVR	_PORTA,W
 	XORIA	0x04
 	MOVAR	_PORTA
-	.line	92, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
+	.line	91, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
 	BANKSEL	_Low_Voltage_LED_Flash_Times_Cnt
 	INCR	_Low_Voltage_LED_Flash_Times_Cnt,F
 ;;swapping arguments (AOP_TYPEs 1/3)
@@ -269,17 +269,17 @@ _02056_DS_:
 	SUBAR	_Low_Voltage_LED_Flash_Times_Cnt,W
 	BTRSS	STATUS,0
 	MGOTO	_02066_DS_
-	.line	94, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
+	.line	93, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
 	CLRR	_Low_Voltage_LED_Flash_Times_Cnt
-	.line	95, "Power_Manage.c"; 	Power_Off();
+	.line	94, "Power_Manage.c"; 	Power_Off();
 	MCALL	_Power_Off
 	MGOTO	_02066_DS_
 _02064_DS_:
-	.line	103, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
+	.line	101, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
 	BANKSEL	_Low_Voltage_Cnt
 	CLRR	_Low_Voltage_Cnt
 _02066_DS_:
-	.line	105, "Power_Manage.c"; 	}
+	.line	103, "Power_Manage.c"; 	}
 	RETURN	
 ; exit point of _Low_Voltage_Process
 
@@ -294,22 +294,22 @@ _02066_DS_:
 	.debuginfo subprogram _Battery_Full_Process
 _Battery_Full_Process:
 ; 2 exit points
-	.line	60, "Power_Manage.c"; 	if ((PCON1 & 0x40))
+	.line	59, "Power_Manage.c"; 	if ((PCON1 & 0x40))
 	IOSTR	_PCON1
 	BANKSEL	r0x100A
 	MOVAR	r0x100A
 	BTRSS	r0x100A,6
 	MGOTO	_02045_DS_
-	.line	62, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
+	.line	61, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
 	BANKSEL	_Sys_Flag4
 	BSR	_Sys_Flag4,5
 	MGOTO	_02047_DS_
 _02045_DS_:
-	.line	66, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
+	.line	65, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
 	BANKSEL	_Sys_Flag4
 	BCR	_Sys_Flag4,5
 _02047_DS_:
-	.line	68, "Power_Manage.c"; 	}
+	.line	67, "Power_Manage.c"; 	}
 	RETURN	
 ; exit point of _Battery_Full_Process
 
@@ -347,7 +347,7 @@ _02036_DS_:
 	.line	53, "Power_Manage.c"; 	Battery_Full_Process();
 	MCALL	_Battery_Full_Process
 _02039_DS_:
-	.line	56, "Power_Manage.c"; 	}
+	.line	55, "Power_Manage.c"; 	}
 	RETURN	
 ; exit point of _Battery_Voltage_Detect
 

@@ -31,10 +31,10 @@ void main(void)
         }
         else
         {
+            Battery_Voltage_Detect();
             TeleCon_Signal_Process();
             Key_Scan();
             M1_Work();
-            Battery_Voltage_Detect();
             if (Sleep_Cnt >= 220)
             {
                 Sleep_Cnt = 0;

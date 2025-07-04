@@ -582,7 +582,7 @@ _Init:
 	CLRR	_INTF
 	.line	97, "Init.c"; 	ENI();
 	ENI
-	.line	99, "Init.c"; 	}
+	.line	98, "Init.c"; 	}
 	RETURN	
 ; exit point of _Init
 

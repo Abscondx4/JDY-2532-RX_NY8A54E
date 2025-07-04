@@ -84,7 +84,10 @@ void Key_Scan()
         else // 如果处于关机状态
         {
             Power_Onoff_FLAG     = 1; // 开机标志位置1
-            LED_On;
+            if (!Low_Voltage_3P0_FLAG)
+            {
+                LED_On;
+            }
             RF_Control_On;
             Power_On_Notice_FLAG = 1;
             M1_Cnt               = 0;

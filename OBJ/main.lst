@@ -440,19 +440,19 @@ NYASM 2.50
                                     1-  382     ;   _Charge_Detect
                                     1-  383     ;   _Charge_Process
                                     1-  384     ;   _Battery_Voltage_Detect
-                                    1-  385     ;   _TeleCon_Signal_Process
-                                    1-  386     ;   _Key_Scan
-                                    1-  387     ;   _M1_Work
-                                    1-  388     ;   _Battery_Voltage_Detect
+                                    1-  385     ;   _Battery_Voltage_Detect
+                                    1-  386     ;   _TeleCon_Signal_Process
+                                    1-  387     ;   _Key_Scan
+                                    1-  388     ;   _M1_Work
                                     1-  389     ;   _LED
                                     1-  390     ;   _Init
                                     1-  391     ;   _Charge_Detect
                                     1-  392     ;   _Charge_Process
                                     1-  393     ;   _Battery_Voltage_Detect
-                                    1-  394     ;   _TeleCon_Signal_Process
-                                    1-  395     ;   _Key_Scan
-                                    1-  396     ;   _M1_Work
-                                    1-  397     ;   _Battery_Voltage_Detect
+                                    1-  394     ;   _Battery_Voltage_Detect
+                                    1-  395     ;   _TeleCon_Signal_Process
+                                    1-  396     ;   _Key_Scan
+                                    1-  397     ;   _M1_Work
                                     1-  398     ;   _LED
                                     1-  399     ;; Starting pCode block
                                     1-  400     .segment "code"; module=main, function=_main
@@ -482,17 +482,17 @@ NYASM 2.50
                                     1-  419     	MGOTO	_02022_DS_
      0008 3rrr                      3-   62 m1      LGOTO rom_address
      0009                           1-  420     _02021_DS_:
-                                    1-  421     	.line	34, "main.c"; 	TeleCon_Signal_Process();
-                                    1-  422     	MCALL	_TeleCon_Signal_Process
+                                    1-  421     	.line	34, "main.c"; 	Battery_Voltage_Detect();
+                                    1-  422     	MCALL	_Battery_Voltage_Detect
      0009 2rrr                      3-   65 m1      LCALL rom_address
-                                    1-  423     	.line	35, "main.c"; 	Key_Scan();
-                                    1-  424     	MCALL	_Key_Scan
+                                    1-  423     	.line	35, "main.c"; 	TeleCon_Signal_Process();
+                                    1-  424     	MCALL	_TeleCon_Signal_Process
      000A 2rrr                      3-   65 m1      LCALL rom_address
-                                    1-  425     	.line	36, "main.c"; 	M1_Work();
-                                    1-  426     	MCALL	_M1_Work
+                                    1-  425     	.line	36, "main.c"; 	Key_Scan();
+                                    1-  426     	MCALL	_Key_Scan
      000B 2rrr                      3-   65 m1      LCALL rom_address
-                                    1-  427     	.line	37, "main.c"; 	Battery_Voltage_Detect();
-                                    1-  428     	MCALL	_Battery_Voltage_Detect
+                                    1-  427     	.line	37, "main.c"; 	M1_Work();
+                                    1-  428     	MCALL	_M1_Work
      000C 2rrr                      3-   65 m1      LCALL rom_address
                                     1-  429     ;;signed compare: left < lit(0xDC=220), size=2, mask=ffff
                                     1-  430     	.line	38, "main.c"; 	if (Sleep_Cnt >= 220)

@@ -436,7 +436,7 @@ NYASM 2.50
      0054 01rr                      1-  349     	MOVR	_Key_Long_Cnt,W
      0055 2426                      1-  350     	XORIA	0x26
      0056 0903                      1-  351     	BTRSS	STATUS,2
-                                    1-  352     	MGOTO	_02039_DS_
+                                    1-  352     	MGOTO	_02041_DS_
      0057 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  353     	.line	79, "Key.c"; 	Key_Long_Cnt++; // 长按计数器+1
      0058 05rr                      1-  354     	INCR	_Key_Long_Cnt,F
@@ -444,44 +444,53 @@ NYASM 2.50
                                     1-  356     	BANKSEL	_Sys_Flag0
      0059 rrrr                      3-  109 m1      .banksel ram_address
      005A 08rr                      1-  357     	BTRSS	_Sys_Flag0,0
-                                    1-  358     	MGOTO	_02035_DS_
+                                    1-  358     	MGOTO	_02037_DS_
      005B 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  359     	.line	82, "Key.c"; 	Power_Off();
                                     1-  360     	MCALL	_Power_Off
      005C 2rrr                      3-   65 m1      LCALL rom_address
-                                    1-  361     	MGOTO	_02039_DS_
+                                    1-  361     	MGOTO	_02041_DS_
      005D 3rrr                      3-   62 m1      LGOTO rom_address
-     005E                           1-  362     _02035_DS_:
+     005E                           1-  362     _02037_DS_:
                                     1-  363     	.line	86, "Key.c"; 	Power_Onoff_FLAG     = 1; // 开机标志位置1
                                     1-  364     	BANKSEL	_Sys_Flag0
      005E rrrr                      3-  109 m1      .banksel ram_address
      005F 18rr                      1-  365     	BSR	_Sys_Flag0,0
-                                    1-  366     	.line	87, "Key.c"; 	LED_On;
-                                    1-  367     	BANKSEL	_PORTA
+                                    1-  366     	.line	87, "Key.c"; 	if (!Low_Voltage_3P0_FLAG)
+                                    1-  367     	BANKSEL	_Sys_Flag4
      0060 rrrr                      3-  109 m1      .banksel ram_address
-     0061 1Drr                      1-  368     	BCR	_PORTA,2
-                                    1-  369     	.line	88, "Key.c"; 	RF_Control_On;
-     0062 1Frr                      1-  370     	BCR	_PORTA,7
-                                    1-  371     	.line	89, "Key.c"; 	Power_On_Notice_FLAG = 1;
-                                    1-  372     	BANKSEL	_Sys_Flag4
+     0061 0Drr                      1-  368     	BTRSC	_Sys_Flag4,3
+                                    1-  369     	MGOTO	_00001_DS_
+     0062 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  370     	.line	89, "Key.c"; 	LED_On;
+                                    1-  371     	BANKSEL	_PORTA
      0063 rrrr                      3-  109 m1      .banksel ram_address
-     0064 1Arr                      1-  373     	BSR	_Sys_Flag4,4
-                                    1-  374     	.line	90, "Key.c"; 	M1_Cnt               = 0;
-                                    1-  375     	BANKSEL	_M1_Cnt
+     0064 1Drr                      1-  372     	BCR	_PORTA,2
+     0065                           1-  373     _00001_DS_:
+                                    1-  374     	.line	91, "Key.c"; 	RF_Control_On;
+                                    1-  375     	BANKSEL	_PORTA
      0065 rrrr                      3-  109 m1      .banksel ram_address
-     0066 02rr                      1-  376     	CLRR	_M1_Cnt
-     0067 02rr                      1-  377     	CLRR	(_M1_Cnt + 1)
-                                    1-  378     	.line	91, "Key.c"; 	StandBy_Mode();
-                                    1-  379     	MCALL	_StandBy_Mode
-     0068 2rrr                      3-   65 m1      LCALL rom_address
-     0069                           1-  380     _02039_DS_:
-                                    1-  381     	.line	95, "Key.c"; 	}
-                                    1-  382     	RETURN	
-     0069 0010                      3-   39 m1      ret
-                                    1-  383     ; exit point of _Key_Scan
-                                    1-  386     ;	code size estimation:
-                                    1-  387     ;	   77+   29 =   106 instructions (  270 byte)
-                                    1-  389     	end
+     0066 1Frr                      1-  376     	BCR	_PORTA,7
+                                    1-  377     	.line	92, "Key.c"; 	Power_On_Notice_FLAG = 1;
+                                    1-  378     	BANKSEL	_Sys_Flag4
+     0067 rrrr                      3-  109 m1      .banksel ram_address
+     0068 1Arr                      1-  379     	BSR	_Sys_Flag4,4
+                                    1-  380     	.line	93, "Key.c"; 	M1_Cnt               = 0;
+                                    1-  381     	BANKSEL	_M1_Cnt
+     0069 rrrr                      3-  109 m1      .banksel ram_address
+     006A 02rr                      1-  382     	CLRR	_M1_Cnt
+     006B 02rr                      1-  383     	CLRR	(_M1_Cnt + 1)
+                                    1-  384     	.line	94, "Key.c"; 	StandBy_Mode();
+                                    1-  385     	MCALL	_StandBy_Mode
+     006C 2rrr                      3-   65 m1      LCALL rom_address
+     006D                           1-  386     _02041_DS_:
+                                    1-  387     	.line	97, "Key.c"; 	}
+                                    1-  388     	RETURN	
+     006D 0010                      3-   39 m1      ret
+                                    1-  389     ; exit point of _Key_Scan
+                                    1-  392     ;	code size estimation:
+                                    1-  393     ;	   79+   31 =   110 instructions (  282 byte)
+                                    1-  395     	end
 
 SYMBOL TABLE            TYPE     VALUE
 __pin_count__           Constant 0000000E

@@ -349,41 +349,47 @@ _02033_DS_:
 	MOVR	_Key_Long_Cnt,W
 	XORIA	0x26
 	BTRSS	STATUS,2
-	MGOTO	_02039_DS_
+	MGOTO	_02041_DS_
 	.line	79, "Key.c"; 	Key_Long_Cnt++; // 长按计数器+1
 	INCR	_Key_Long_Cnt,F
 	.line	80, "Key.c"; 	if (Power_Onoff_FLAG) // 如果处于开机状态
 	BANKSEL	_Sys_Flag0
 	BTRSS	_Sys_Flag0,0
-	MGOTO	_02035_DS_
+	MGOTO	_02037_DS_
 	.line	82, "Key.c"; 	Power_Off();
 	MCALL	_Power_Off
-	MGOTO	_02039_DS_
-_02035_DS_:
+	MGOTO	_02041_DS_
+_02037_DS_:
 	.line	86, "Key.c"; 	Power_Onoff_FLAG     = 1; // 开机标志位置1
 	BANKSEL	_Sys_Flag0
 	BSR	_Sys_Flag0,0
-	.line	87, "Key.c"; 	LED_On;
+	.line	87, "Key.c"; 	if (!Low_Voltage_3P0_FLAG)
+	BANKSEL	_Sys_Flag4
+	BTRSC	_Sys_Flag4,3
+	MGOTO	_00001_DS_
+	.line	89, "Key.c"; 	LED_On;
 	BANKSEL	_PORTA
 	BCR	_PORTA,2
-	.line	88, "Key.c"; 	RF_Control_On;
+_00001_DS_:
+	.line	91, "Key.c"; 	RF_Control_On;
+	BANKSEL	_PORTA
 	BCR	_PORTA,7
-	.line	89, "Key.c"; 	Power_On_Notice_FLAG = 1;
+	.line	92, "Key.c"; 	Power_On_Notice_FLAG = 1;
 	BANKSEL	_Sys_Flag4
 	BSR	_Sys_Flag4,4
-	.line	90, "Key.c"; 	M1_Cnt               = 0;
+	.line	93, "Key.c"; 	M1_Cnt               = 0;
 	BANKSEL	_M1_Cnt
 	CLRR	_M1_Cnt
 	CLRR	(_M1_Cnt + 1)
-	.line	91, "Key.c"; 	StandBy_Mode();
+	.line	94, "Key.c"; 	StandBy_Mode();
 	MCALL	_StandBy_Mode
-_02039_DS_:
-	.line	95, "Key.c"; 	}
+_02041_DS_:
+	.line	97, "Key.c"; 	}
 	RETURN	
 ; exit point of _Key_Scan
 
 
 ;	code size estimation:
-;	   77+   29 =   106 instructions (  270 byte)
+;	   79+   31 =   110 instructions (  282 byte)
 
 	end

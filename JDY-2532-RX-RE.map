@@ -11,16 +11,16 @@
 Module list:
 ------------
 Charge.o:
-    .debug_line          offset:0x0        size:0x2b5 (693)
+    .debug_line          offset:0x0        size:0x279 (633)
     .debug_info          offset:0x0        size:0x46 (70)
     .debug_abbrev        offset:0x0        size:0x15 (21)
     .debug_ranges        offset:0x0        size:0xc (12)
     .debug_aranges       offset:0x0        size:0x14 (20)
-    code                 offset:0x3a5      size:0x4a (74)
-    code                 offset:0x50d      size:0x1d (29)
+    code                 offset:0x3f3      size:0x3f (63)
+    code                 offset:0x506      size:0x1d (29)
 
 Clock.o:
-    .debug_line          offset:0x2b5      size:0x285 (645)
+    .debug_line          offset:0x279      size:0x285 (645)
     .debug_info          offset:0x46       size:0x34 (52)
     .debug_abbrev        offset:0x15       size:0x15 (21)
     .debug_ranges        offset:0xc        size:0x8
@@ -28,7 +28,7 @@ Clock.o:
     code                 offset:0x26f      size:0x73 (115)
 
 Init.o:
-    .debug_line          offset:0x53a      size:0x252 (594)
+    .debug_line          offset:0x4fe      size:0x252 (594)
     .debug_info          offset:0x7a       size:0x5fa (1530)
     .debug_abbrev        offset:0x2a       size:0x24 (36)
     .debug_ranges        offset:0x14       size:0xd0 (208)
@@ -74,26 +74,26 @@ Init.o:
     idata                offset:0x2000005b size:0x1
     idata                offset:0x2000005c size:0x1
     idata                offset:0x2000003f size:0x2
-    code                 offset:0x52a      size:0x1b (27)
+    code                 offset:0x523      size:0x1b (27)
 
 Key.o:
-    .debug_line          offset:0x78c      size:0x2b3 (691)
+    .debug_line          offset:0x750      size:0x2d6 (726)
     .debug_info          offset:0x675      size:0x35 (53)
     .debug_abbrev        offset:0x4e       size:0x15 (21)
     .debug_ranges        offset:0xe4       size:0x8
     .debug_aranges       offset:0xfc       size:0x10 (16)
-    code                 offset:0x2e2      size:0x6a (106)
+    code                 offset:0x2e2      size:0x6e (110)
 
 LED.o:
-    .debug_line          offset:0xa3f      size:0x1fc (508)
+    .debug_line          offset:0xa26      size:0x1fc (508)
     .debug_info          offset:0x6aa      size:0x32 (50)
     .debug_abbrev        offset:0x63       size:0x15 (21)
     .debug_ranges        offset:0xec       size:0x8
     .debug_aranges       offset:0x10c      size:0x10 (16)
-    code                 offset:0x3ef      size:0x4a (74)
+    code                 offset:0x3a9      size:0x4a (74)
 
 Motor.o:
-    .debug_line          offset:0xc3c      size:0x87a (2170)
+    .debug_line          offset:0xc23      size:0x87a (2170)
     .debug_info          offset:0x6dc      size:0x8e (142)
     .debug_abbrev        offset:0x78       size:0x24 (36)
     .debug_ranges        offset:0xf4       size:0x20 (32)
@@ -101,27 +101,27 @@ Motor.o:
     uninit               offset:0x20000020 size:0x1
     uninit               offset:0x20000021 size:0x1
     code                 offset:0x9        size:0x123 (291)
-    code                 offset:0x58a      size:0x10 (16)
-    code                 offset:0x34c      size:0x59 (89)
-    code                 offset:0x545      size:0x1a (26)
-    code                 offset:0x55f      size:0x1a (26)
+    code                 offset:0x583      size:0x10 (16)
+    code                 offset:0x350      size:0x59 (89)
+    code                 offset:0x53e      size:0x1a (26)
+    code                 offset:0x558      size:0x1a (26)
 
 Power_Manage.o:
-    .debug_line          offset:0x14b6     size:0x322 (802)
+    .debug_line          offset:0x149d     size:0x322 (802)
     .debug_info          offset:0x76b      size:0x8f (143)
     .debug_abbrev        offset:0x9d       size:0x15 (21)
     .debug_ranges        offset:0x114      size:0x28 (40)
     .debug_aranges       offset:0x144      size:0x30 (48)
     uninit               offset:0x20000022 size:0x1
     uninit               offset:0x20000023 size:0x1
-    code                 offset:0x4df      size:0x2e (46)
-    code                 offset:0x5b3      size:0xb (11)
-    code                 offset:0x59a      size:0xd (13)
-    code                 offset:0x5a7      size:0xc (12)
-    code                 offset:0x579      size:0x11 (17)
+    code                 offset:0x4d8      size:0x2e (46)
+    code                 offset:0x5ac      size:0xb (11)
+    code                 offset:0x593      size:0xd (13)
+    code                 offset:0x5a0      size:0xc (12)
+    code                 offset:0x572      size:0x11 (17)
 
 Telecontrol.o:
-    .debug_line          offset:0x17d9     size:0x68c (1676)
+    .debug_line          offset:0x17c0     size:0x68c (1676)
     .debug_info          offset:0x7fa      size:0x4e (78)
     .debug_abbrev        offset:0xb2       size:0x15 (21)
     .debug_ranges        offset:0x13c      size:0xc (12)
@@ -130,7 +130,7 @@ Telecontrol.o:
     code                 offset:0x12c      size:0xbf (191)
 
 main.o:
-    .debug_line          offset:0x1e65     size:0x2c0 (704)
+    .debug_line          offset:0x1e4c     size:0x2c0 (704)
     .debug_info          offset:0x848      size:0x8d (141)
     .debug_abbrev        offset:0xc7       size:0x24 (36)
     .debug_ranges        offset:0x148      size:0x60 (96)
@@ -145,11 +145,11 @@ main.o:
     uninit               offset:0x20000026 size:0x1
     .text                offset:0x0        size:0x1
     .text                offset:0x8        size:0x1
-    code                 offset:0x4ab      size:0x34 (52)
-    code                 offset:0x439      size:0x3a (58)
+    code                 offset:0x4a4      size:0x34 (52)
+    code                 offset:0x432      size:0x3a (58)
 
 NY8A054E.a:
-    .debug_line          offset:0x2125     size:0x345 (837)
+    .debug_line          offset:0x210c     size:0x345 (837)
     .debug_info          offset:0x8d5      size:0x2d (45)
     .debug_abbrev        offset:0xeb       size:0xf (15)
     .debug_ranges        offset:0x1a8      size:0x17c (380)
@@ -252,7 +252,7 @@ NY8A054E.a:
 libsdcc_bankram.a:
 
 bank2_8b.a:
-    .debug_line          offset:0x246a     size:0x3c (60)
+    .debug_line          offset:0x2451     size:0x3c (60)
     .debug_info          offset:0x903      size:0x2b (43)
     .debug_abbrev        offset:0xfb       size:0xf (15)
     .debug_ranges        offset:0x324      size:0x8
@@ -416,8 +416,8 @@ share_bank           0x2000007f 0x1
 Symbol list by name:
 Name                      Value
 --------------------------------
-___cinit_load__           0x371 (881)
-___cinit_run__            0x371 (881)
+___cinit_load__           0x36b (875)
+___cinit_run__            0x36b (875)
 ___cinit_size__           0x38 (56)
 ___fs2schar               no used
 ___fs2sint                no used
@@ -492,8 +492,8 @@ ___STK12                  no used
 ___uchar2fs               no used
 ___uint2fs                no used
 ___ulong2fs               no used
-__checksum                0x478 (1144)
-__CHECKSUM_ADDR__         0x478 (1144)
+__checksum                0x472 (1138)
+__CHECKSUM_ADDR__         0x472 (1138)
 __codeptrget1             no used
 __divschar                no used
 __divsint                 no used
@@ -560,8 +560,8 @@ _Analyze_Save3            no used
 _APHCON                   0x20800009
 _AWUCON                   0x20000015
 _AWUCONbits               0x20000015
-_Battery_Full_Process     0x470 (1136)
-_Battery_Voltage_Detect   0x45e (1118)
+_Battery_Full_Process     0x46a (1130)
+_Battery_Voltage_Detect   0x458 (1112)
 _BODCON                   0x2080000c
 _BPHCON                   0x2000000c
 _BPHCONbits               0x2000000c
@@ -570,8 +570,8 @@ _BWUCONbits               0x20000009
 _BZ1CR                    0x21000005
 _Charge_3H_Time_Cnt       0x20000037
 _Charge_Cnt               0x20000051
-_Charge_Detect            0x3f6 (1014)
-_Charge_Process           0x2d2 (722)
+_Charge_Detect            0x3f0 (1008)
+_Charge_Process           0x309 (777)
 _Charging_LED_Flashing_Time 0x20000050
 _clear_ram                no used
 _Clock                    0x1f4 (500)
@@ -580,7 +580,7 @@ _CMPCR                    0x2080000e
 _FSR                      0x20000004
 _Full_Cnt                 0x20000052
 _INDF                     0x20000000
-_Init                     0x40a (1034)
+_Init                     0x404 (1028)
 _INTE                     0x2000000e
 _INTE2                    0x2000001f
 _INTE2bits                0x2000001f
@@ -592,17 +592,17 @@ _INTFbits                 0x2000000f
 _IOSTA                    0x20800005
 _IOSTB                    0x20800006
 _IRCR                     0x21000006
-_isr                      0x3a9 (937)
+_isr                      0x3a3 (931)
 _Key_Long_Cnt             0x2000004b
 _Key_Press_Cnt            0x2000004a
 _Key_Quick_Press_LED_Cnt  0x2000004c
 _Key_Scan                 0x249 (585)
-_LED                      0x306 (774)
+_LED                      0x2d4 (724)
 _Low_Voltage_Cnt          0x2000005c
 _Low_Voltage_Debounce_Cnt 0x2000005b
 _Low_Voltage_LED_Flash_Cnt 0x20000053
 _Low_Voltage_LED_Flash_Times_Cnt 0x20000054
-_Low_Voltage_Process      0x3d2 (978)
+_Low_Voltage_Process      0x3cc (972)
 _M1_1_Cycle_Set           no used
 _M1_1_Duty_Set            no used
 _M1_Cnt                   0x20000035
@@ -612,16 +612,16 @@ _M1_Duty                  0x2000002f
 _M1_Duty_Set              0x2000002b
 _M1_Freq_Change           0x2000004e
 _M1_Freq_Change_Set       no used
-_M1_Reset                 0x453 (1107)
+_M1_Reset                 0x44d (1101)
 _M1_Work                  0x9
-_M1_Work_Processs         0x296 (662)
-_main                     0x33b (827)
+_M1_Work_Processs         0x298 (664)
+_main                     0x335 (821)
 _Motor_Freq_Change        0x2000004d
 _Motor_Freq_Cnt0          0x2000004f
 _Motor_Freq_Cnt1          0x20000031
 _Motor_Freq_Cnt2          0x20000033
-_Motor_PWM_Loop1          0x436 (1078)
-_Motor_PWM_Loop2          0x424 (1060)
+_Motor_PWM_Loop1          0x430 (1072)
+_Motor_PWM_Loop2          0x41e (1054)
 _multi_16b                no used
 _multi_8b                 no used
 _OSCCR                    0x2100000f
@@ -637,7 +637,7 @@ _PORTA                    0x20000005
 _PORTAbits                0x20000005
 _PORTB                    0x20000006
 _PORTBbits                0x20000006
-_Power_Off                0x448 (1096)
+_Power_Off                0x442 (1090)
 _PS0CV                    0x2080000a
 _PS1CV                    0x21000004
 _PS3CV                    0x21000014
@@ -653,7 +653,7 @@ _RFCbits                  0x2000001b
 _Sleep_Cnt                0x20000027
 _StandBy_Check            no used
 _StandBy_Exit             no used
-_StandBy_Mode             0x469 (1129)
+_StandBy_Mode             0x463 (1123)
 _StandBy_ShutDown_Cnt     0x2000003f
 _STATUS                   0x20000003
 _Sys_Flag0                0x20000041

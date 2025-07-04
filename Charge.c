@@ -68,12 +68,12 @@ void Charge_Process()
     {
         if (Charge_Full_FLAG) // 如果充满标志位为1
         {
-            if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
-            {
-                Full_Cnt                   = 0;
-                Charging_LED_Flashing_Time = 0;
-                Charge_Full_FLAG           = 0;
-            }
+            // if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
+            // {
+            //     Full_Cnt                   = 0;
+            //     Charging_LED_Flashing_Time = 0;
+            //     Charge_Full_FLAG           = 0;
+            // }
         }
         else // 如果充满标志位为0
         {

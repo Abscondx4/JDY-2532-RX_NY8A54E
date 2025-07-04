@@ -428,7 +428,7 @@ NYASM 2.50
      0018 02rr                      1-  582     	CLRR	_INTF
                                     1-  583     	.line	97, "Init.c"; 	ENI();
      0019 0004                      1-  584     	ENI
-                                    1-  585     	.line	99, "Init.c"; 	}
+                                    1-  585     	.line	98, "Init.c"; 	}
                                     1-  586     	RETURN	
      001A 0010                      3-   39 m1      ret
                                     1-  587     ; exit point of _Init

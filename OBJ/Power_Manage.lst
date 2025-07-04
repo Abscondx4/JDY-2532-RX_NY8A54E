@@ -256,7 +256,7 @@ NYASM 2.50
                                     1-  210     .segment "code"; module=Power_Manage, function=_Low_Voltage_Process
      0000                           1-  212     _Low_Voltage_Process:
                                     1-  213     ; 2 exit points
-                                    1-  214     	.line	72, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
+                                    1-  214     	.line	71, "Power_Manage.c"; 	if (!(PCON1 & 0x40))
      0000 001r                      1-  215     	IOSTR	_PCON1
                                     1-  216     	BANKSEL	r0x1009
      0001 rrrr                      3-  109 m1      .banksel ram_address
@@ -265,7 +265,7 @@ NYASM 2.50
                                     1-  219     	MGOTO	_02055_DS_
      0004 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  220     ;;unsigned compare: left < lit(0x28=40), size=1
-                                    1-  221     	.line	74, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
+                                    1-  221     	.line	73, "Power_Manage.c"; 	if (Low_Voltage_Debounce_Cnt >= Low_Voltage_Debounce_Time)
      0005 2128                      1-  222     	MOVIA	0x28
                                     1-  223     	BANKSEL	_Low_Voltage_Debounce_Cnt
      0006 rrrr                      3-  109 m1      .banksel ram_address
@@ -273,26 +273,26 @@ NYASM 2.50
      0008 0803                      1-  225     	BTRSS	STATUS,0
                                     1-  226     	MGOTO	_02056_DS_
      0009 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  227     	.line	76, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
+                                    1-  227     	.line	75, "Power_Manage.c"; 	Low_Voltage_3P0_FLAG = 1;
                                     1-  228     	BANKSEL	_Sys_Flag4
      000A rrrr                      3-  109 m1      .banksel ram_address
      000B 19rr                      1-  229     	BSR	_Sys_Flag4,3
                                     1-  230     	MGOTO	_02056_DS_
      000C 3rrr                      3-   62 m1      LGOTO rom_address
      000D                           1-  231     _02055_DS_:
-                                    1-  232     	.line	81, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
+                                    1-  232     	.line	80, "Power_Manage.c"; 	Low_Voltage_Debounce_Cnt = 0;
                                     1-  233     	BANKSEL	_Low_Voltage_Debounce_Cnt
      000D rrrr                      3-  109 m1      .banksel ram_address
      000E 02rr                      1-  234     	CLRR	_Low_Voltage_Debounce_Cnt
      000F                           1-  235     _02056_DS_:
-                                    1-  236     	.line	83, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
+                                    1-  236     	.line	82, "Power_Manage.c"; 	if (Low_Voltage_3P0_FLAG)
                                     1-  237     	BANKSEL	_Sys_Flag4
      000F rrrr                      3-  109 m1      .banksel ram_address
      0010 09rr                      1-  238     	BTRSS	_Sys_Flag4,3
                                     1-  239     	MGOTO	_02064_DS_
      0011 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  240     ;;unsigned compare: left < lit(0xA=10), size=1
-                                    1-  241     	.line	85, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
+                                    1-  241     	.line	84, "Power_Manage.c"; 	if (Low_Voltage_Cnt >= Low_Voltage_Time)
      0012 210A                      1-  242     	MOVIA	0x0a
                                     1-  243     	BANKSEL	_Low_Voltage_Cnt
      0013 rrrr                      3-  109 m1      .banksel ram_address
@@ -300,11 +300,11 @@ NYASM 2.50
      0015 0803                      1-  245     	BTRSS	STATUS,0
                                     1-  246     	MGOTO	_02066_DS_
      0016 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  247     	.line	87, "Power_Manage.c"; 	StandBy_Mode();
+                                    1-  247     	.line	86, "Power_Manage.c"; 	StandBy_Mode();
                                     1-  248     	MCALL	_StandBy_Mode
      0017 2rrr                      3-   65 m1      LCALL rom_address
                                     1-  249     ;;unsigned compare: left < lit(0x19=25), size=1
-                                    1-  250     	.line	88, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
+                                    1-  250     	.line	87, "Power_Manage.c"; 	if (Low_Voltage_LED_Flash_Cnt >= Low_Voltage_LED_Notice_Freq)
      0018 2119                      1-  251     	MOVIA	0x19
                                     1-  252     	BANKSEL	_Low_Voltage_LED_Flash_Cnt
      0019 rrrr                      3-  109 m1      .banksel ram_address
@@ -312,15 +312,15 @@ NYASM 2.50
      001B 0803                      1-  254     	BTRSS	STATUS,0
                                     1-  255     	MGOTO	_02066_DS_
      001C 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  256     	.line	90, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
+                                    1-  256     	.line	89, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Cnt = 0;
      001D 02rr                      1-  257     	CLRR	_Low_Voltage_LED_Flash_Cnt
-                                    1-  258     	.line	91, "Power_Manage.c"; 	LED1 =~ LED1;
+                                    1-  258     	.line	90, "Power_Manage.c"; 	LED1 =~ LED1;
                                     1-  259     	BANKSEL	_PORTA
      001E rrrr                      3-  109 m1      .banksel ram_address
      001F 01rr                      1-  260     	MOVR	_PORTA,W
      0020 2404                      1-  261     	XORIA	0x04
      0021 00rr                      1-  262     	MOVAR	_PORTA
-                                    1-  263     	.line	92, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
+                                    1-  263     	.line	91, "Power_Manage.c"; 	if (++Low_Voltage_LED_Flash_Times_Cnt > 10)
                                     1-  264     	BANKSEL	_Low_Voltage_LED_Flash_Times_Cnt
      0022 rrrr                      3-  109 m1      .banksel ram_address
      0023 05rr                      1-  265     	INCR	_Low_Voltage_LED_Flash_Times_Cnt,F
@@ -331,20 +331,20 @@ NYASM 2.50
      0026 0803                      1-  270     	BTRSS	STATUS,0
                                     1-  271     	MGOTO	_02066_DS_
      0027 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  272     	.line	94, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
+                                    1-  272     	.line	93, "Power_Manage.c"; 	Low_Voltage_LED_Flash_Times_Cnt = 0;
      0028 02rr                      1-  273     	CLRR	_Low_Voltage_LED_Flash_Times_Cnt
-                                    1-  274     	.line	95, "Power_Manage.c"; 	Power_Off();
+                                    1-  274     	.line	94, "Power_Manage.c"; 	Power_Off();
                                     1-  275     	MCALL	_Power_Off
      0029 2rrr                      3-   65 m1      LCALL rom_address
                                     1-  276     	MGOTO	_02066_DS_
      002A 3rrr                      3-   62 m1      LGOTO rom_address
      002B                           1-  277     _02064_DS_:
-                                    1-  278     	.line	103, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
+                                    1-  278     	.line	101, "Power_Manage.c"; 	Low_Voltage_Cnt = 0;
                                     1-  279     	BANKSEL	_Low_Voltage_Cnt
      002B rrrr                      3-  109 m1      .banksel ram_address
      002C 02rr                      1-  280     	CLRR	_Low_Voltage_Cnt
      002D                           1-  281     _02066_DS_:
-                                    1-  282     	.line	105, "Power_Manage.c"; 	}
+                                    1-  282     	.line	103, "Power_Manage.c"; 	}
                                     1-  283     	RETURN	
      002D 0010                      3-   39 m1      ret
                                     1-  284     ; exit point of _Low_Voltage_Process
@@ -358,7 +358,7 @@ NYASM 2.50
                                     1-  293     .segment "code"; module=Power_Manage, function=_Battery_Full_Process
      0000                           1-  295     _Battery_Full_Process:
                                     1-  296     ; 2 exit points
-                                    1-  297     	.line	60, "Power_Manage.c"; 	if ((PCON1 & 0x40))
+                                    1-  297     	.line	59, "Power_Manage.c"; 	if ((PCON1 & 0x40))
      0000 001r                      1-  298     	IOSTR	_PCON1
                                     1-  299     	BANKSEL	r0x100A
      0001 rrrr                      3-  109 m1      .banksel ram_address
@@ -366,19 +366,19 @@ NYASM 2.50
      0003 0Brr                      1-  301     	BTRSS	r0x100A,6
                                     1-  302     	MGOTO	_02045_DS_
      0004 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  303     	.line	62, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
+                                    1-  303     	.line	61, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 1;     
                                     1-  304     	BANKSEL	_Sys_Flag4
      0005 rrrr                      3-  109 m1      .banksel ram_address
      0006 1Arr                      1-  305     	BSR	_Sys_Flag4,5
                                     1-  306     	MGOTO	_02047_DS_
      0007 3rrr                      3-   62 m1      LGOTO rom_address
      0008                           1-  307     _02045_DS_:
-                                    1-  308     	.line	66, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
+                                    1-  308     	.line	65, "Power_Manage.c"; 	Charge_Force_Full_FLAG = 0;
                                     1-  309     	BANKSEL	_Sys_Flag4
      0008 rrrr                      3-  109 m1      .banksel ram_address
      0009 1Err                      1-  310     	BCR	_Sys_Flag4,5
      000A                           1-  311     _02047_DS_:
-                                    1-  312     	.line	68, "Power_Manage.c"; 	}
+                                    1-  312     	.line	67, "Power_Manage.c"; 	}
                                     1-  313     	RETURN	
      000A 0010                      3-   39 m1      ret
                                     1-  314     ; exit point of _Battery_Full_Process
@@ -421,7 +421,7 @@ NYASM 2.50
                                     1-  348     	MCALL	_Battery_Full_Process
      000B 2rrr                      3-   65 m1      LCALL rom_address
      000C                           1-  349     _02039_DS_:
-                                    1-  350     	.line	56, "Power_Manage.c"; 	}
+                                    1-  350     	.line	55, "Power_Manage.c"; 	}
                                     1-  351     	RETURN	
      000C 0010                      3-   39 m1      ret
                                     1-  352     ; exit point of _Battery_Voltage_Detect

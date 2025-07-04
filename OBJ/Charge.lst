@@ -256,11 +256,11 @@ NYASM 2.50
      0002 2580                      1-  210     	ADDIA	0x80
      0003 2556                      1-  211     	ADDIA	0x56
      0004 0903                      1-  212     	BTRSS	STATUS,2
-                                    1-  213     	MGOTO	_02072_DS_
+                                    1-  213     	MGOTO	_02066_DS_
      0005 3rrr                      3-   62 m1      LGOTO rom_address
      0006 214E                      1-  214     	MOVIA	0x4e
      0007 04rr                      1-  215     	SUBAR	_Charge_3H_Time_Cnt,W
-     0008                           1-  216     _02072_DS_:
+     0008                           1-  216     _02066_DS_:
      0008 0803                      1-  217     	BTRSS	STATUS,0
                                     1-  218     	MGOTO	_02019_DS_
      0009 3rrr                      3-   62 m1      LGOTO rom_address
@@ -284,7 +284,7 @@ NYASM 2.50
      0013 212A                      1-  232     	MOVIA	0x2a
      0014 00rr                      1-  233     	MOVAR	(_Charge_3H_Time_Cnt + 1)
                                     1-  234     	.line	43, "Charge.c"; 	return;
-                                    1-  235     	MGOTO	_02038_DS_
+                                    1-  235     	MGOTO	_02036_DS_
      0015 3rrr                      3-   62 m1      LGOTO rom_address
      0016                           1-  236     _02019_DS_:
                                     1-  237     	.line	46, "Charge.c"; 	if (Power_Onoff_FLAG) // 如果处于开机状态
@@ -299,7 +299,7 @@ NYASM 2.50
                                     1-  244     	BANKSEL	_PORTA
      0019 rrrr                      3-  109 m1      .banksel ram_address
      001A 09rr                      1-  245     	BTRSS	_PORTA,3
-                                    1-  246     	MGOTO	_02036_DS_
+                                    1-  246     	MGOTO	_02034_DS_
      001B 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  247     	.line	53, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
                                     1-  248     	BANKSEL	_Sys_Flag1
@@ -315,7 +315,7 @@ NYASM 2.50
                                     1-  255     	BANKSEL	_Sys_Flag2
      0021 rrrr                      3-  109 m1      .banksel ram_address
      0022 18rr                      1-  256     	BSR	_Sys_Flag2,0
-                                    1-  257     	MGOTO	_02038_DS_
+                                    1-  257     	MGOTO	_02036_DS_
      0023 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  258     ;;unsigned compare: left < lit(0x5=5), size=1
      0024                           1-  259     _02025_DS_:
@@ -325,7 +325,7 @@ NYASM 2.50
      0025 rrrr                      3-  109 m1      .banksel ram_address
      0026 04rr                      1-  263     	SUBAR	_Full_Cnt,W
      0027 0803                      1-  264     	BTRSS	STATUS,0
-                                    1-  265     	MGOTO	_02038_DS_
+                                    1-  265     	MGOTO	_02036_DS_
      0028 3rrr                      3-   62 m1      LGOTO rom_address
                                     1-  266     	.line	62, "Charge.c"; 	Full_Cnt         = 0;
      0029 02rr                      1-  267     	CLRR	_Full_Cnt
@@ -333,143 +333,121 @@ NYASM 2.50
                                     1-  269     	BANKSEL	_Sys_Flag1
      002A rrrr                      3-  109 m1      .banksel ram_address
      002B 1Arr                      1-  270     	BSR	_Sys_Flag1,5
-                                    1-  271     	MGOTO	_02038_DS_
+                                    1-  271     	MGOTO	_02036_DS_
      002C 3rrr                      3-   62 m1      LGOTO rom_address
-     002D                           1-  272     _02036_DS_:
+     002D                           1-  272     _02034_DS_:
                                     1-  273     	.line	69, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
                                     1-  274     	BANKSEL	_Sys_Flag1
      002D rrrr                      3-  109 m1      .banksel ram_address
-     002E 0Arr                      1-  275     	BTRSS	_Sys_Flag1,5
-                                    1-  276     	MGOTO	_02033_DS_
+     002E 0Err                      1-  275     	BTRSC	_Sys_Flag1,5
+                                    1-  276     	MGOTO	_02036_DS_
      002F 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  277     ;;unsigned compare: left < lit(0x5=5), size=1
-                                    1-  278     	.line	71, "Charge.c"; 	if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
-     0030 2105                      1-  279     	MOVIA	0x05
-                                    1-  280     	BANKSEL	_Full_Cnt
-     0031 rrrr                      3-  109 m1      .banksel ram_address
-     0032 04rr                      1-  281     	SUBAR	_Full_Cnt,W
-     0033 0803                      1-  282     	BTRSS	STATUS,0
-                                    1-  283     	MGOTO	_02038_DS_
-     0034 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  284     	.line	73, "Charge.c"; 	Full_Cnt                   = 0;
-     0035 02rr                      1-  285     	CLRR	_Full_Cnt
-                                    1-  286     	.line	74, "Charge.c"; 	Charging_LED_Flashing_Time = 0;
-                                    1-  287     	BANKSEL	_Charging_LED_Flashing_Time
-     0036 rrrr                      3-  109 m1      .banksel ram_address
-     0037 02rr                      1-  288     	CLRR	_Charging_LED_Flashing_Time
-                                    1-  289     	.line	75, "Charge.c"; 	Charge_Full_FLAG           = 0;
-                                    1-  290     	BANKSEL	_Sys_Flag1
-     0038 rrrr                      3-  109 m1      .banksel ram_address
-     0039 1Err                      1-  291     	BCR	_Sys_Flag1,5
-                                    1-  292     	MGOTO	_02038_DS_
-     003A 3rrr                      3-   62 m1      LGOTO rom_address
-     003B                           1-  293     _02033_DS_:
-                                    1-  294     	.line	80, "Charge.c"; 	if (Charge_Force_Full_FLAG)
-                                    1-  295     	BANKSEL	_Sys_Flag4
-     003B rrrr                      3-  109 m1      .banksel ram_address
-     003C 0Arr                      1-  296     	BTRSS	_Sys_Flag4,5
-                                    1-  297     	MGOTO	_02030_DS_
-     003D 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  298     	.line	82, "Charge.c"; 	Full_Cnt                        = 0;
-                                    1-  299     	BANKSEL	_Full_Cnt
-     003E rrrr                      3-  109 m1      .banksel ram_address
-     003F 02rr                      1-  300     	CLRR	_Full_Cnt
-                                    1-  301     	.line	83, "Charge.c"; 	Charge_Full_FLAG                = 1;
-                                    1-  302     	BANKSEL	_Sys_Flag1
-     0040 rrrr                      3-  109 m1      .banksel ram_address
-     0041 1Arr                      1-  303     	BSR	_Sys_Flag1,5
-                                    1-  304     	.line	84, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1;
-                                    1-  305     	BANKSEL	_Sys_Flag2
-     0042 rrrr                      3-  109 m1      .banksel ram_address
-     0043 18rr                      1-  306     	BSR	_Sys_Flag2,0
-                                    1-  307     	MGOTO	_02038_DS_
-     0044 3rrr                      3-   62 m1      LGOTO rom_address
-     0045                           1-  308     _02030_DS_:
-                                    1-  309     	.line	88, "Charge.c"; 	Full_Cnt = 0;
-                                    1-  310     	BANKSEL	_Full_Cnt
-     0045 rrrr                      3-  109 m1      .banksel ram_address
-     0046 02rr                      1-  311     	CLRR	_Full_Cnt
-                                    1-  312     	.line	89, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0;
-                                    1-  313     	BANKSEL	_Sys_Flag2
-     0047 rrrr                      3-  109 m1      .banksel ram_address
-     0048 1Crr                      1-  314     	BCR	_Sys_Flag2,0
-     0049                           1-  315     _02038_DS_:
-                                    1-  316     	.line	93, "Charge.c"; 	}
-                                    1-  317     	RETURN	
-     0049 0010                      3-   39 m1      ret
-                                    1-  318     ; exit point of _Charge_Process
-                                    1-  320     ;***
-                                    1-  321     ;  pBlock Stats: dbName = C
-                                    1-  322     ;***
-                                    1-  323     ;has an exit
-                                    1-  324     ;; Starting pCode block
-                                    1-  325     .segment "code"; module=Charge, function=_Charge_Detect
-     0000                           1-  327     _Charge_Detect:
-                                    1-  328     ; 2 exit points
-                                    1-  329     	.line	6, "Charge.c"; 	if (Charge_DET) // 检测到充电
-                                    1-  330     	BANKSEL	_PORTA
+                                    1-  277     	.line	80, "Charge.c"; 	if (Charge_Force_Full_FLAG)
+                                    1-  278     	BANKSEL	_Sys_Flag4
+     0030 rrrr                      3-  109 m1      .banksel ram_address
+     0031 0Arr                      1-  279     	BTRSS	_Sys_Flag4,5
+                                    1-  280     	MGOTO	_02028_DS_
+     0032 3rrr                      3-   62 m1      LGOTO rom_address
+                                    1-  281     	.line	82, "Charge.c"; 	Full_Cnt                        = 0;
+                                    1-  282     	BANKSEL	_Full_Cnt
+     0033 rrrr                      3-  109 m1      .banksel ram_address
+     0034 02rr                      1-  283     	CLRR	_Full_Cnt
+                                    1-  284     	.line	83, "Charge.c"; 	Charge_Full_FLAG                = 1;
+                                    1-  285     	BANKSEL	_Sys_Flag1
+     0035 rrrr                      3-  109 m1      .banksel ram_address
+     0036 1Arr                      1-  286     	BSR	_Sys_Flag1,5
+                                    1-  287     	.line	84, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1;
+                                    1-  288     	BANKSEL	_Sys_Flag2
+     0037 rrrr                      3-  109 m1      .banksel ram_address
+     0038 18rr                      1-  289     	BSR	_Sys_Flag2,0
+                                    1-  290     	MGOTO	_02036_DS_
+     0039 3rrr                      3-   62 m1      LGOTO rom_address
+     003A                           1-  291     _02028_DS_:
+                                    1-  292     	.line	88, "Charge.c"; 	Full_Cnt = 0;
+                                    1-  293     	BANKSEL	_Full_Cnt
+     003A rrrr                      3-  109 m1      .banksel ram_address
+     003B 02rr                      1-  294     	CLRR	_Full_Cnt
+                                    1-  295     	.line	89, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0;
+                                    1-  296     	BANKSEL	_Sys_Flag2
+     003C rrrr                      3-  109 m1      .banksel ram_address
+     003D 1Crr                      1-  297     	BCR	_Sys_Flag2,0
+     003E                           1-  298     _02036_DS_:
+                                    1-  299     	.line	93, "Charge.c"; 	}
+                                    1-  300     	RETURN	
+     003E 0010                      3-   39 m1      ret
+                                    1-  301     ; exit point of _Charge_Process
+                                    1-  303     ;***
+                                    1-  304     ;  pBlock Stats: dbName = C
+                                    1-  305     ;***
+                                    1-  306     ;has an exit
+                                    1-  307     ;; Starting pCode block
+                                    1-  308     .segment "code"; module=Charge, function=_Charge_Detect
+     0000                           1-  310     _Charge_Detect:
+                                    1-  311     ; 2 exit points
+                                    1-  312     	.line	6, "Charge.c"; 	if (Charge_DET) // 检测到充电
+                                    1-  313     	BANKSEL	_PORTA
      0000 rrrr                      3-  109 m1      .banksel ram_address
-     0001 0Arr                      1-  331     	BTRSS	_PORTA,5
-                                    1-  332     	MGOTO	_02011_DS_
+     0001 0Arr                      1-  314     	BTRSS	_PORTA,5
+                                    1-  315     	MGOTO	_02011_DS_
      0002 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  333     	.line	8, "Charge.c"; 	if (Charging_FLAG) // 如果充电标志位为1
-                                    1-  334     	BANKSEL	_Sys_Flag1
+                                    1-  316     	.line	8, "Charge.c"; 	if (Charging_FLAG) // 如果充电标志位为1
+                                    1-  317     	BANKSEL	_Sys_Flag1
      0003 rrrr                      3-  109 m1      .banksel ram_address
-     0004 0Brr                      1-  335     	BTRSS	_Sys_Flag1,6
-                                    1-  336     	MGOTO	_02008_DS_
+     0004 0Brr                      1-  318     	BTRSS	_Sys_Flag1,6
+                                    1-  319     	MGOTO	_02008_DS_
      0005 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  337     	.line	10, "Charge.c"; 	Charge_LED_Flashing_FLAG = 1; // LED呼吸标志位置1
-     0006 1Brr                      1-  338     	BSR	_Sys_Flag1,7
-                                    1-  339     	MGOTO	_02013_DS_
+                                    1-  320     	.line	10, "Charge.c"; 	Charge_LED_Flashing_FLAG = 1; // LED呼吸标志位置1
+     0006 1Brr                      1-  321     	BSR	_Sys_Flag1,7
+                                    1-  322     	MGOTO	_02013_DS_
      0007 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  340     ;;unsigned compare: left < lit(0x28=40), size=1
-     0008                           1-  341     _02008_DS_:
-                                    1-  342     	.line	15, "Charge.c"; 	if (Charge_Cnt >= Charge_Debounce_Time) // 进行消抖计数
-     0008 2128                      1-  343     	MOVIA	0x28
-                                    1-  344     	BANKSEL	_Charge_Cnt
+                                    1-  323     ;;unsigned compare: left < lit(0x28=40), size=1
+     0008                           1-  324     _02008_DS_:
+                                    1-  325     	.line	15, "Charge.c"; 	if (Charge_Cnt >= Charge_Debounce_Time) // 进行消抖计数
+     0008 2128                      1-  326     	MOVIA	0x28
+                                    1-  327     	BANKSEL	_Charge_Cnt
      0009 rrrr                      3-  109 m1      .banksel ram_address
-     000A 04rr                      1-  345     	SUBAR	_Charge_Cnt,W
-     000B 0803                      1-  346     	BTRSS	STATUS,0
-                                    1-  347     	MGOTO	_02013_DS_
+     000A 04rr                      1-  328     	SUBAR	_Charge_Cnt,W
+     000B 0803                      1-  329     	BTRSS	STATUS,0
+                                    1-  330     	MGOTO	_02013_DS_
      000C 3rrr                      3-   62 m1      LGOTO rom_address
-                                    1-  348     	.line	17, "Charge.c"; 	Charge_Cnt    = 0; // 清空充电计数器
-     000D 02rr                      1-  349     	CLRR	_Charge_Cnt
-                                    1-  350     	.line	18, "Charge.c"; 	Charging_FLAG = 1; // 充电标志位置1
-                                    1-  351     	BANKSEL	_Sys_Flag1
+                                    1-  331     	.line	17, "Charge.c"; 	Charge_Cnt    = 0; // 清空充电计数器
+     000D 02rr                      1-  332     	CLRR	_Charge_Cnt
+                                    1-  333     	.line	18, "Charge.c"; 	Charging_FLAG = 1; // 充电标志位置1
+                                    1-  334     	BANKSEL	_Sys_Flag1
      000E rrrr                      3-  109 m1      .banksel ram_address
-     000F 1Brr                      1-  352     	BSR	_Sys_Flag1,6
-                                    1-  353     	MGOTO	_02013_DS_
+     000F 1Brr                      1-  335     	BSR	_Sys_Flag1,6
+                                    1-  336     	MGOTO	_02013_DS_
      0010 3rrr                      3-   62 m1      LGOTO rom_address
-     0011                           1-  354     _02011_DS_:
-                                    1-  355     	.line	25, "Charge.c"; 	Charging_FLAG                   = 0; // 充电标志位清零
-                                    1-  356     	BANKSEL	_Sys_Flag1
+     0011                           1-  337     _02011_DS_:
+                                    1-  338     	.line	25, "Charge.c"; 	Charging_FLAG                   = 0; // 充电标志位清零
+                                    1-  339     	BANKSEL	_Sys_Flag1
      0011 rrrr                      3-  109 m1      .banksel ram_address
-     0012 1Frr                      1-  357     	BCR	_Sys_Flag1,6
-                                    1-  358     	.line	26, "Charge.c"; 	Charge_Cnt                      = 0; // 清空充电计数器
-                                    1-  359     	BANKSEL	_Charge_Cnt
+     0012 1Frr                      1-  340     	BCR	_Sys_Flag1,6
+                                    1-  341     	.line	26, "Charge.c"; 	Charge_Cnt                      = 0; // 清空充电计数器
+                                    1-  342     	BANKSEL	_Charge_Cnt
      0013 rrrr                      3-  109 m1      .banksel ram_address
-     0014 02rr                      1-  360     	CLRR	_Charge_Cnt
-                                    1-  361     	.line	27, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0; // 充满LED亮标志位清零
-                                    1-  362     	BANKSEL	_Sys_Flag2
+     0014 02rr                      1-  343     	CLRR	_Charge_Cnt
+                                    1-  344     	.line	27, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0; // 充满LED亮标志位清零
+                                    1-  345     	BANKSEL	_Sys_Flag2
      0015 rrrr                      3-  109 m1      .banksel ram_address
-     0016 1Crr                      1-  363     	BCR	_Sys_Flag2,0
-                                    1-  364     	.line	28, "Charge.c"; 	Charge_3H_Time_Cnt              = 0; // 3h时间计数器清零
-                                    1-  365     	BANKSEL	_Charge_3H_Time_Cnt
+     0016 1Crr                      1-  346     	BCR	_Sys_Flag2,0
+                                    1-  347     	.line	28, "Charge.c"; 	Charge_3H_Time_Cnt              = 0; // 3h时间计数器清零
+                                    1-  348     	BANKSEL	_Charge_3H_Time_Cnt
      0017 rrrr                      3-  109 m1      .banksel ram_address
-     0018 02rr                      1-  366     	CLRR	_Charge_3H_Time_Cnt
-     0019 02rr                      1-  367     	CLRR	(_Charge_3H_Time_Cnt + 1)
-                                    1-  368     	.line	29, "Charge.c"; 	Charge_LED_Flashing_FLAG        = 0; // LED充电闪烁标志位清零
-                                    1-  369     	BANKSEL	_Sys_Flag1
+     0018 02rr                      1-  349     	CLRR	_Charge_3H_Time_Cnt
+     0019 02rr                      1-  350     	CLRR	(_Charge_3H_Time_Cnt + 1)
+                                    1-  351     	.line	29, "Charge.c"; 	Charge_LED_Flashing_FLAG        = 0; // LED充电闪烁标志位清零
+                                    1-  352     	BANKSEL	_Sys_Flag1
      001A rrrr                      3-  109 m1      .banksel ram_address
-     001B 1Frr                      1-  370     	BCR	_Sys_Flag1,7
-     001C                           1-  371     _02013_DS_:
-                                    1-  372     	.line	32, "Charge.c"; 	}
-                                    1-  373     	RETURN	
+     001B 1Frr                      1-  353     	BCR	_Sys_Flag1,7
+     001C                           1-  354     _02013_DS_:
+                                    1-  355     	.line	32, "Charge.c"; 	}
+                                    1-  356     	RETURN	
      001C 0010                      3-   39 m1      ret
-                                    1-  374     ; exit point of _Charge_Detect
-                                    1-  377     ;	code size estimation:
-                                    1-  378     ;	   72+   31 =   103 instructions (  268 byte)
-                                    1-  380     	end
+                                    1-  357     ; exit point of _Charge_Detect
+                                    1-  360     ;	code size estimation:
+                                    1-  361     ;	   64+   28 =    92 instructions (  240 byte)
+                                    1-  363     	end
 
 SYMBOL TABLE            TYPE     VALUE
 __pin_count__           Constant 0000000E

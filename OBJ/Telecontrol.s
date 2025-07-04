@@ -216,15 +216,15 @@
 	.debuginfo subprogram _TeleCon_Signal_Process
 _TeleCon_Signal_Process:
 ; 2 exit points
-	.line	88, "Telecontrol.c"; 	if (TeleCon_8Bit_Check_Code_Geted_FLAG) // 当校验位标记完成接收
+	.line	87, "Telecontrol.c"; 	if (TeleCon_8Bit_Check_Code_Geted_FLAG) // 当校验位标记完成接收
 	BANKSEL	_Sys_Flag3
 	BTRSS	_Sys_Flag3,2
 	MGOTO	_00001_DS_
-	.line	90, "Telecontrol.c"; 	TeleCon_8Bit_Check_Code_Geted_FLAG = 0; // 清空校验位标记
+	.line	89, "Telecontrol.c"; 	TeleCon_8Bit_Check_Code_Geted_FLAG = 0; // 清空校验位标记
 	BCR	_Sys_Flag3,2
-	.line	91, "Telecontrol.c"; 	TeleCon_Error_FLAG                 = 0; // 清空遥控错误标志
+	.line	90, "Telecontrol.c"; 	TeleCon_Error_FLAG                 = 0; // 清空遥控错误标志
 	BCR	_Sys_Flag3,5
-	.line	93, "Telecontrol.c"; 	if ((Analyze_Save1 != S1_Short_Guide_Code) && (Analyze_Save1 != S1_Long_Press_Guide_Code) && (Analyze_Save1 != S2_Short_Guide_Code) && (Analyze_Save1 != S2_Long_Press_Guide_Code) && (Analyze_Save1 != S1_Short_Guide_Code_1) && (Analyze_Save1 != S1_Long_Press_Guide_Code_1) && (Analyze_Save1 != S2_Short_Guide_Code_1) && (Analyze_Save1 != S2_Long_Press_Guide_Code_1))
+	.line	92, "Telecontrol.c"; 	if ((Analyze_Save1 != S1_Short_Guide_Code) && (Analyze_Save1 != S1_Long_Press_Guide_Code) && (Analyze_Save1 != S2_Short_Guide_Code) && (Analyze_Save1 != S2_Long_Press_Guide_Code) && (Analyze_Save1 != S1_Short_Guide_Code_1) && (Analyze_Save1 != S1_Long_Press_Guide_Code_1) && (Analyze_Save1 != S2_Short_Guide_Code_1) && (Analyze_Save1 != S2_Long_Press_Guide_Code_1))
 	BANKSEL	_Analyze_Save1
 	MOVR	_Analyze_Save1,W
 	XORIA	0x24
@@ -258,144 +258,144 @@ _TeleCon_Signal_Process:
 	XORIA	0x28
 	BTRSC	STATUS,2
 	MGOTO	_00001_DS_
-	.line	95, "Telecontrol.c"; 	TeleCon_Error_FLAG = 1; // 如果不正确则将遥控码错误标志位置1
+	.line	94, "Telecontrol.c"; 	TeleCon_Error_FLAG = 1; // 如果不正确则将遥控码错误标志位置1
 	BANKSEL	_Sys_Flag3
 	BSR	_Sys_Flag3,5
 _00001_DS_:
-	.line	99, "Telecontrol.c"; 	if (TeleCon_8to16Bit_Data_Geted_FLAG) // 当遥控码数据接收完成
+	.line	98, "Telecontrol.c"; 	if (TeleCon_8to16Bit_Data_Geted_FLAG) // 当遥控码数据接收完成
 	BANKSEL	_Sys_Flag3
 	BTRSS	_Sys_Flag3,3
 	MGOTO	_02143_DS_
-	.line	101, "Telecontrol.c"; 	TeleCon_8to16Bit_Data_Geted_FLAG = 0;             // 清空遥控数据接收完成标志
+	.line	100, "Telecontrol.c"; 	TeleCon_8to16Bit_Data_Geted_FLAG = 0;             // 清空遥控数据接收完成标志
 	BCR	_Sys_Flag3,3
-	.line	102, "Telecontrol.c"; 	TeleCon_Data_Code                = Analyze_Save2; // 更新遥控数据
+	.line	101, "Telecontrol.c"; 	TeleCon_Data_Code                = Analyze_Save2; // 更新遥控数据
 	BANKSEL	_Analyze_Save2
 	MOVR	_Analyze_Save2,W
 	BANKSEL	_TeleCon_Data_Code
 	MOVAR	_TeleCon_Data_Code
-	.line	104, "Telecontrol.c"; 	if (!TeleCon_Error_FLAG && !Signal_Recv_Time_FLAG) // 如果遥控码错误标志位置为0,表示没有错误
+	.line	103, "Telecontrol.c"; 	if (!TeleCon_Error_FLAG && !Signal_Recv_Time_FLAG) // 如果遥控码错误标志位置为0,表示没有错误
 	BANKSEL	_Sys_Flag3
 	BTRSC	_Sys_Flag3,5
 	MGOTO	_02143_DS_
 	BANKSEL	_Sys_Flag2
 	BTRSC	_Sys_Flag2,3
 	MGOTO	_02143_DS_
-	.line	106, "Telecontrol.c"; 	if (TeleCon_Data_Code == S2_Freq_Change_Code) // 换频
+	.line	105, "Telecontrol.c"; 	if (TeleCon_Data_Code == S2_Freq_Change_Code) // 换频
 	BANKSEL	_TeleCon_Data_Code
 	MOVR	_TeleCon_Data_Code,W
 	XORIA	0x19
 	BTRSS	STATUS,2
 	MGOTO	_02136_DS_
-	.line	108, "Telecontrol.c"; 	M1_PWM_Write_FLAG = 1;
+	.line	107, "Telecontrol.c"; 	M1_PWM_Write_FLAG = 1;
 	BANKSEL	_Sys_Flag1
 	BSR	_Sys_Flag1,2
-	.line	109, "Telecontrol.c"; 	M1_Freq_Change ++;
+	.line	108, "Telecontrol.c"; 	M1_Freq_Change ++;
 	BANKSEL	_M1_Freq_Change
 	INCR	_M1_Freq_Change,F
 ;;swapping arguments (AOP_TYPEs 1/3)
 ;;unsigned compare: left >= lit(0xB=11), size=1
-	.line	110, "Telecontrol.c"; 	if (M1_Freq_Change > 10)
+	.line	109, "Telecontrol.c"; 	if (M1_Freq_Change > 10)
 	MOVIA	0x0b
 	SUBAR	_M1_Freq_Change,W
 	BTRSS	STATUS,0
 	MGOTO	_02127_DS_
-	.line	112, "Telecontrol.c"; 	M1_Freq_Change = 1;
+	.line	111, "Telecontrol.c"; 	M1_Freq_Change = 1;
 	MOVIA	0x01
 	MOVAR	_M1_Freq_Change
 _02127_DS_:
-	.line	114, "Telecontrol.c"; 	TeleCon_M1_Work_Once_FLAG    = 1;
+	.line	113, "Telecontrol.c"; 	TeleCon_M1_Work_Once_FLAG    = 1;
 	BANKSEL	_Sys_Flag4
 	BSR	_Sys_Flag4,5
-	.line	115, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
+	.line	114, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
 	BANKSEL	_Sys_Flag2
 	BSR	_Sys_Flag2,3
-	.line	116, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
+	.line	115, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
 	BANKSEL	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	(_TeleCon_Signal_Recv_Time_Cnt + 1)
-	.line	117, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
+	.line	116, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
 	BANKSEL	_TeleCon_Check_Code
 	CLRR	_TeleCon_Check_Code
-	.line	118, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
+	.line	117, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
 	MOVIA	0xff
 	BANKSEL	_TeleCon_Data_Code
 	MOVAR	_TeleCon_Data_Code
-	.line	119, "Telecontrol.c"; 	TeleCon_LED_Flash_FLAG       = 1;
+	.line	118, "Telecontrol.c"; 	TeleCon_LED_Flash_FLAG       = 1;
 	BANKSEL	_Sys_Flag3
 	BSR	_Sys_Flag3,7
-	.line	120, "Telecontrol.c"; 	M1_Reset();
+	.line	119, "Telecontrol.c"; 	M1_Reset();
 	MCALL	_M1_Reset
-	.line	121, "Telecontrol.c"; 	M1_Work();
+	.line	120, "Telecontrol.c"; 	M1_Work();
 	MCALL	_M1_Work
 	MGOTO	_02143_DS_
 _02136_DS_:
-	.line	123, "Telecontrol.c"; 	else if (TeleCon_Data_Code == S1_Freq_Change_Code)
+	.line	122, "Telecontrol.c"; 	else if (TeleCon_Data_Code == S1_Freq_Change_Code)
 	BANKSEL	_TeleCon_Data_Code
 	MOVR	_TeleCon_Data_Code,W
 	XORIA	0xdb
 	BTRSS	STATUS,2
 	MGOTO	_02133_DS_
-	.line	125, "Telecontrol.c"; 	Key_LED_Flash_FLAG = 1;
+	.line	124, "Telecontrol.c"; 	Key_LED_Flash_FLAG = 1;
 	BANKSEL	_Sys_Flag0
 	BSR	_Sys_Flag0,5
-	.line	126, "Telecontrol.c"; 	if (!TeleCon_M1_Work_Once_FLAG)
+	.line	125, "Telecontrol.c"; 	if (!TeleCon_M1_Work_Once_FLAG)
 	BANKSEL	_Sys_Flag4
 	BTRSC	_Sys_Flag4,5
 	MGOTO	_02129_DS_
-	.line	128, "Telecontrol.c"; 	TeleCon_M1_Work_Once_FLAG = 1;
+	.line	127, "Telecontrol.c"; 	TeleCon_M1_Work_Once_FLAG = 1;
 	BSR	_Sys_Flag4,5
-	.line	129, "Telecontrol.c"; 	M1_PWM_Write_FLAG         = 1;
+	.line	128, "Telecontrol.c"; 	M1_PWM_Write_FLAG         = 1;
 	BANKSEL	_Sys_Flag1
 	BSR	_Sys_Flag1,2
-	.line	130, "Telecontrol.c"; 	M1_Freq_Change            = 1;
+	.line	129, "Telecontrol.c"; 	M1_Freq_Change            = 1;
 	MOVIA	0x01
 	BANKSEL	_M1_Freq_Change
 	MOVAR	_M1_Freq_Change
-	.line	131, "Telecontrol.c"; 	M1_Reset();
+	.line	130, "Telecontrol.c"; 	M1_Reset();
 	MCALL	_M1_Reset
-	.line	132, "Telecontrol.c"; 	M1_Work();
+	.line	131, "Telecontrol.c"; 	M1_Work();
 	MCALL	_M1_Work
 _02129_DS_:
-	.line	134, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
+	.line	133, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
 	BANKSEL	_Sys_Flag2
 	BSR	_Sys_Flag2,3
-	.line	135, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
+	.line	134, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
 	BANKSEL	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	(_TeleCon_Signal_Recv_Time_Cnt + 1)
-	.line	136, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
+	.line	135, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
 	BANKSEL	_TeleCon_Check_Code
 	CLRR	_TeleCon_Check_Code
-	.line	137, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
+	.line	136, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
 	MOVIA	0xff
 	BANKSEL	_TeleCon_Data_Code
 	MOVAR	_TeleCon_Data_Code
 	MGOTO	_02143_DS_
 _02133_DS_:
-	.line	139, "Telecontrol.c"; 	else if (TeleCon_Data_Code == S1_Power_Off_Code)
+	.line	138, "Telecontrol.c"; 	else if (TeleCon_Data_Code == S1_Power_Off_Code)
 	BANKSEL	_TeleCon_Data_Code
 	MOVR	_TeleCon_Data_Code,W
 	XORIA	0x5a
 	BTRSS	STATUS,2
 	MGOTO	_02143_DS_
-	.line	141, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
+	.line	140, "Telecontrol.c"; 	Signal_Recv_Time_FLAG        = 1;
 	BANKSEL	_Sys_Flag2
 	BSR	_Sys_Flag2,3
-	.line	142, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
+	.line	141, "Telecontrol.c"; 	TeleCon_Signal_Recv_Time_Cnt = 0;
 	BANKSEL	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	_TeleCon_Signal_Recv_Time_Cnt
 	CLRR	(_TeleCon_Signal_Recv_Time_Cnt + 1)
-	.line	143, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
+	.line	142, "Telecontrol.c"; 	TeleCon_Check_Code           = 0;
 	BANKSEL	_TeleCon_Check_Code
 	CLRR	_TeleCon_Check_Code
-	.line	144, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
+	.line	143, "Telecontrol.c"; 	TeleCon_Data_Code            = 0xFF;
 	MOVIA	0xff
 	BANKSEL	_TeleCon_Data_Code
 	MOVAR	_TeleCon_Data_Code
-	.line	145, "Telecontrol.c"; 	StandBy_Mode();
+	.line	144, "Telecontrol.c"; 	StandBy_Mode();
 	MCALL	_StandBy_Mode
 _02143_DS_:
-	.line	149, "Telecontrol.c"; 	}
+	.line	148, "Telecontrol.c"; 	}
 	RETURN	
 ; exit point of _TeleCon_Signal_Process
 
@@ -669,7 +669,7 @@ _02030_DS_:
 	CLRR	_TeleCon_Signal_Cnt
 	CLRR	(_TeleCon_Signal_Cnt + 1)
 _02039_DS_:
-	.line	83, "Telecontrol.c"; 	}
+	.line	82, "Telecontrol.c"; 	}
 	RETURN	
 ; exit point of _TeleCon_Data_Recv
 

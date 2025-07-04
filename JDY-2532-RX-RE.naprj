@@ -113,8 +113,8 @@
     <Array name="files">
       <Element value="main.c|False" />
       <Element value="SysInc.h|False" />
-      <Element value="Init.h|True" />
-      <Element value="Charge.c|True" />
+      <Element value="Init.h|False" />
+      <Element value="Charge.c|False" />
       <Element value="Clock.c|False" />
       <Element value="Init.c|False" />
       <Element value="Key.c|False" />
@@ -195,9 +195,9 @@
       <Element value="TeleCon_Signal_Sbit_Cnt|0" />
       <Element value="TeleCon_Data_Code|0" />
       <Element value="TeleCon_Error_FLAG|0" />
-      <Element value="T_1MIN" />
-      <Element value="Charge_Cnt" />
-      <Element value="Charge_3H_Time_Cnt" />
+      <Element value="T_1MIN|0" />
+      <Element value="Charge_Cnt|0" />
+      <Element value="Charge_3H_Time_Cnt|0" />
     </Array>
   </Properties>
 </Project>

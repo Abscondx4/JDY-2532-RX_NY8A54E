@@ -382,19 +382,19 @@ END_OF_INTERRUPT:
 ;   _Charge_Detect
 ;   _Charge_Process
 ;   _Battery_Voltage_Detect
+;   _Battery_Voltage_Detect
 ;   _TeleCon_Signal_Process
 ;   _Key_Scan
 ;   _M1_Work
-;   _Battery_Voltage_Detect
 ;   _LED
 ;   _Init
 ;   _Charge_Detect
 ;   _Charge_Process
 ;   _Battery_Voltage_Detect
+;   _Battery_Voltage_Detect
 ;   _TeleCon_Signal_Process
 ;   _Key_Scan
 ;   _M1_Work
-;   _Battery_Voltage_Detect
 ;   _LED
 ;; Starting pCode block
 .segment "code"; module=main, function=_main
@@ -418,14 +418,14 @@ _02024_DS_:
 	MCALL	_Battery_Voltage_Detect
 	MGOTO	_02022_DS_
 _02021_DS_:
-	.line	34, "main.c"; 	TeleCon_Signal_Process();
-	MCALL	_TeleCon_Signal_Process
-	.line	35, "main.c"; 	Key_Scan();
-	MCALL	_Key_Scan
-	.line	36, "main.c"; 	M1_Work();
-	MCALL	_M1_Work
-	.line	37, "main.c"; 	Battery_Voltage_Detect();
+	.line	34, "main.c"; 	Battery_Voltage_Detect();
 	MCALL	_Battery_Voltage_Detect
+	.line	35, "main.c"; 	TeleCon_Signal_Process();
+	MCALL	_TeleCon_Signal_Process
+	.line	36, "main.c"; 	Key_Scan();
+	MCALL	_Key_Scan
+	.line	37, "main.c"; 	M1_Work();
+	MCALL	_M1_Work
 ;;signed compare: left < lit(0xDC=220), size=2, mask=ffff
 	.line	38, "main.c"; 	if (Sleep_Cnt >= 220)
 	BANKSEL	_Sleep_Cnt

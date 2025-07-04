@@ -210,10 +210,10 @@ _Charge_Process:
 	ADDIA	0x80
 	ADDIA	0x56
 	BTRSS	STATUS,2
-	MGOTO	_02072_DS_
+	MGOTO	_02066_DS_
 	MOVIA	0x4e
 	SUBAR	_Charge_3H_Time_Cnt,W
-_02072_DS_:
+_02066_DS_:
 	BTRSS	STATUS,0
 	MGOTO	_02019_DS_
 	.line	39, "Charge.c"; 	Full_Cnt                        = 0;
@@ -232,7 +232,7 @@ _02072_DS_:
 	MOVIA	0x2a
 	MOVAR	(_Charge_3H_Time_Cnt + 1)
 	.line	43, "Charge.c"; 	return;
-	MGOTO	_02038_DS_
+	MGOTO	_02036_DS_
 _02019_DS_:
 	.line	46, "Charge.c"; 	if (Power_Onoff_FLAG) // 如果处于开机状态
 	BANKSEL	_Sys_Flag0
@@ -243,7 +243,7 @@ _02021_DS_:
 	.line	51, "Charge.c"; 	if (KEY_Full) // 如果充满电
 	BANKSEL	_PORTA
 	BTRSS	_PORTA,3
-	MGOTO	_02036_DS_
+	MGOTO	_02034_DS_
 	.line	53, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
 	BANKSEL	_Sys_Flag1
 	BTRSS	_Sys_Flag1,5
@@ -254,7 +254,7 @@ _02021_DS_:
 	.line	56, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1; // 充满LED亮标志位置1
 	BANKSEL	_Sys_Flag2
 	BSR	_Sys_Flag2,0
-	MGOTO	_02038_DS_
+	MGOTO	_02036_DS_
 ;;unsigned compare: left < lit(0x5=5), size=1
 _02025_DS_:
 	.line	60, "Charge.c"; 	if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
@@ -262,39 +262,22 @@ _02025_DS_:
 	BANKSEL	_Full_Cnt
 	SUBAR	_Full_Cnt,W
 	BTRSS	STATUS,0
-	MGOTO	_02038_DS_
+	MGOTO	_02036_DS_
 	.line	62, "Charge.c"; 	Full_Cnt         = 0;
 	CLRR	_Full_Cnt
 	.line	63, "Charge.c"; 	Charge_Full_FLAG = 1; // 充满标志位置1
 	BANKSEL	_Sys_Flag1
 	BSR	_Sys_Flag1,5
-	MGOTO	_02038_DS_
-_02036_DS_:
+	MGOTO	_02036_DS_
+_02034_DS_:
 	.line	69, "Charge.c"; 	if (Charge_Full_FLAG) // 如果充满标志位为1
 	BANKSEL	_Sys_Flag1
-	BTRSS	_Sys_Flag1,5
-	MGOTO	_02033_DS_
-;;unsigned compare: left < lit(0x5=5), size=1
-	.line	71, "Charge.c"; 	if (Full_Cnt >= Full_Debounce_Time) // 进行消抖计数
-	MOVIA	0x05
-	BANKSEL	_Full_Cnt
-	SUBAR	_Full_Cnt,W
-	BTRSS	STATUS,0
-	MGOTO	_02038_DS_
-	.line	73, "Charge.c"; 	Full_Cnt                   = 0;
-	CLRR	_Full_Cnt
-	.line	74, "Charge.c"; 	Charging_LED_Flashing_Time = 0;
-	BANKSEL	_Charging_LED_Flashing_Time
-	CLRR	_Charging_LED_Flashing_Time
-	.line	75, "Charge.c"; 	Charge_Full_FLAG           = 0;
-	BANKSEL	_Sys_Flag1
-	BCR	_Sys_Flag1,5
-	MGOTO	_02038_DS_
-_02033_DS_:
+	BTRSC	_Sys_Flag1,5
+	MGOTO	_02036_DS_
 	.line	80, "Charge.c"; 	if (Charge_Force_Full_FLAG)
 	BANKSEL	_Sys_Flag4
 	BTRSS	_Sys_Flag4,5
-	MGOTO	_02030_DS_
+	MGOTO	_02028_DS_
 	.line	82, "Charge.c"; 	Full_Cnt                        = 0;
 	BANKSEL	_Full_Cnt
 	CLRR	_Full_Cnt
@@ -304,15 +287,15 @@ _02033_DS_:
 	.line	84, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 1;
 	BANKSEL	_Sys_Flag2
 	BSR	_Sys_Flag2,0
-	MGOTO	_02038_DS_
-_02030_DS_:
+	MGOTO	_02036_DS_
+_02028_DS_:
 	.line	88, "Charge.c"; 	Full_Cnt = 0;
 	BANKSEL	_Full_Cnt
 	CLRR	_Full_Cnt
 	.line	89, "Charge.c"; 	Charge_Full_LED_Long_Light_FLAG = 0;
 	BANKSEL	_Sys_Flag2
 	BCR	_Sys_Flag2,0
-_02038_DS_:
+_02036_DS_:
 	.line	93, "Charge.c"; 	}
 	RETURN	
 ; exit point of _Charge_Process
@@ -375,6 +358,6 @@ _02013_DS_:
 
 
 ;	code size estimation:
-;	   72+   31 =   103 instructions (  268 byte)
+;	   64+   28 =    92 instructions (  240 byte)
 
 	end
